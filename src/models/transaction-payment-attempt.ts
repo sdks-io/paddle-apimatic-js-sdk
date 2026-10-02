@@ -1,0 +1,58 @@
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
+import { methodDetailsSchema, type MethodDetails } from "./method-details.js";
+import { paymentAttemptStatusSchema, type PaymentAttemptStatus } from "./payment-attempt-status.js";
+import { capturedAtSchema, type CapturedAt } from "./unions/captured-at.js";
+import { errorCode1Schema, type ErrorCode1 } from "./unions/error-code1.js";
+import { paymentMethodIdSchema, type PaymentMethodId } from "./unions/payment-method-id.js";
+
+export type TransactionPaymentAttempt = {
+  /** UUID for this payment attempt. */
+  paymentAttemptId: string;
+  /**
+   * UUID for the stored payment method used for this payment attempt. Deprecated - use
+   * `payment_method_id` instead.
+   *
+   * @deprecated
+   */
+  storedPaymentMethodId: string;
+  /** Paddle ID of the payment method used for this payment attempt, prefixed with `paymtd_`. */
+  paymentMethodId: PaymentMethodId;
+  /** Amount for collection in the lowest denomination of a currency (e.g. cents for USD). */
+  amount: string;
+  /** Status of this payment attempt. */
+  status: PaymentAttemptStatus;
+  /** Reason why a payment attempt failed. Returns `null` if payment captured successfully. */
+  errorCode: ErrorCode1;
+  /** Information about the payment method used for a payment attempt. */
+  methodDetails: MethodDetails;
+  /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
+  createdAt: Date;
+  /**
+   * RFC 3339 datetime string of when this payment was captured. `null` if `status` is not
+   * `captured`.
+   */
+  capturedAt: CapturedAt;
+};
+
+export const transactionPaymentAttemptSchema: Schema<TransactionPaymentAttempt> =
+  s.object<TransactionPaymentAttempt>({
+    paymentAttemptId: s.string(),
+    storedPaymentMethodId: s.string(),
+    paymentMethodId: paymentMethodIdSchema,
+    amount: s.string(),
+    status: paymentAttemptStatusSchema,
+    errorCode: errorCode1Schema,
+    methodDetails: methodDetailsSchema,
+    createdAt: s.dateTime(),
+    capturedAt: capturedAtSchema,
+    _keysMap: {
+      paymentAttemptId: "payment_attempt_id",
+      storedPaymentMethodId: "stored_payment_method_id",
+      paymentMethodId: "payment_method_id",
+      errorCode: "error_code",
+      methodDetails: "method_details",
+      createdAt: "created_at",
+      capturedAt: "captured_at",
+    },
+  });

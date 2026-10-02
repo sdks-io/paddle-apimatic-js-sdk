@@ -1,0 +1,25 @@
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
+import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
+
+/**
+ * A base representation of monetary value unformatted in the lowest denomination with currency
+ * code.
+ */
+export type Money = {
+  /**
+   * Amount in the lowest denomination for the currency, e.g. 10 USD = 1000 (cents). Although
+   * represented as a string, this value must be a valid integer.
+   */
+  amount: string;
+  /** Supported three-letter ISO 4217 currency code. */
+  currencyCode: CurrencyCode;
+};
+
+export const moneySchema: Schema<Money> = s.object<Money>({
+  amount: s.string(),
+  currencyCode: currencyCodeSchema,
+  _keysMap: {
+    currencyCode: "currency_code",
+  },
+});

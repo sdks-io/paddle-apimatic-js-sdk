@@ -1,0 +1,23 @@
+import * as s from "../core/validation/index.js";
+import type { Schema } from "../core/validation/schema.js";
+import { price10Schema, type Price10 } from "./price10.js";
+import { proration13Schema, type Proration13 } from "./unions/proration13.js";
+
+export type TransactionItem1 = {
+  /** Represents a price entity. */
+  price: Price10;
+  /** Quantity of this item on the transaction. */
+  quantity: number;
+  /**
+   * How proration was calculated for this item. Populated when a transaction is created from a
+   * subscription change, where `proration_billing_mode` was `prorated_immediately` or
+   * `prorated_next_billing_period`. Set automatically by Paddle.
+   */
+  proration: Proration13;
+};
+
+export const transactionItem1Schema: Schema<TransactionItem1> = s.object<TransactionItem1>({
+  price: price10Schema,
+  quantity: s.number(),
+  proration: proration13Schema,
+});
