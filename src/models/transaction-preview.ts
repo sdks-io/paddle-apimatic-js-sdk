@@ -1,5 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { addressPreviewSchema, type AddressPreview } from "./address-preview.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { paymentMethodType1Schema, type PaymentMethodType1 } from "./payment-method-type1.js";
 import {
@@ -7,38 +8,32 @@ import {
   type TransactionDetailsPreview,
 } from "./transaction-details-preview.js";
 import { transactionItemPreviewSchema, type TransactionItemPreview } from "./transaction-item-preview.js";
-import { addressId11Schema, type AddressId11 } from "./unions/address-id11.js";
-import { address13Schema, type Address13 } from "./unions/address13.js";
-import { businessId15Schema, type BusinessId15 } from "./unions/business-id15.js";
-import { customerId11Schema, type CustomerId11 } from "./unions/customer-id11.js";
-import { customerIpAddressSchema, type CustomerIpAddress } from "./unions/customer-ip-address.js";
-import { discountId11Schema, type DiscountId11 } from "./unions/discount-id11.js";
 
 /** Represents a transaction entity when previewing transactions. */
 export type TransactionPreview = {
   /** Paddle ID of the customer that this transaction preview is for, prefixed with `ctm_`. */
-  customerId: CustomerId11;
+  customerId: string | null;
   /**
    * Paddle ID of the address that this transaction preview is for, prefixed with `add_`. Send one
    * of `address_id`, `customer_ip_address`, or the `address` object when previewing.
    */
-  addressId: AddressId11;
+  addressId: string | null;
   /** Paddle ID of the business that this transaction preview is for, prefixed with `biz_`. */
-  businessId: BusinessId15;
+  businessId: string | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /** Paddle ID of the discount applied to this transaction preview, prefixed with `dsc_`. */
-  discountId: DiscountId11;
+  discountId: string | null;
   /**
    * IP address for this transaction preview. Send one of `address_id`, `customer_ip_address`, or
    * the `address` object when previewing.
    */
-  customerIpAddress: CustomerIpAddress;
+  customerIpAddress: string | null;
   /**
    * Address for this transaction preview. Send one of `address_id`, `customer_ip_address`, or the
    * `address` object when previewing.
    */
-  address: Address13;
+  address: AddressPreview | null;
   /**
    * Whether trials should be ignored for transaction preview calculations.
    *
@@ -59,13 +54,13 @@ export type TransactionPreview = {
 };
 
 export const transactionPreviewSchema: Schema<TransactionPreview> = s.object<TransactionPreview>({
-  customerId: customerId11Schema,
-  addressId: addressId11Schema,
-  businessId: businessId15Schema,
+  customerId: s.nullable(s.string()),
+  addressId: s.nullable(s.string()),
+  businessId: s.nullable(s.string()),
   currencyCode: currencyCodeSchema,
-  discountId: discountId11Schema,
-  customerIpAddress: customerIpAddressSchema,
-  address: address13Schema,
+  discountId: s.nullable(s.string()),
+  customerIpAddress: s.nullable(s.string()),
+  address: s.nullable(s.lazy(() => addressPreviewSchema)),
   ignoreTrials: s.defaulted(s.boolean(), false),
   items: s.array(s.lazy(() => transactionItemPreviewSchema)),
   details: transactionDetailsPreviewSchema,

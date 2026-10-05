@@ -9,12 +9,15 @@ import {
   type TransactionDetailsTaxRatesUsedItem,
 } from "./transaction-details-tax-rates-used-item.js";
 import {
+  transactionPayoutTotalsAdjustedSchema,
+  type TransactionPayoutTotalsAdjusted,
+} from "./transaction-payout-totals-adjusted.js";
+import { transactionPayoutTotalsSchema, type TransactionPayoutTotals } from "./transaction-payout-totals.js";
+import {
   transactionTotalsAdjustedSchema,
   type TransactionTotalsAdjusted,
 } from "./transaction-totals-adjusted.js";
 import { transactionTotalsSchema, type TransactionTotals } from "./transaction-totals.js";
-import { adjustedPayoutTotalsSchema, type AdjustedPayoutTotals } from "./unions/adjusted-payout-totals.js";
-import { payoutTotals1Schema, type PayoutTotals1 } from "./unions/payout-totals1.js";
 
 /**
  * Calculated totals for a transaction, including proration, discounts, tax, and currency
@@ -34,12 +37,12 @@ export type TransactionDetails = {
    * Breakdown of the payout total for a transaction. `null` until the transaction is `completed`.
    * Returned in your payout currency.
    */
-  payoutTotals: PayoutTotals1;
+  payoutTotals: TransactionPayoutTotals | null;
   /**
    * Breakdown of the payout total for a transaction after adjustments. `null` until the transaction
    * is `completed`.
    */
-  adjustedPayoutTotals: AdjustedPayoutTotals;
+  adjustedPayoutTotals: TransactionPayoutTotalsAdjusted | null;
   /**
    * Information about line items for this transaction. Different from transaction `items` as they
    * include totals calculated by Paddle. Considered the source of truth for line item totals.
@@ -51,8 +54,8 @@ export const transactionDetailsSchema: Schema<TransactionDetails> = s.object<Tra
   taxRatesUsed: s.array(s.lazy(() => transactionDetailsTaxRatesUsedItemSchema)),
   totals: transactionTotalsSchema,
   adjustedTotals: transactionTotalsAdjustedSchema,
-  payoutTotals: payoutTotals1Schema,
-  adjustedPayoutTotals: adjustedPayoutTotalsSchema,
+  payoutTotals: s.nullable(s.lazy(() => transactionPayoutTotalsSchema)),
+  adjustedPayoutTotals: s.nullable(s.lazy(() => transactionPayoutTotalsAdjustedSchema)),
   lineItems: s.array(s.lazy(() => transactionDetailsLineItemSchema)),
   _keysMap: {
     taxRatesUsed: "tax_rates_used",

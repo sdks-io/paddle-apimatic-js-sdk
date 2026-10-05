@@ -9,8 +9,6 @@ import {
   type ReportFilterReconciliation,
 } from "./report-filter-reconciliation.js";
 import { ReportStatus, reportStatusSchema } from "./report-status.js";
-import { expiresAt4Schema, type ExpiresAt4 } from "./unions/expires-at4.js";
-import { rowsSchema, type Rows } from "./unions/rows.js";
 
 /** Entity when working with a reconciliation report. */
 export type PayoutReconciliationReport = {
@@ -19,12 +17,12 @@ export type PayoutReconciliationReport = {
   /** @default ReportStatus.Pending */
   status?: ReportStatus;
   /** Number of records in this report. `null` if the report is `pending`. */
-  rows: Rows;
+  rows: number | null;
   /**
    * RFC 3339 datetime string of when this report expires. The report is no longer available to
    * download after this date.
    */
-  expiresAt: ExpiresAt4;
+  expiresAt: Date | null;
   /** RFC 3339 datetime string of when this report was last updated. */
   updatedAt: Date;
   /** RFC 3339 datetime string of when this report was created. */
@@ -43,8 +41,8 @@ export const payoutReconciliationReportSchema: Schema<PayoutReconciliationReport
   s.object<PayoutReconciliationReport>({
     id: s.string(),
     status: s.defaulted(reportStatusSchema, ReportStatus.Pending),
-    rows: rowsSchema,
-    expiresAt: expiresAt4Schema,
+    rows: s.nullable(s.int()),
+    expiresAt: s.nullable(s.dateTime()),
     updatedAt: s.dateTime(),
     createdAt: s.dateTime(),
     type: payoutReconciliationReportTypeSchema,

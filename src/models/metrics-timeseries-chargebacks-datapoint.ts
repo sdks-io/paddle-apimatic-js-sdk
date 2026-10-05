@@ -12,5 +12,5 @@ export type MetricsTimeseriesChargebacksDatapoint = {
 export const metricsTimeseriesChargebacksDatapointSchema: Schema<MetricsTimeseriesChargebacksDatapoint> =
   s.object<MetricsTimeseriesChargebacksDatapoint>({
     timestamp: s.dateTime(),
-    count: s.number(),
+    count: s.int(),
   });

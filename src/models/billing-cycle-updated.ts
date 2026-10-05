@@ -2,7 +2,6 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { durationSchema, type Duration } from "./duration.js";
 import { timePeriodSchema, type TimePeriod } from "./time-period.js";
-import { nextBilledAt2Schema, type NextBilledAt2 } from "./unions/next-billed-at2.js";
 
 /** Details specific to `subscription_billing_cycle_updated` actions. */
 export type BillingCycleUpdated = {
@@ -17,14 +16,14 @@ export type BillingCycleUpdated = {
    * billing cycle was updated. `null` if the subscription has no next billing date (for example,
    * paused without a scheduled resume).
    */
-  nextBilledAt: NextBilledAt2;
+  nextBilledAt: Date | null;
 };
 
 export const billingCycleUpdatedSchema: Schema<BillingCycleUpdated> = s.object<BillingCycleUpdated>({
   action: s.defaulted(s.literal("subscription_billing_cycle_updated"), "subscription_billing_cycle_updated"),
   billingCycle: durationSchema,
   currentBillingPeriod: timePeriodSchema,
-  nextBilledAt: nextBilledAt2Schema,
+  nextBilledAt: s.nullable(s.dateTime()),
   _keysMap: {
     billingCycle: "billing_cycle",
     currentBillingPeriod: "current_billing_period",

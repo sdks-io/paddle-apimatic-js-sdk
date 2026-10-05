@@ -4,8 +4,6 @@ import {
   subscriptionDiscountTypeSchema,
   type SubscriptionDiscountType,
 } from "./subscription-discount-type.js";
-import { endsAtSchema, type EndsAt } from "./unions/ends-at.js";
-import { startsAtSchema, type StartsAt } from "./unions/starts-at.js";
 
 /** Details of the discount applied to this subscription. */
 export type SubscriptionDiscountTimePeriod = {
@@ -15,13 +13,13 @@ export type SubscriptionDiscountTimePeriod = {
    * RFC 3339 datetime string of when this discount was first applied. `null` for canceled
    * subscriptions where a discount was redeemed but never applied to a transaction.
    */
-  startsAt: StartsAt;
+  startsAt: Date | null;
   /**
    * RFC 3339 datetime string of when this discount no longer applies. Where a discount has
    * `maximum_recurring_intervals`, this is the date of the last billing period where this discount
    * applies. `null` where a discount recurs forever.
    */
-  endsAt: EndsAt;
+  endsAt: Date | null;
   /** Whether this discount applies for multiple billing periods. */
   type: SubscriptionDiscountType;
 };
@@ -29,8 +27,8 @@ export type SubscriptionDiscountTimePeriod = {
 export const subscriptionDiscountTimePeriodSchema: Schema<SubscriptionDiscountTimePeriod> =
   s.object<SubscriptionDiscountTimePeriod>({
     id: s.string(),
-    startsAt: startsAtSchema,
-    endsAt: endsAtSchema,
+    startsAt: s.nullable(s.dateTime()),
+    endsAt: s.nullable(s.dateTime()),
     type: subscriptionDiscountTypeSchema,
     _keysMap: {
       startsAt: "starts_at",

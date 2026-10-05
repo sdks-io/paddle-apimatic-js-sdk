@@ -1,15 +1,8 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { countryCodeSupportedSchema, type CountryCodeSupported } from "./country-code-supported.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { statusSchema, type Status } from "./status.js";
-import { city3Schema, type City3 } from "./unions/city3.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { description11Schema, type Description11 } from "./unions/description11.js";
-import { firstLine3Schema, type FirstLine3 } from "./unions/first-line3.js";
-import { importMeta11Schema, type ImportMeta11 } from "./unions/import-meta11.js";
-import { postalCode5Schema, type PostalCode5 } from "./unions/postal-code5.js";
-import { region3Schema, type Region3 } from "./unions/region3.js";
-import { secondLine4Schema, type SecondLine4 } from "./unions/second-line4.js";
 
 /** New or changed entity. */
 export type Data = {
@@ -17,18 +10,18 @@ export type Data = {
   id: string;
   /** The ID of the customer this address belongs to. */
   customerId: string;
-  description: Description11;
-  firstLine: FirstLine3;
-  secondLine: SecondLine4;
-  city: City3;
-  postalCode: PostalCode5;
-  region: Region3;
+  description: string | null;
+  firstLine: string | null;
+  secondLine: string | null;
+  city: string | null;
+  postalCode: string | null;
+  region: string | null;
   countryCode: CountryCodeSupported;
   /** Your own structured key-value data. */
-  customData: CustomData;
+  customData: Record<string, unknown> | null;
   /** Whether this entity can be used in Paddle. */
   status: Status;
-  importMeta: ImportMeta11;
+  importMeta: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -38,16 +31,16 @@ export type Data = {
 export const dataSchema: Schema<Data> = s.object<Data>({
   id: s.string(),
   customerId: s.string(),
-  description: description11Schema,
-  firstLine: firstLine3Schema,
-  secondLine: secondLine4Schema,
-  city: city3Schema,
-  postalCode: postalCode5Schema,
-  region: region3Schema,
+  description: s.nullable(s.string()),
+  firstLine: s.nullable(s.string()),
+  secondLine: s.nullable(s.string()),
+  city: s.nullable(s.string()),
+  postalCode: s.nullable(s.string()),
+  region: s.nullable(s.string()),
   countryCode: countryCodeSupportedSchema,
-  customData: customDataSchema,
+  customData: s.nullable(s.record(s.string(), s.unknown())),
   status: statusSchema,
-  importMeta: importMeta11Schema,
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

@@ -1,8 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { ClientTokenStatus, clientTokenStatusSchema } from "./client-token-status.js";
-import { description3Schema, type Description3 } from "./unions/description3.js";
-import { revokedAtSchema, type RevokedAt } from "./unions/revoked-at.js";
 
 /** Represents a client-side token entity. */
 export type ClientSideToken = {
@@ -14,11 +12,11 @@ export type ClientSideToken = {
   token: string;
   /** Short name of this client-side token. Typically unique and human-identifiable. */
   name: string;
-  description: Description3;
+  description: string | null;
   /** @default ClientTokenStatus.Active */
   status?: ClientTokenStatus;
   /** RFC 3339 datetime string of when this client-side token was revoked. `null` if not revoked. */
-  revokedAt: RevokedAt;
+  revokedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -27,9 +25,9 @@ export const clientSideTokenSchema: Schema<ClientSideToken> = s.object<ClientSid
   id: s.string(),
   token: s.string(),
   name: s.string(),
-  description: description3Schema,
+  description: s.nullable(s.string()),
   status: s.defaulted(clientTokenStatusSchema, ClientTokenStatus.Active),
-  revokedAt: revokedAtSchema,
+  revokedAt: s.nullable(s.dateTime()),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

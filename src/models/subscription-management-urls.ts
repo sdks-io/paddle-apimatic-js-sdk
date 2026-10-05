@@ -1,6 +1,5 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { updatePaymentMethodSchema, type UpdatePaymentMethod } from "./unions/update-payment-method.js";
 
 /**
  * Customer portal deep links for this subscription.
@@ -15,7 +14,7 @@ export type SubscriptionManagementUrls = {
    * form pre-opened. Use as part of workflows to let customers update their payment details. `null`
    * for manually-collected subscriptions.
    */
-  updatePaymentMethod: UpdatePaymentMethod;
+  updatePaymentMethod: string | null;
   /**
    * Link to the page for this subscription in the customer portal with the subscription
    * cancellation form pre-opened. Use as part of cancel subscription workflows.
@@ -25,7 +24,7 @@ export type SubscriptionManagementUrls = {
 
 export const subscriptionManagementUrlsSchema: Schema<SubscriptionManagementUrls> =
   s.object<SubscriptionManagementUrls>({
-    updatePaymentMethod: updatePaymentMethodSchema,
+    updatePaymentMethod: s.nullable(s.string()),
     cancel: s.string(),
     _keysMap: {
       updatePaymentMethod: "update_payment_method",

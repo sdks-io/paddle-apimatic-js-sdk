@@ -3,8 +3,6 @@ import type { Schema } from "../core/validation/schema.js";
 import { moneySchema, type Money } from "./money.js";
 import { priceQuantitySchema, type PriceQuantity } from "./price-quantity.js";
 import { TaxMode, taxModeSchema } from "./tax-mode.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { name11Schema, type Name11 } from "./unions/name11.js";
 import { unitPriceOverrideSchema, type UnitPriceOverride } from "./unit-price-override.js";
 
 export type SubscriptionChargeCreateWithPriceInternalPriceModel = {
@@ -16,7 +14,7 @@ export type SubscriptionChargeCreateWithPriceInternalPriceModel = {
    * Name of this price, shown to customers at checkout and on invoices. Typically describes how
    * often the related product bills.
    */
-  name?: Name11;
+  name?: string | null;
   /** @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
@@ -35,19 +33,19 @@ export type SubscriptionChargeCreateWithPriceInternalPriceModel = {
    */
   quantity?: PriceQuantity;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
 };
 
 export const subscriptionChargeCreateWithPriceInternalPriceModelSchema: Schema<SubscriptionChargeCreateWithPriceInternalPriceModel> =
   s.object<SubscriptionChargeCreateWithPriceInternalPriceModel>({
     productId: s.string(),
     description: s.string(),
-    name: s.optional(s.lazy(() => name11Schema)),
+    name: s.optionalNullable(s.string()),
     taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
     unitPrice: moneySchema,
     unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceOverrideSchema))),
     quantity: s.optional(s.lazy(() => priceQuantitySchema)),
-    customData: s.optional(s.lazy(() => customDataSchema)),
+    customData: s.optionalNullable(s.record(s.string(), s.unknown())),
     _keysMap: {
       productId: "product_id",
       taxMode: "tax_mode",

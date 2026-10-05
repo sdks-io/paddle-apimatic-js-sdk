@@ -1,9 +1,9 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { product10Schema, type Product10 } from "./product10.js";
+import { proration1Schema, type Proration1 } from "./proration1.js";
 import { totals3Schema, type Totals3 } from "./totals3.js";
 import { totals4Schema, type Totals4 } from "./totals4.js";
-import { proration13Schema, type Proration13 } from "./unions/proration13.js";
 
 export type LineItem = {
   /** Paddle ID for the price related to this transaction line item, prefixed with `pri_`. */
@@ -15,7 +15,7 @@ export type LineItem = {
    * subscription change, where `proration_billing_mode` was `prorated_immediately` or
    * `prorated_next_billing_period`. Set automatically by Paddle.
    */
-  proration: Proration13;
+  proration: Proration1 | null;
   /** Rate used to calculate tax for this transaction line item. */
   taxRate: string;
   /**
@@ -39,8 +39,8 @@ export type LineItem = {
 
 export const lineItemSchema: Schema<LineItem> = s.object<LineItem>({
   priceId: s.string(),
-  quantity: s.number(),
-  proration: proration13Schema,
+  quantity: s.int(),
+  proration: s.nullable(s.lazy(() => proration1Schema)),
   taxRate: s.string(),
   unitTotals: totals3Schema,
   totals: totals4Schema,

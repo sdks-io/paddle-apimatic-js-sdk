@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { pricePreviewSchema, type PricePreview } from "./price-preview.js";
-import { proration18Schema, type Proration18 } from "./unions/proration18.js";
+import { prorationSchema, type Proration } from "./proration.js";
 
 export type TransactionItemPreview = {
   /** Quantity of this item on the transaction. */
@@ -14,14 +14,14 @@ export type TransactionItemPreview = {
    */
   includeInTotals?: boolean;
   /** How proration was calculated for this item. `null` for transaction previews. */
-  proration: Proration18;
+  proration: Proration | null;
   price: PricePreview;
 };
 
 export const transactionItemPreviewSchema: Schema<TransactionItemPreview> = s.object<TransactionItemPreview>({
-  quantity: s.number(),
+  quantity: s.int(),
   includeInTotals: s.defaulted(s.boolean(), true),
-  proration: proration18Schema,
+  proration: s.nullable(s.lazy(() => prorationSchema)),
   price: pricePreviewSchema,
   _keysMap: {
     includeInTotals: "include_in_totals",

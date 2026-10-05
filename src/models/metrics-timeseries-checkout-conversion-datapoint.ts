@@ -16,8 +16,8 @@ export type MetricsTimeseriesCheckoutConversionDatapoint = {
 export const metricsTimeseriesCheckoutConversionDatapointSchema: Schema<MetricsTimeseriesCheckoutConversionDatapoint> =
   s.object<MetricsTimeseriesCheckoutConversionDatapoint>({
     timestamp: s.dateTime(),
-    count: s.number(),
-    completedCount: s.number(),
+    count: s.int(),
+    completedCount: s.int(),
     rate: s.string(),
     _keysMap: {
       completedCount: "completed_count",

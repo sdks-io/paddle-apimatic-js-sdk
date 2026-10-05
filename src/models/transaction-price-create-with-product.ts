@@ -1,5 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { durationSchema, type Duration } from "./duration.js";
 import { moneySchema, type Money } from "./money.js";
 import { priceQuantitySchema, type PriceQuantity } from "./price-quantity.js";
 import { TaxMode, taxModeSchema } from "./tax-mode.js";
@@ -7,10 +8,6 @@ import {
   transactionSubscriptionProductCreateSchema,
   type TransactionSubscriptionProductCreate,
 } from "./transaction-subscription-product-create.js";
-import { billingCycleSchema, type BillingCycle } from "./unions/billing-cycle.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { name5Schema, type Name5 } from "./unions/name5.js";
-import { trialPeriod1Schema, type TrialPeriod1 } from "./unions/trial-period1.js";
 import { unitPriceOverrideSchema, type UnitPriceOverride } from "./unit-price-override.js";
 
 export type TransactionPriceCreateWithProduct = {
@@ -20,14 +17,14 @@ export type TransactionPriceCreateWithProduct = {
    * Name of this price, shown to customers at checkout and on invoices. Typically describes how
    * often the related product bills.
    */
-  name?: Name5;
+  name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
-  billingCycle?: BillingCycle;
+  billingCycle?: Duration | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
-  trialPeriod?: TrialPeriod1;
+  trialPeriod?: Duration | null;
   /** @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
@@ -46,7 +43,7 @@ export type TransactionPriceCreateWithProduct = {
    */
   quantity?: PriceQuantity;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
   /** Product object for a non-catalog item to charge for. */
   product: TransactionSubscriptionProductCreate;
 };
@@ -54,14 +51,14 @@ export type TransactionPriceCreateWithProduct = {
 export const transactionPriceCreateWithProductSchema: Schema<TransactionPriceCreateWithProduct> =
   s.object<TransactionPriceCreateWithProduct>({
     description: s.string(),
-    name: s.optional(s.lazy(() => name5Schema)),
-    billingCycle: s.optional(s.lazy(() => billingCycleSchema)),
-    trialPeriod: s.optional(s.lazy(() => trialPeriod1Schema)),
+    name: s.optionalNullable(s.string()),
+    billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
+    trialPeriod: s.optionalNullable(s.lazy(() => durationSchema)),
     taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
     unitPrice: moneySchema,
     unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceOverrideSchema))),
     quantity: s.optional(s.lazy(() => priceQuantitySchema)),
-    customData: s.optional(s.lazy(() => customDataSchema)),
+    customData: s.optionalNullable(s.record(s.string(), s.unknown())),
     product: transactionSubscriptionProductCreateSchema,
     _keysMap: {
       billingCycle: "billing_cycle",

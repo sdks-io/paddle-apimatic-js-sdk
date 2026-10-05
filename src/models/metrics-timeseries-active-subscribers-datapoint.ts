@@ -12,5 +12,5 @@ export type MetricsTimeseriesActiveSubscribersDatapoint = {
 export const metricsTimeseriesActiveSubscribersDatapointSchema: Schema<MetricsTimeseriesActiveSubscribersDatapoint> =
   s.object<MetricsTimeseriesActiveSubscribersDatapoint>({
     timestamp: s.dateTime(),
-    count: s.number(),
+    count: s.int(),
   });

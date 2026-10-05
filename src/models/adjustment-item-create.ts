@@ -1,7 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { adjustmentItemTypeSchema, type AdjustmentItemType } from "./adjustment-item-type.js";
-import { amountSchema, type Amount } from "./unions/amount.js";
 
 export type AdjustmentItemCreate = {
   /**
@@ -15,13 +14,13 @@ export type AdjustmentItemCreate = {
    */
   type: AdjustmentItemType;
   /** Amount adjusted for this transaction item. Required when item `type` is `partial`. */
-  amount?: Amount;
+  amount?: string | null;
 };
 
 export const adjustmentItemCreateSchema: Schema<AdjustmentItemCreate> = s.object<AdjustmentItemCreate>({
   itemId: s.string(),
   type: adjustmentItemTypeSchema,
-  amount: s.optional(s.lazy(() => amountSchema)),
+  amount: s.optionalNullable(s.string()),
   _keysMap: {
     itemId: "item_id",
   },

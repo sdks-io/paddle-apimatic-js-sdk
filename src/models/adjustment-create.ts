@@ -1,9 +1,9 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { adjustmentActionSchema, type AdjustmentAction } from "./adjustment-action.js";
+import { adjustmentItemCreateSchema, type AdjustmentItemCreate } from "./adjustment-item-create.js";
 import { AdjustmentTaxMode, adjustmentTaxModeSchema } from "./adjustment-tax-mode.js";
 import { AdjustmentType, adjustmentTypeSchema } from "./adjustment-type.js";
-import { itemsSchema, type Items } from "./unions/items.js";
 
 /** Represents an adjustment entity when creating adjustments. */
 export type AdjustmentCreate = {
@@ -30,7 +30,7 @@ export type AdjustmentCreate = {
   /**
    * List of transaction items to adjust. Required if `type` is not populated or set to `partial`.
    */
-  items?: Items;
+  items?: AdjustmentItemCreate[] | null;
 };
 
 export const adjustmentCreateSchema: Schema<AdjustmentCreate> = s.object<AdjustmentCreate>({
@@ -39,7 +39,7 @@ export const adjustmentCreateSchema: Schema<AdjustmentCreate> = s.object<Adjustm
   taxMode: s.defaulted(adjustmentTaxModeSchema, AdjustmentTaxMode.Internal),
   transactionId: s.string(),
   reason: s.string(),
-  items: s.optional(s.lazy(() => itemsSchema)),
+  items: s.optionalNullable(s.array(s.lazy(() => adjustmentItemCreateSchema))),
   _keysMap: {
     taxMode: "tax_mode",
     transactionId: "transaction_id",

@@ -143,7 +143,7 @@ Accessor: `client.subscriptions` · Source: `src/resources/subscriptions.ts` · 
 | `orderBy` | `query` | `order_by` | `string` | no | `"id[DESC]"` |
 | `priceId` | `query` | `price_id` | `string[]` | no | — |
 | `scheduledChangeAction` | `query` | `scheduled_change_action` | `ScheduledChangeActionQuery[]` | no | — |
-| `nextBilledAt` | `query` | `next_billed_at` | `NextBilledAtModel` | no | — |
+| `nextBilledAt` | `query` | `next_billed_at` | `string[]` | no | — |
 | `status` | `query` | — | `SubscriptionStatusQuery[]` | no | — |
 | `skipCount` | `header` | `Skip-Count` | `string` | no | — |
 
@@ -151,7 +151,6 @@ Accessor: `client.subscriptions` · Source: `src/resources/subscriptions.ts` · 
 | --- | --- | --- |
 | `CollectionModeQuery` | `collectionModeQuerySchema` | `src/models/collection-mode-query.ts` |
 | `ScheduledChangeActionQuery` | `scheduledChangeActionQuerySchema` | `src/models/scheduled-change-action-query.ts` |
-| `NextBilledAtModel` | `nextBilledAtModelSchema` | `src/models/unions/next-billed-at-model.ts` |
 | `SubscriptionStatusQuery` | `subscriptionStatusQuerySchema` | `src/models/subscription-status-query.ts` |
 | `SubscriptionsResponse` | `subscriptionsResponseSchema` | `src/models/subscriptions-response.ts` |
 | `ErrorResponse` | `errorResponseSchema` | `src/models/error-response.ts` |
@@ -244,11 +243,11 @@ Accessor: `client.subscriptions` · Source: `src/resources/subscriptions.ts` · 
 | Field | Channel | Wire | Type | Req |
 | --- | --- | --- | --- | --- |
 | `subscriptionId` | `path` | `subscription_id` | `string` | yes |
-| `body` | `body` | — | `SubscriptionResume1` | yes |
+| `body` | `body` | — | `SubscriptionResume` | yes |
 
 | Type | Schema value | Source |
 | --- | --- | --- |
-| `SubscriptionResume1` | `subscriptionResume1Schema` | `src/models/unions/subscription-resume1.ts` |
+| `SubscriptionResume` | `subscriptionResumeSchema` | `src/models/unions/subscription-resume.ts` |
 | `SubscriptionsResumeResponse` | `subscriptionsResumeResponseSchema` | `src/models/subscriptions-resume-response.ts` |
 | `ErrorResponse` | `errorResponseSchema` | `src/models/error-response.ts` |
 

@@ -1,6 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { original1Schema, type Original1 } from "./unions/original1.js";
+import { original2Schema, type Original2 } from "./original2.js";
 
 /** Details of any chargeback fees incurred for this transaction. */
 export type ChargebackFee2 = {
@@ -10,10 +10,10 @@ export type ChargebackFee2 = {
    * Chargeback fee before conversion to the payout currency. `null` when the chargeback fee is the
    * same as the payout currency.
    */
-  original: Original1;
+  original: Original2 | null;
 };
 
 export const chargebackFee2Schema: Schema<ChargebackFee2> = s.object<ChargebackFee2>({
   amount: s.string(),
-  original: original1Schema,
+  original: s.nullable(s.lazy(() => original2Schema)),
 });

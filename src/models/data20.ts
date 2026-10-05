@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { statusSchema, type Status } from "./status.js";
-import { importMeta11Schema, type ImportMeta11 } from "./unions/import-meta11.js";
 
 /** New or changed entity. */
 export type Data20 = {
@@ -14,7 +14,7 @@ export type Data20 = {
    * shown to customers.
    */
   name: string;
-  importMeta: ImportMeta11;
+  importMeta: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -25,7 +25,7 @@ export const data20Schema: Schema<Data20> = s.object<Data20>({
   id: s.string(),
   status: statusSchema,
   name: s.string(),
-  importMeta: importMeta11Schema,
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

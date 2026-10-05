@@ -1,23 +1,25 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { billingDetails2Schema, type BillingDetails2 } from "./billing-details2.js";
+import { collectionModeSchema, type CollectionMode } from "./collection-mode.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { duration5Schema, type Duration5 } from "./duration5.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
+import {
+  subscriptionConsentRequirement1Schema,
+  type SubscriptionConsentRequirement1,
+} from "./subscription-consent-requirement1.js";
+import {
+  subscriptionDiscountTimePeriodSchema,
+  type SubscriptionDiscountTimePeriod,
+} from "./subscription-discount-time-period.js";
 import { subscriptionItem1Schema, type SubscriptionItem1 } from "./subscription-item1.js";
+import {
+  subscriptionScheduledChange1Schema,
+  type SubscriptionScheduledChange1,
+} from "./subscription-scheduled-change1.js";
 import { subscriptionStatusSchema, type SubscriptionStatus } from "./subscription-status.js";
-import { billingDetails26Schema, type BillingDetails26 } from "./unions/billing-details26.js";
-import { businessId17Schema, type BusinessId17 } from "./unions/business-id17.js";
-import { canceledAtSchema, type CanceledAt } from "./unions/canceled-at.js";
-import { collectionMode2Schema, type CollectionMode2 } from "./unions/collection-mode2.js";
-import { consentRequirementsSchema, type ConsentRequirements } from "./unions/consent-requirements.js";
-import { currentBillingPeriod1Schema, type CurrentBillingPeriod1 } from "./unions/current-billing-period1.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { discount110Schema, type Discount110 } from "./unions/discount110.js";
-import { firstBilledAt1Schema, type FirstBilledAt1 } from "./unions/first-billed-at1.js";
-import { importMeta11Schema, type ImportMeta11 } from "./unions/import-meta11.js";
-import { nextBilledAt4Schema, type NextBilledAt4 } from "./unions/next-billed-at4.js";
-import { pausedAtSchema, type PausedAt } from "./unions/paused-at.js";
-import { scheduledChange3Schema, type ScheduledChange3 } from "./unions/scheduled-change3.js";
-import { startedAtSchema, type StartedAt } from "./unions/started-at.js";
+import { timePeriodSchema, type TimePeriod } from "./time-period.js";
 
 /** New or changed entity. */
 export type Data35 = {
@@ -32,7 +34,7 @@ export type Data35 = {
   customerId: string;
   /** Unique Paddle ID for this address entity, prefixed with `add_`. */
   addressId: string;
-  businessId: BusinessId17;
+  businessId: string | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /** RFC 3339 datetime string. */
@@ -43,48 +45,48 @@ export type Data35 = {
    * RFC 3339 datetime string of when this subscription started. This may be different from
    * `first_billed_at` if the subscription started in trial.
    */
-  startedAt: StartedAt;
+  startedAt: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was first billed. This may be different from
    * `started_at` if the subscription started in trial.
    */
-  firstBilledAt: FirstBilledAt1;
+  firstBilledAt: Date | null;
   /** RFC 3339 datetime string of when this subscription is next scheduled to be billed. */
-  nextBilledAt: NextBilledAt4;
+  nextBilledAt: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was paused. Set automatically by Paddle when
    * the pause subscription operation is used. `null` if not paused.
    */
-  pausedAt: PausedAt;
+  pausedAt: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was canceled. Set automatically by Paddle
    * when the cancel subscription operation is used. `null` if not canceled.
    */
-  canceledAt: CanceledAt;
-  discount: Discount110;
+  canceledAt: Date | null;
+  discount: SubscriptionDiscountTimePeriod | null;
   /**
    * How payment is collected for transactions created for this subscription. `automatic` for
    * checkout, `manual` for invoices.
    */
-  collectionMode: CollectionMode2;
-  billingDetails: BillingDetails26;
+  collectionMode: CollectionMode | null;
+  billingDetails: BillingDetails2 | null;
   /**
    * Current billing period for this subscription. Set automatically by Paddle based on the billing
    * cycle. `null` for `paused` and `canceled` subscriptions.
    */
-  currentBillingPeriod: CurrentBillingPeriod1;
+  currentBillingPeriod: TimePeriod | null;
   /**
    * How often this subscription renews. Set automatically by Paddle based on the prices on this
    * subscription.
    */
   billingCycle: Duration5;
-  scheduledChange: ScheduledChange3;
+  scheduledChange: SubscriptionScheduledChange1 | null;
   items: SubscriptionItem1[];
   /** List of active consent requirements for the subscription's current billing period. */
-  consentRequirements: ConsentRequirements;
+  consentRequirements: SubscriptionConsentRequirement1[] | null;
   /** Your own structured key-value data. */
-  customData: CustomData;
-  importMeta: ImportMeta11;
+  customData: Record<string, unknown> | null;
+  importMeta: ImportMeta | null;
 };
 
 export const data35Schema: Schema<Data35> = s.object<Data35>({
@@ -92,25 +94,25 @@ export const data35Schema: Schema<Data35> = s.object<Data35>({
   status: subscriptionStatusSchema,
   customerId: s.string(),
   addressId: s.string(),
-  businessId: businessId17Schema,
+  businessId: s.nullable(s.string()),
   currencyCode: currencyCodeSchema,
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  startedAt: startedAtSchema,
-  firstBilledAt: firstBilledAt1Schema,
-  nextBilledAt: nextBilledAt4Schema,
-  pausedAt: pausedAtSchema,
-  canceledAt: canceledAtSchema,
-  discount: discount110Schema,
-  collectionMode: collectionMode2Schema,
-  billingDetails: billingDetails26Schema,
-  currentBillingPeriod: currentBillingPeriod1Schema,
+  startedAt: s.nullable(s.dateTime()),
+  firstBilledAt: s.nullable(s.dateTime()),
+  nextBilledAt: s.nullable(s.dateTime()),
+  pausedAt: s.nullable(s.dateTime()),
+  canceledAt: s.nullable(s.dateTime()),
+  discount: s.nullable(s.lazy(() => subscriptionDiscountTimePeriodSchema)),
+  collectionMode: s.nullable(s.lazy(() => collectionModeSchema)),
+  billingDetails: s.nullable(s.lazy(() => billingDetails2Schema)),
+  currentBillingPeriod: s.nullable(s.lazy(() => timePeriodSchema)),
   billingCycle: duration5Schema,
-  scheduledChange: scheduledChange3Schema,
+  scheduledChange: s.nullable(s.lazy(() => subscriptionScheduledChange1Schema)),
   items: s.array(s.lazy(() => subscriptionItem1Schema)),
-  consentRequirements: consentRequirementsSchema,
-  customData: customDataSchema,
-  importMeta: importMeta11Schema,
+  consentRequirements: s.nullable(s.array(s.lazy(() => subscriptionConsentRequirement1Schema))),
+  customData: s.nullable(s.record(s.string(), s.unknown())),
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     customerId: "customer_id",
     addressId: "address_id",

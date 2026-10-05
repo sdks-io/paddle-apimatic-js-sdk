@@ -41,7 +41,7 @@ export type OAuthToken = {
 export const oauthTokenSchema: Schema<OAuthToken> = s.object<OAuthToken>({
   accessToken: s.string(),
   tokenType: s.string(),
-  expiresIn: s.optional(s.number()),
+  expiresIn: s.optional(s.int()),
   scope: s.optional(s.string()),
   _keysMap: {
     accessToken: "access_token",
@@ -68,7 +68,7 @@ export type OAuthTokenRefreshable = OAuthToken & {
 export const oauthTokenRefreshableSchema: Schema<OAuthTokenRefreshable> = s.object<OAuthTokenRefreshable>({
   accessToken: s.string(),
   tokenType: s.string(),
-  expiresIn: s.optional(s.number()),
+  expiresIn: s.optional(s.int()),
   scope: s.optional(s.string()),
   refreshToken: s.optional(s.string()),
   _keysMap: {

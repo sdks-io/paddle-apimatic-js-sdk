@@ -38,10 +38,6 @@ import {
   type TransactionsReviseResponse,
 } from "../models/transactions-revise-response.js";
 import {
-  subscriptionIdModelSchema,
-  type SubscriptionIdModel,
-} from "../models/unions/subscription-id-model.js";
-import {
   transactionPreviewCreateSchema,
   type TransactionPreviewCreate,
 } from "../models/unions/transaction-preview-create.js";
@@ -287,9 +283,9 @@ export class Transactions {
           {
             name: "subscription_id",
             value: request.subscriptionId,
-            schema: s.optional(s.lazy(() => subscriptionIdModelSchema)),
+            schema: s.optionalNullable(s.array(s.string())),
           },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 30) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 30) },
           { name: "updated_at", value: request.updatedAt, schema: s.optional(s.string()) },
         ],
         headers: [{ name: "Skip-Count", value: request.skipCount, schema: s.optional(s.string()) }],
@@ -612,7 +608,7 @@ export namespace Transactions {
      * multiple subscription IDs. Pass `null` to return entities that aren't related to any
      * subscription.
      */
-    subscriptionId?: SubscriptionIdModel;
+    subscriptionId?: string[] | null;
     /**
      * Set how many entities are returned per page. Paddle returns the maximum number of results if
      * a number greater than the maximum is requested. Check `meta.pagination.per_page` in the

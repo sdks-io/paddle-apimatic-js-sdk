@@ -98,7 +98,7 @@ export class SubscriptionHistoryApi {
           },
           { name: "occurred_at", value: request.occurredAt, schema: s.optional(s.string()) },
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
           { name: "order_by", value: request.orderBy, schema: s.defaulted(s.string(), "occurred_at[DESC]") },
         ],
         headers: [{ name: "Skip-Count", value: request.skipCount, schema: s.optional(s.string()) }],

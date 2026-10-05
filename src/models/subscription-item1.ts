@@ -3,9 +3,7 @@ import type { Schema } from "../core/validation/schema.js";
 import { price1Schema, type Price1 } from "./price1.js";
 import { product1Schema, type Product1 } from "./product1.js";
 import { subscriptionItemStatusSchema, type SubscriptionItemStatus } from "./subscription-item-status.js";
-import { nextBilledAtSchema, type NextBilledAt } from "./unions/next-billed-at.js";
-import { previouslyBilledAtSchema, type PreviouslyBilledAt } from "./unions/previously-billed-at.js";
-import { trialDatesSchema, type TrialDates } from "./unions/trial-dates.js";
+import { timePeriodSchema, type TimePeriod } from "./time-period.js";
 
 /** Represents a subscription item. */
 export type SubscriptionItem1 = {
@@ -20,11 +18,11 @@ export type SubscriptionItem1 = {
   /** RFC 3339 datetime string of when this item was last updated on this subscription. */
   updatedAt: Date;
   /** RFC 3339 datetime string of when this item was last billed. */
-  previouslyBilledAt: PreviouslyBilledAt;
+  previouslyBilledAt: Date | null;
   /** RFC 3339 datetime string of when this item is next scheduled to be billed. */
-  nextBilledAt: NextBilledAt;
+  nextBilledAt: Date | null;
   /** Trial dates for this item. */
-  trialDates: TrialDates;
+  trialDates: TimePeriod | null;
   /**
    * Related price entity for this item. This reflects the price entity at the time it was added to
    * the subscription.
@@ -39,13 +37,13 @@ export type SubscriptionItem1 = {
 
 export const subscriptionItem1Schema: Schema<SubscriptionItem1> = s.object<SubscriptionItem1>({
   status: subscriptionItemStatusSchema,
-  quantity: s.number(),
+  quantity: s.float64(),
   recurring: s.boolean(),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  previouslyBilledAt: previouslyBilledAtSchema,
-  nextBilledAt: nextBilledAtSchema,
-  trialDates: trialDatesSchema,
+  previouslyBilledAt: s.nullable(s.dateTime()),
+  nextBilledAt: s.nullable(s.dateTime()),
+  trialDates: s.nullable(s.lazy(() => timePeriodSchema)),
   price: price1Schema,
   product: product1Schema,
   _keysMap: {

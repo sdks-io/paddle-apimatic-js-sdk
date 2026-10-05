@@ -19,8 +19,8 @@ export type Card = {
 export const cardSchema: Schema<Card> = s.object<Card>({
   type: cardTypeSchema,
   last4: s.string(),
-  expiryMonth: s.number(),
-  expiryYear: s.number(),
+  expiryMonth: s.int(),
+  expiryYear: s.int(),
   cardholderName: s.string(),
   _keysMap: {
     expiryMonth: "expiry_month",

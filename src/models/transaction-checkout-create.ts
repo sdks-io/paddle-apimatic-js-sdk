@@ -1,6 +1,5 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { url1Schema, type Url1 } from "./unions/url1.js";
 
 /**
  * Paddle Checkout details for this transaction. You may pass a URL when creating or updating an
@@ -15,10 +14,10 @@ export type TransactionCheckoutCreate = {
    * Paddle returns a unique payment link composed of the URL passed or your default payment URL +
    * `?_ptxn=` and the Paddle ID for this transaction.
    */
-  url?: Url1;
+  url?: string | null;
 };
 
 export const transactionCheckoutCreateSchema: Schema<TransactionCheckoutCreate> =
   s.object<TransactionCheckoutCreate>({
-    url: s.optional(s.lazy(() => url1Schema)),
+    url: s.optionalNullable(s.string()),
   });

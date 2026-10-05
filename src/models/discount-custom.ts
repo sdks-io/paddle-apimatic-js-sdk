@@ -1,12 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { discountTypeSchema, type DiscountType } from "./discount-type.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import {
-  maximumRecurringIntervalsSchema,
-  type MaximumRecurringIntervals,
-} from "./unions/maximum-recurring-intervals.js";
-import { restrictToSchema, type RestrictTo } from "./unions/restrict-to.js";
 
 /** Represents a discount entity for a custom, non-catalog discount. */
 export type DiscountCustom = {
@@ -33,14 +27,14 @@ export type DiscountCustom = {
    * Subscription renewals, midcycle changes, and one-time charges billed to a subscription aren't
    * considered a redemption. `times_used` is not incremented in these cases.
    */
-  maximumRecurringIntervals?: MaximumRecurringIntervals;
+  maximumRecurringIntervals?: number | null;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
   /**
    * Product or price IDs that this discount is for. When including a product ID, all prices for
    * that product can be discounted. `null` if this discount applies to all products and prices.
    */
-  restrictTo?: RestrictTo;
+  restrictTo?: string[] | null;
 };
 
 export const discountCustomSchema: Schema<DiscountCustom> = s.object<DiscountCustom>({
@@ -48,9 +42,9 @@ export const discountCustomSchema: Schema<DiscountCustom> = s.object<DiscountCus
   type: discountTypeSchema,
   amount: s.string(),
   recur: s.defaulted(s.boolean(), false),
-  maximumRecurringIntervals: s.optional(s.lazy(() => maximumRecurringIntervalsSchema)),
-  customData: s.optional(s.lazy(() => customDataSchema)),
-  restrictTo: s.optional(s.lazy(() => restrictToSchema)),
+  maximumRecurringIntervals: s.optionalNullable(s.int()),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  restrictTo: s.optionalNullable(s.array(s.string())),
   _keysMap: {
     maximumRecurringIntervals: "maximum_recurring_intervals",
     customData: "custom_data",

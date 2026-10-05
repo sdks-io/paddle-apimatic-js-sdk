@@ -57,7 +57,7 @@ export const notificationSettingCreateSchema: Schema<NotificationSettingCreate> 
     type: notificationSettingTypeSchema,
     destination: s.string(),
     active: s.defaulted(s.boolean(), true),
-    apiVersion: s.optional(s.number()),
+    apiVersion: s.optional(s.int()),
     includeSensitiveFields: s.defaulted(s.boolean(), false),
     subscribedEvents: s.array(s.lazy(() => eventTypeNameSchema)),
     endpointSecretKey: s.optional(s.string()),

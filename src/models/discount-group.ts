@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { statusSchema, type Status } from "./status.js";
-import { importMeta1Schema, type ImportMeta1 } from "./unions/import-meta1.js";
 
 /** Represents a discount group entity. */
 export type DiscountGroup = {
@@ -16,7 +16,7 @@ export type DiscountGroup = {
   createdAt: Date;
   updatedAt: Date;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta1;
+  importMeta: ImportMeta | null;
 };
 
 export const discountGroupSchema: Schema<DiscountGroup> = s.object<DiscountGroup>({
@@ -25,7 +25,7 @@ export const discountGroupSchema: Schema<DiscountGroup> = s.object<DiscountGroup
   status: statusSchema,
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  importMeta: importMeta1Schema,
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     createdAt: "created_at",
     updatedAt: "updated_at",

@@ -17,6 +17,6 @@ export type NonCatalogPriceAndProduct = {
 
 export const nonCatalogPriceAndProductSchema: Schema<NonCatalogPriceAndProduct> =
   s.object<NonCatalogPriceAndProduct>({
-    quantity: s.number(),
+    quantity: s.int(),
     price: transactionPriceCreateWithProductSchema,
   });

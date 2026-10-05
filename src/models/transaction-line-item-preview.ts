@@ -1,9 +1,8 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { productPreviewSchema, type ProductPreview } from "./product-preview.js";
+import { prorationSchema, type Proration } from "./proration.js";
 import { totalsSchema, type Totals } from "./totals.js";
-import { priceIdSchema, type PriceId } from "./unions/price-id.js";
-import { proration12Schema, type Proration12 } from "./unions/proration12.js";
 
 /**
  * Information about line items for this transaction preview. Different from transaction preview
@@ -15,7 +14,7 @@ export type TransactionLineItemPreview = {
    * Paddle ID for the price related to this transaction line item, prefixed with `pri_`. The value
    * is null for custom prices being previewed.
    */
-  priceId: PriceId;
+  priceId: string | null;
   /** Quantity of this transaction line item. */
   quantity: number;
   /** Rate used to calculate tax for this transaction line item. */
@@ -29,18 +28,18 @@ export type TransactionLineItemPreview = {
   /** Related product entity for this transaction line item price. */
   product: ProductPreview;
   /** How proration was calculated for this item. */
-  proration: Proration12;
+  proration: Proration | null;
 };
 
 export const transactionLineItemPreviewSchema: Schema<TransactionLineItemPreview> =
   s.object<TransactionLineItemPreview>({
-    priceId: priceIdSchema,
-    quantity: s.number(),
+    priceId: s.nullable(s.string()),
+    quantity: s.int(),
     taxRate: s.string(),
     unitTotals: totalsSchema,
     totals: totalsSchema,
     product: productPreviewSchema,
-    proration: proration12Schema,
+    proration: s.nullable(s.lazy(() => prorationSchema)),
     _keysMap: {
       priceId: "price_id",
       taxRate: "tax_rate",

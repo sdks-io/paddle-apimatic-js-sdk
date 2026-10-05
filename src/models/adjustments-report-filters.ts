@@ -1,10 +1,10 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { filterOperatorSchema, type FilterOperator } from "./filter-operator.js";
 import {
   reportFilterAdjustmentsNameSchema,
   type ReportFilterAdjustmentsName,
 } from "./report-filter-adjustments-name.js";
-import { operatorSchema, type Operator } from "./unions/operator.js";
 import { valueSchema, type Value } from "./unions/value.js";
 
 /**
@@ -16,7 +16,7 @@ export type AdjustmentsReportFilters = {
   /** Field name to filter by. */
   name: ReportFilterAdjustmentsName;
   /** Operator to use when filtering. Valid when filtering by `updated_at`, `null` otherwise. */
-  operator: Operator;
+  operator: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -27,6 +27,6 @@ export type AdjustmentsReportFilters = {
 export const adjustmentsReportFiltersSchema: Schema<AdjustmentsReportFilters> =
   s.object<AdjustmentsReportFilters>({
     name: reportFilterAdjustmentsNameSchema,
-    operator: operatorSchema,
+    operator: s.nullable(s.lazy(() => filterOperatorSchema)),
     value: valueSchema,
   });

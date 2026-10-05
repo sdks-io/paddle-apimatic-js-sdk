@@ -102,7 +102,7 @@ Accessor: `client.transactions` · Source: `src/resources/transactions.ts` · 7 
 | `origin` | `query` | — | `TransactionOriginQuery[]` | no | — |
 | `orderBy` | `query` | `order_by` | `string` | no | `"id[DESC]"` |
 | `status` | `query` | — | `TransactionStatusQuery[]` | no | — |
-| `subscriptionId` | `query` | `subscription_id` | `SubscriptionIdModel` | no | — |
+| `subscriptionId` | `query` | `subscription_id` | `string[]` | no | — |
 | `perPage` | `query` | `per_page` | `number` | no | `30` |
 | `updatedAt` | `query` | `updated_at` | `string` | no | — |
 | `skipCount` | `header` | `Skip-Count` | `string` | no | — |
@@ -113,7 +113,6 @@ Accessor: `client.transactions` · Source: `src/resources/transactions.ts` · 7 
 | `CollectionMode` | `collectionModeSchema` | `src/models/collection-mode.ts` |
 | `TransactionOriginQuery` | `transactionOriginQuerySchema` | `src/models/transaction-origin-query.ts` |
 | `TransactionStatusQuery` | `transactionStatusQuerySchema` | `src/models/transaction-status-query.ts` |
-| `SubscriptionIdModel` | `subscriptionIdModelSchema` | `src/models/unions/subscription-id-model.ts` |
 | `TransactionsResponse` | `transactionsResponseSchema` | `src/models/transactions-response.ts` |
 | `ErrorResponse` | `errorResponseSchema` | `src/models/error-response.ts` |
 

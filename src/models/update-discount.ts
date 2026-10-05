@@ -1,20 +1,10 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { DiscountMode, discountModeSchema } from "./discount-mode.js";
 import { discountStatusSchema, type DiscountStatus } from "./discount-status.js";
 import { discountTypeSchema, type DiscountType } from "./discount-type.js";
-import { code1Schema, type Code1 } from "./unions/code1.js";
-import { currencyCode1Schema, type CurrencyCode1 } from "./unions/currency-code1.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { discountGroupIdSchema, type DiscountGroupId } from "./unions/discount-group-id.js";
-import { expiresAtSchema, type ExpiresAt } from "./unions/expires-at.js";
-import { importMeta1Schema, type ImportMeta1 } from "./unions/import-meta1.js";
-import {
-  maximumRecurringIntervalsSchema,
-  type MaximumRecurringIntervals,
-} from "./unions/maximum-recurring-intervals.js";
-import { restrictToSchema, type RestrictTo } from "./unions/restrict-to.js";
-import { usageLimitSchema, type UsageLimit } from "./unions/usage-limit.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 
 /** Represents a discount entity when updating discounts. */
 export type UpdateDiscount = {
@@ -30,7 +20,7 @@ export type UpdateDiscount = {
    */
   enabledForCheckout?: boolean;
   /** Unique code that customers can use to redeem this discount at checkout. Not case-sensitive. */
-  code?: Code1;
+  code?: string | null;
   /** Type of discount. Determines how this discount impacts the checkout or transaction total. */
   type?: DiscountType;
   /**
@@ -49,7 +39,7 @@ export type UpdateDiscount = {
    * Supported three-letter ISO 4217 currency code. Required where discount type is `flat` or
    * `flat_per_seat`.
    */
-  currencyCode?: CurrencyCode1;
+  currencyCode?: CurrencyCode | null;
   /**
    * Whether this discount applies for multiple subscription billing periods (`true`) or not
    * (`false`).
@@ -64,7 +54,7 @@ export type UpdateDiscount = {
    * Subscription renewals, midcycle changes, and one-time charges billed to a subscription aren't
    * considered a redemption. `times_used` is not incremented in these cases.
    */
-  maximumRecurringIntervals?: MaximumRecurringIntervals;
+  maximumRecurringIntervals?: number | null;
   /**
    * Maximum number of times this discount can be redeemed. This is an overall limit for this
    * discount, rather than a per-customer limit. `null` if this discount can be redeemed an
@@ -74,12 +64,12 @@ export type UpdateDiscount = {
    * against a subscription. Transactions created for subscription renewals, midcycle changes, and
    * one-time charges aren't considered a redemption.
    */
-  usageLimit?: UsageLimit;
+  usageLimit?: number | null;
   /**
    * Product or price IDs that this discount is for. When including a product ID, all prices for
    * that product can be discounted. `null` if this discount applies to all products and prices.
    */
-  restrictTo?: RestrictTo;
+  restrictTo?: string[] | null;
   /**
    * RFC 3339 datetime string of when this discount expires. Discount can no longer be redeemed
    * after this date has elapsed. `null` if this discount can be redeemed forever.
@@ -87,9 +77,9 @@ export type UpdateDiscount = {
    * Expired discounts can't be redeemed against transactions or checkouts, but can be applied when
    * updating subscriptions.
    */
-  expiresAt?: ExpiresAt;
+  expiresAt?: Date | null;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
   /**
    * How many times this discount has been redeemed. Automatically incremented by Paddle.
    *
@@ -104,9 +94,9 @@ export type UpdateDiscount = {
    * Paddle ID for the discount group related to this discount, prefixed with `dsg_`. `null` if not
    * in a discount group.
    */
-  discountGroupId?: DiscountGroupId;
+  discountGroupId?: string | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta?: ImportMeta1;
+  importMeta?: ImportMeta | null;
 };
 
 export const updateDiscountSchema: Schema<UpdateDiscount> = s.object<UpdateDiscount>({
@@ -114,22 +104,22 @@ export const updateDiscountSchema: Schema<UpdateDiscount> = s.object<UpdateDisco
   status: s.optional(s.lazy(() => discountStatusSchema)),
   description: s.optional(s.string()),
   enabledForCheckout: s.defaulted(s.boolean(), true),
-  code: s.optional(s.lazy(() => code1Schema)),
+  code: s.optionalNullable(s.string()),
   type: s.optional(s.lazy(() => discountTypeSchema)),
   mode: s.defaulted(discountModeSchema, DiscountMode.Standard),
   amount: s.optional(s.string()),
-  currencyCode: s.optional(s.lazy(() => currencyCode1Schema)),
+  currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
   recur: s.defaulted(s.boolean(), false),
-  maximumRecurringIntervals: s.optional(s.lazy(() => maximumRecurringIntervalsSchema)),
-  usageLimit: s.optional(s.lazy(() => usageLimitSchema)),
-  restrictTo: s.optional(s.lazy(() => restrictToSchema)),
-  expiresAt: s.optional(s.lazy(() => expiresAtSchema)),
-  customData: s.optional(s.lazy(() => customDataSchema)),
-  timesUsed: s.optional(s.number()),
+  maximumRecurringIntervals: s.optionalNullable(s.int()),
+  usageLimit: s.optionalNullable(s.int()),
+  restrictTo: s.optionalNullable(s.array(s.string())),
+  expiresAt: s.optionalNullable(s.dateTime()),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  timesUsed: s.optional(s.int()),
   createdAt: s.optional(s.dateTime()),
   updatedAt: s.optional(s.dateTime()),
-  discountGroupId: s.optional(s.lazy(() => discountGroupIdSchema)),
-  importMeta: s.optional(s.lazy(() => importMeta1Schema)),
+  discountGroupId: s.optionalNullable(s.string()),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     enabledForCheckout: "enabled_for_checkout",
     currencyCode: "currency_code",

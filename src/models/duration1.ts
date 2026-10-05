@@ -11,5 +11,5 @@ export type Duration1 = {
 
 export const duration1Schema: Schema<Duration1> = s.object<Duration1>({
   interval: intervalSchema,
-  frequency: s.number(),
+  frequency: s.int(),
 });

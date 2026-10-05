@@ -7,7 +7,6 @@ import {
   subscriptionOnPaymentFailureSchema,
   type SubscriptionOnPaymentFailure,
 } from "./subscription-on-payment-failure.js";
-import { transactionId4Schema, type TransactionId4 } from "./unions/transaction-id4.js";
 
 /** Details specific to `subscription_item_removed` actions. */
 export type ItemRemoved = {
@@ -32,17 +31,17 @@ export type ItemRemoved = {
    * Paddle ID of the transaction created as a result of the item being removed, prefixed with
    * `txn_`. `null` if no transaction was created.
    */
-  transactionId: TransactionId4;
+  transactionId: string | null;
 };
 
 export const itemRemovedSchema: Schema<ItemRemoved> = s.object<ItemRemoved>({
   action: s.defaulted(s.literal("subscription_item_removed"), "subscription_item_removed"),
   price: priceSchema,
-  quantity: s.number(),
+  quantity: s.int(),
   updateSummary: itemUpdateSummarySchema,
   prorationBillingMode: prorationBillingModeSchema,
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: transactionId4Schema,
+  transactionId: s.nullable(s.string()),
   _keysMap: {
     updateSummary: "update_summary",
     prorationBillingMode: "proration_billing_mode",

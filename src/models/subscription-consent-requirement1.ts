@@ -8,9 +8,7 @@ import {
   subscriptionConsentRequirementTypeSchema,
   type SubscriptionConsentRequirementType,
 } from "./subscription-consent-requirement-type.js";
-import { consentPeriodSchema, type ConsentPeriod } from "./unions/consent-period.js";
-import { grantedAtSchema, type GrantedAt } from "./unions/granted-at.js";
-import { voidedAtSchema, type VoidedAt } from "./unions/voided-at.js";
+import { timePeriodSchema, type TimePeriod } from "./time-period.js";
 
 /**
  * Represents a specific condition under which explicit customer consent is, or was, mandated for a
@@ -31,16 +29,16 @@ export type SubscriptionConsentRequirement1 = {
    * Period during which consent for this subscription can be granted. `null` if there is no
    * `next_billed_at` or the consent requirement does not apply to the current billing period.
    */
-  consentPeriod: ConsentPeriod;
+  consentPeriod: TimePeriod | null;
   /**
    * RFC 3339 datetime string of when the customer granted their consent. `null` if not yet granted.
    */
-  grantedAt: GrantedAt;
+  grantedAt: Date | null;
   /**
    * RFC 3339 datetime string of when consent was voided or no longer required. `null` if not
    * voided.
    */
-  voidedAt: VoidedAt;
+  voidedAt: Date | null;
 };
 
 export const subscriptionConsentRequirement1Schema: Schema<SubscriptionConsentRequirement1> =
@@ -49,9 +47,9 @@ export const subscriptionConsentRequirement1Schema: Schema<SubscriptionConsentRe
     requirement: subscriptionConsentRequirementTypeSchema,
     status: subscriptionConsentRequirementStatusSchema,
     createdAt: s.dateTime(),
-    consentPeriod: consentPeriodSchema,
-    grantedAt: grantedAtSchema,
-    voidedAt: voidedAtSchema,
+    consentPeriod: s.nullable(s.lazy(() => timePeriodSchema)),
+    grantedAt: s.nullable(s.dateTime()),
+    voidedAt: s.nullable(s.dateTime()),
     _keysMap: {
       createdAt: "created_at",
       consentPeriod: "consent_period",

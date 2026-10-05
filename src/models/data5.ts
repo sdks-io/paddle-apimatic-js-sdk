@@ -5,7 +5,6 @@ import {
   type ApiKeyExposureActionTaken,
 } from "./api-key-exposure-action-taken.js";
 import { apiKeyExposureLevelSchema, type ApiKeyExposureLevel } from "./api-key-exposure-level.js";
-import { description14Schema, type Description14 } from "./unions/description14.js";
 
 /** New or changed entity. */
 export type Data5 = {
@@ -21,7 +20,7 @@ export type Data5 = {
   source?: "github";
   /** Reference or identifier for this exposure. */
   reference: string;
-  description: Description14;
+  description: string | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
 };
@@ -33,7 +32,7 @@ export const data5Schema: Schema<Data5> = s.object<Data5>({
   actionTaken: apiKeyExposureActionTakenSchema,
   source: s.defaulted(s.literal("github"), "github"),
   reference: s.string(),
-  description: description14Schema,
+  description: s.nullable(s.string()),
   createdAt: s.dateTime(),
   _keysMap: {
     apiKeyId: "api_key_id",

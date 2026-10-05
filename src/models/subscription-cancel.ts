@@ -1,13 +1,14 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { effectiveFrom1Schema, type EffectiveFrom1 } from "./unions/effective-from1.js";
+import { EffectiveFrom, effectiveFromSchema } from "./effective-from.js";
 
 export type SubscriptionCancel = {
-  effectiveFrom?: EffectiveFrom1;
+  /** @default EffectiveFrom.NextBillingPeriod */
+  effectiveFrom?: EffectiveFrom | null;
 };
 
 export const subscriptionCancelSchema: Schema<SubscriptionCancel> = s.object<SubscriptionCancel>({
-  effectiveFrom: s.optional(s.lazy(() => effectiveFrom1Schema)),
+  effectiveFrom: s.defaulted(s.nullable(s.lazy(() => effectiveFromSchema)), EffectiveFrom.NextBillingPeriod),
   _keysMap: {
     effectiveFrom: "effective_from",
   },

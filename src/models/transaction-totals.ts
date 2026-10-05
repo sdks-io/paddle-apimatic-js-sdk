@@ -1,8 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
-import { earningsSchema, type Earnings } from "./unions/earnings.js";
-import { feeSchema, type Fee } from "./unions/fee.js";
 
 /**
  * Breakdown of the total for a transaction. These numbers can be negative when dealing with
@@ -48,12 +46,12 @@ export type TransactionTotals = {
    * Total fee taken by Paddle for this transaction. `null` until the transaction is `completed` and
    * the fee is processed.
    */
-  fee: Fee;
+  fee: string | null;
   /**
    * Total earnings for this transaction. This is the total minus the Paddle fee. `null` until the
    * transaction is `completed` and the fee is processed.
    */
-  earnings: Earnings;
+  earnings: string | null;
   /** Three-letter ISO 4217 currency code of the currency used for this transaction. */
   currencyCode: CurrencyCode;
 };
@@ -68,8 +66,8 @@ export const transactionTotalsSchema: Schema<TransactionTotals> = s.object<Trans
   balance: s.string(),
   grandTotal: s.string(),
   grandTotalTax: s.string(),
-  fee: feeSchema,
-  earnings: earningsSchema,
+  fee: s.nullable(s.string()),
+  earnings: s.nullable(s.string()),
   currencyCode: currencyCodeSchema,
   _keysMap: {
     creditToBalance: "credit_to_balance",

@@ -905,7 +905,7 @@ if (result.ok) {
 | <code>origin?</code> | <code>[TransactionOriginQuery](src/models/transaction-origin-query.ts)[]</code> | Return entities related to the specified origin. Use a comma-separated list to specify multiple origins. |
 | <code>orderBy?</code> | <code>string</code> | Order returned entities by the specified field and direction (`[ASC]` or `[DESC]`). For example, `?order_by=id[ASC]`.<br><br>Valid fields for ordering: `billed_at`, `created_at`, `id`, and `updated_at`.<br>**Default**: "id[DESC]" |
 | <code>status?</code> | <code>[TransactionStatusQuery](src/models/transaction-status-query.ts)[]</code> | Return entities that match the specified status. Use a comma-separated list to specify multiple status values. |
-| <code>subscriptionId?</code> | <code>[SubscriptionIdModel](src/models/unions/subscription-id-model.ts)</code> | Return entities related to the specified subscription. Use a comma-separated list to specify multiple subscription IDs. Pass `null` to return entities that aren't related to any subscription. |
+| <code>subscriptionId?</code> | <code>string[]</code> | Return entities related to the specified subscription. Use a comma-separated list to specify multiple subscription IDs. Pass `null` to return entities that aren't related to any subscription. |
 | <code>perPage?</code> | <code>number</code> | Set how many entities are returned per page. Paddle returns the maximum number of results if a number greater than the maximum is requested. Check `meta.pagination.per_page` in the response to see how many were returned.<br><br>Default: `30`; Maximum: `30`.<br>**Default**: 30 |
 | <code>updatedAt?</code> | <code>string</code> | Return entities updated at a specific time. Pass an RFC 3339 datetime string, or use `[LT]` (less than), `[LTE]` (less than or equal to), `[GT]` (greater than), or `[GTE]` (greater than or equal to) operators. For example, `updated_at=2023-04-18T17:03:26` or `updated_at[LT]=2023-04-18T17:03:26`. |
 | <code>skipCount?</code> | <code>string</code> | Set to `true` to skip the count query on list operations. When set, `meta.pagination.estimated_total` returns `-1` instead of an exact count. |
@@ -1876,7 +1876,7 @@ if (result.ok) {
 | <code>orderBy?</code> | <code>string</code> | Order returned entities by the specified field and direction (`[ASC]` or `[DESC]`). For example, `?order_by=id[ASC]`.<br><br>Valid fields for ordering: `id`.<br>**Default**: "id[DESC]" |
 | <code>priceId?</code> | <code>string[]</code> | Return entities related to the specified price. Use a comma-separated list to specify multiple price IDs. |
 | <code>scheduledChangeAction?</code> | <code>[ScheduledChangeActionQuery](src/models/scheduled-change-action-query.ts)[]</code> | Return subscriptions that have a scheduled change. Use a comma-separated list to specify multiple scheduled change actions. |
-| <code>nextBilledAt?</code> | <code>[NextBilledAtModel](src/models/unions/next-billed-at-model.ts)</code> | Return entities next billed at a specific time. Pass `null` to return entities with no next billing date. |
+| <code>nextBilledAt?</code> | <code>string[]</code> | Return entities next billed at a specific time. Pass `null` to return entities with no next billing date. |
 | <code>status?</code> | <code>[SubscriptionStatusQuery](src/models/subscription-status-query.ts)[]</code> | Return entities that match the specified status. Use a comma-separated list to specify multiple status values. |
 | <code>skipCount?</code> | <code>string</code> | Set to `true` to skip the count query on list operations. When set, `meta.pagination.estimated_total` returns `-1` instead of an exact count. |
 
@@ -2310,7 +2310,7 @@ if (result.ok) {
 | Name | Type | Description |
 | --- | --- | --- |
 | <code>subscriptionId</code> | <code>string</code> | Paddle ID of the subscription entity to work with. |
-| <code>body</code> | <code>[SubscriptionResume1](src/models/unions/subscription-resume1.ts)</code> | - |
+| <code>body</code> | <code>[SubscriptionResume](src/models/unions/subscription-resume.ts)</code> | - |
 
 </dd>
 </dl>

@@ -1,18 +1,13 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { adjustmentAction1Schema, type AdjustmentAction1 } from "./adjustment-action1.js";
+import { adjustmentTaxRateUsed1Schema, type AdjustmentTaxRateUsed1 } from "./adjustment-tax-rate-used1.js";
 import { adjustmentTotals2Schema, type AdjustmentTotals2 } from "./adjustment-totals2.js";
+import { adjustmentTypeSchema, type AdjustmentType } from "./adjustment-type.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { item1Schema, type Item1 } from "./item1.js";
+import { payoutTotalsAdjustment1Schema, type PayoutTotalsAdjustment1 } from "./payout-totals-adjustment1.js";
 import { status7Schema, type Status7 } from "./status7.js";
-import {
-  creditAppliedToBalance1Schema,
-  type CreditAppliedToBalance1,
-} from "./unions/credit-applied-to-balance1.js";
-import { payoutTotals2Schema, type PayoutTotals2 } from "./unions/payout-totals2.js";
-import { subscriptionId14Schema, type SubscriptionId14 } from "./unions/subscription-id14.js";
-import { taxRatesUsed1Schema, type TaxRatesUsed1 } from "./unions/tax-rates-used1.js";
-import { typeSchema, type Type } from "./unions/type.js";
 
 /** New or changed entity. */
 export type Data3 = {
@@ -28,11 +23,11 @@ export type Data3 = {
    * Type of adjustment. Use `full` to adjust the grand total for the related transaction. Include
    * an `items` array when creating a `partial` adjustment. If omitted, defaults to `partial`.
    */
-  type: Type;
+  type: AdjustmentType | null;
   /** ID of the Transaction that this adjustment belongs to */
   transactionId: string;
   /** ID of the Subscription that this adjustment belongs to */
-  subscriptionId: SubscriptionId14;
+  subscriptionId: string | null;
   /** ID of the Customer that this Transaction is for */
   customerId: string;
   /** Some context on why the adjustment is being performed */
@@ -42,7 +37,7 @@ export type Data3 = {
    * If it is true, it indicates that credits have been applied to the customer's balance.
    * Otherwise, the adjustment is used to decrease the total amount of a billed invoice Transaction.
    */
-  creditAppliedToBalance: CreditAppliedToBalance1;
+  creditAppliedToBalance: boolean | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /**
@@ -53,8 +48,8 @@ export type Data3 = {
   items: Item1[];
   /** Breakdown of the total for an adjustment. */
   totals: AdjustmentTotals2;
-  payoutTotals: PayoutTotals2;
-  taxRatesUsed: TaxRatesUsed1;
+  payoutTotals: PayoutTotalsAdjustment1 | null;
+  taxRatesUsed: AdjustmentTaxRateUsed1[] | null;
   /**
    * Timestamp following the RFC 3339 standard. This is set by the system, and cannot be changed via
    * the API.
@@ -70,18 +65,18 @@ export type Data3 = {
 export const data3Schema: Schema<Data3> = s.object<Data3>({
   id: s.string(),
   action: adjustmentAction1Schema,
-  type: typeSchema,
+  type: s.nullable(s.lazy(() => adjustmentTypeSchema)),
   transactionId: s.string(),
-  subscriptionId: subscriptionId14Schema,
+  subscriptionId: s.nullable(s.string()),
   customerId: s.string(),
   reason: s.string(),
-  creditAppliedToBalance: creditAppliedToBalance1Schema,
+  creditAppliedToBalance: s.nullable(s.boolean()),
   currencyCode: currencyCodeSchema,
   status: status7Schema,
   items: s.array(s.lazy(() => item1Schema)),
   totals: adjustmentTotals2Schema,
-  payoutTotals: payoutTotals2Schema,
-  taxRatesUsed: taxRatesUsed1Schema,
+  payoutTotals: s.nullable(s.lazy(() => payoutTotalsAdjustment1Schema)),
+  taxRatesUsed: s.nullable(s.array(s.lazy(() => adjustmentTaxRateUsed1Schema))),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

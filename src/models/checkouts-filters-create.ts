@@ -4,7 +4,7 @@ import {
   checkoutsReportFilterNameSchema,
   type CheckoutsReportFilterName,
 } from "./checkouts-report-filter-name.js";
-import { operator6Schema, type Operator6 } from "./unions/operator6.js";
+import { filterOperatorSchema, type FilterOperator } from "./filter-operator.js";
 import { value1Schema, type Value1 } from "./unions/value1.js";
 
 /** List of filters applied to this report. */
@@ -15,7 +15,7 @@ export type CheckoutsFiltersCreate = {
    * Operator to use when filtering. Valid when filtering by `checkout_created_at` (must be `gte` or
    * `lt`), `null` otherwise.
    */
-  operator?: Operator6;
+  operator?: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -25,6 +25,6 @@ export type CheckoutsFiltersCreate = {
 
 export const checkoutsFiltersCreateSchema: Schema<CheckoutsFiltersCreate> = s.object<CheckoutsFiltersCreate>({
   name: s.optional(s.lazy(() => checkoutsReportFilterNameSchema)),
-  operator: s.optional(s.lazy(() => operator6Schema)),
+  operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
   value: s.optional(s.lazy(() => value1Schema)),
 });

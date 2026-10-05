@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { EffectiveFromImmediately, effectiveFromImmediatelySchema } from "./effective-from-immediately.js";
 import { SubscriptionOnResume, subscriptionOnResumeSchema } from "./subscription-on-resume.js";
-import { effectiveFrom12Schema, type EffectiveFrom12 } from "./unions/effective-from12.js";
 
 export type ResumeImmediately = {
   /**
@@ -11,14 +11,19 @@ export type ResumeImmediately = {
    * Valid where subscriptions have the status of `paused`.
    *
    * Defaults to `immediately` if omitted.
+   *
+   * @default EffectiveFromImmediately.Immediately
    */
-  effectiveFrom: EffectiveFrom12;
+  effectiveFrom?: EffectiveFromImmediately | null;
   /** @default SubscriptionOnResume.StartNewBillingPeriod */
   onResume?: SubscriptionOnResume;
 };
 
 export const resumeImmediatelySchema: Schema<ResumeImmediately> = s.object<ResumeImmediately>({
-  effectiveFrom: effectiveFrom12Schema,
+  effectiveFrom: s.defaulted(
+    s.nullable(s.lazy(() => effectiveFromImmediatelySchema)),
+    EffectiveFromImmediately.Immediately,
+  ),
   onResume: s.defaulted(subscriptionOnResumeSchema, SubscriptionOnResume.StartNewBillingPeriod),
   _keysMap: {
     effectiveFrom: "effective_from",

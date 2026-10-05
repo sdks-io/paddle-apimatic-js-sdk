@@ -7,7 +7,6 @@ import {
   subscriptionOnPaymentFailureSchema,
   type SubscriptionOnPaymentFailure,
 } from "./subscription-on-payment-failure.js";
-import { transactionId2Schema, type TransactionId2 } from "./unions/transaction-id2.js";
 
 /** Details specific to `subscription_item_added` actions. */
 export type ItemAdded = {
@@ -30,17 +29,17 @@ export type ItemAdded = {
    * Paddle ID of the transaction created as a result of the item being added, prefixed with `txn_`.
    * `null` if no transaction was created.
    */
-  transactionId: TransactionId2;
+  transactionId: string | null;
 };
 
 export const itemAddedSchema: Schema<ItemAdded> = s.object<ItemAdded>({
   action: s.defaulted(s.literal("subscription_item_added"), "subscription_item_added"),
   price: priceSchema,
-  quantity: s.number(),
+  quantity: s.int(),
   updateSummary: itemUpdateSummarySchema,
   prorationBillingMode: prorationBillingModeSchema,
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: transactionId2Schema,
+  transactionId: s.nullable(s.string()),
   _keysMap: {
     updateSummary: "update_summary",
     prorationBillingMode: "proration_billing_mode",

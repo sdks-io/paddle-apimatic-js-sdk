@@ -157,7 +157,7 @@ export class Prices {
         query: [
           { name: "id", value: request.id, schema: s.optional(s.array(s.string())) },
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
           {
             name: "include",
             value: request.include,
@@ -175,7 +175,7 @@ export class Prices {
           {
             name: "billing_cycle.frequency",
             value: request.billingCycleFrequency,
-            schema: s.optional(s.number()),
+            schema: s.optional(s.int()),
           },
           { name: "type", value: request.type, schema: s.optional(s.lazy(() => catalogTypeSchema)) },
         ],

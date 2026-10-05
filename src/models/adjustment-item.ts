@@ -2,8 +2,7 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { adjustmentItemTotalsSchema, type AdjustmentItemTotals } from "./adjustment-item-totals.js";
 import { adjustmentItemTypeSchema, type AdjustmentItemType } from "./adjustment-item-type.js";
-import { amountSchema, type Amount } from "./unions/amount.js";
-import { proration11Schema, type Proration11 } from "./unions/proration11.js";
+import { prorationSchema, type Proration } from "./proration.js";
 
 export type AdjustmentItem = {
   /**
@@ -17,17 +16,17 @@ export type AdjustmentItem = {
    */
   type: AdjustmentItemType;
   /** Amount adjusted for this transaction item. Required when item `type` is `partial`. */
-  amount: Amount;
+  amount: string | null;
   /** How proration was calculated for this adjustment item. */
-  proration: Proration11;
+  proration: Proration | null;
   totals: AdjustmentItemTotals;
 };
 
 export const adjustmentItemSchema: Schema<AdjustmentItem> = s.object<AdjustmentItem>({
   itemId: s.string(),
   type: adjustmentItemTypeSchema,
-  amount: amountSchema,
-  proration: proration11Schema,
+  amount: s.nullable(s.string()),
+  proration: s.nullable(s.lazy(() => prorationSchema)),
   totals: adjustmentItemTotalsSchema,
   _keysMap: {
     itemId: "item_id",

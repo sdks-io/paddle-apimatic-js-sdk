@@ -177,7 +177,7 @@ export class Adjustments {
           },
           { name: "customer_id", value: request.customerId, schema: s.optional(s.array(s.string())) },
           { name: "order_by", value: request.orderBy, schema: s.defaulted(s.string(), "id[DESC]") },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 10) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 10) },
           {
             name: "status",
             value: request.status,

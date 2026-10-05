@@ -34,7 +34,7 @@ export type PricePreviewLineItem = {
 
 export const pricePreviewLineItemSchema: Schema<PricePreviewLineItem> = s.object<PricePreviewLineItem>({
   price: priceSchema,
-  quantity: s.number(),
+  quantity: s.int(),
   taxRate: s.string(),
   unitTotals: totalsSchema,
   formattedUnitTotals: totalsSchema,

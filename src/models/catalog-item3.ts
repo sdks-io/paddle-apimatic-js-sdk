@@ -1,6 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { proration18Schema, type Proration18 } from "./unions/proration18.js";
+import { prorationSchema, type Proration } from "./proration.js";
 
 /**
  * Add a catalog item to a transaction. In this case, the product and price that you're billing for
@@ -17,15 +17,15 @@ export type CatalogItem3 = {
    */
   includeInTotals?: boolean;
   /** How proration was calculated for this item. `null` for transaction previews. */
-  proration?: Proration18;
+  proration?: Proration | null;
   /** Paddle ID of an existing catalog price to preview charging for, prefixed with `pri_`. */
   priceId: string;
 };
 
 export const catalogItem3Schema: Schema<CatalogItem3> = s.object<CatalogItem3>({
-  quantity: s.number(),
+  quantity: s.int(),
   includeInTotals: s.defaulted(s.boolean(), true),
-  proration: s.optional(s.lazy(() => proration18Schema)),
+  proration: s.optionalNullable(s.lazy(() => prorationSchema)),
   priceId: s.string(),
   _keysMap: {
     includeInTotals: "include_in_totals",

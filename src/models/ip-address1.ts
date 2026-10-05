@@ -1,9 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { currencyCode14Schema, type CurrencyCode14 } from "./unions/currency-code14.js";
-import { customerId11Schema, type CustomerId11 } from "./unions/customer-id11.js";
-import { discountId12Schema, type DiscountId12 } from "./unions/discount-id12.js";
-import { discount14Schema, type Discount14 } from "./unions/discount14.js";
+import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
+import { discountCustomSchema, type DiscountCustom } from "./discount-custom.js";
 import {
   transactionPreviewCreateItemsSchema,
   type TransactionPreviewCreateItems,
@@ -12,13 +10,13 @@ import {
 /** Paddle fetches location using the IP address to calculate totals. */
 export type IpAddress1 = {
   /** Paddle ID of the customer that this transaction preview is for, prefixed with `ctm_`. */
-  customerId?: CustomerId11;
+  customerId?: string | null;
   /** Supported three-letter ISO 4217 currency code. */
-  currencyCode?: CurrencyCode14;
+  currencyCode?: CurrencyCode | null;
   /** Paddle ID of the discount to apply to this transaction preview, prefixed with `dsc_`. */
-  discountId?: DiscountId12;
+  discountId?: string | null;
   /** Apply a non-catalog discount to a transaction. Send one of `discount_id` or `discount`. */
-  discount?: Discount14;
+  discount?: DiscountCustom | null;
   /**
    * Whether trials should be ignored for transaction preview calculations.
    *
@@ -42,10 +40,10 @@ export type IpAddress1 = {
 };
 
 export const ipAddress1Schema: Schema<IpAddress1> = s.object<IpAddress1>({
-  customerId: s.optional(s.lazy(() => customerId11Schema)),
-  currencyCode: s.optional(s.lazy(() => currencyCode14Schema)),
-  discountId: s.optional(s.lazy(() => discountId12Schema)),
-  discount: s.optional(s.lazy(() => discount14Schema)),
+  customerId: s.optionalNullable(s.string()),
+  currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
+  discountId: s.optionalNullable(s.string()),
+  discount: s.optionalNullable(s.lazy(() => discountCustomSchema)),
   ignoreTrials: s.defaulted(s.boolean(), false),
   items: s.array(s.lazy(() => transactionPreviewCreateItemsSchema)),
   customerIpAddress: s.string(),

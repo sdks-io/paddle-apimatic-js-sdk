@@ -7,12 +7,7 @@ import { adjustmentTotalsSchema, type AdjustmentTotals } from "./adjustment-tota
 import { AdjustmentType, adjustmentTypeSchema } from "./adjustment-type.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { itemSchema, type Item } from "./item.js";
-import {
-  creditAppliedToBalanceSchema,
-  type CreditAppliedToBalance,
-} from "./unions/credit-applied-to-balance.js";
-import { payoutTotalsSchema, type PayoutTotals } from "./unions/payout-totals.js";
-import { subscriptionIdSchema, type SubscriptionId } from "./unions/subscription-id.js";
+import { payoutTotalsAdjustmentSchema, type PayoutTotalsAdjustment } from "./payout-totals-adjustment.js";
 
 /** Represents an adjustment entity. */
 export type Adjustment = {
@@ -27,7 +22,7 @@ export type Adjustment = {
    * Paddle ID for the subscription related to this adjustment, prefixed with `sub_`. Set
    * automatically by Paddle based on the `subscription_id` of the related transaction.
    */
-  subscriptionId: SubscriptionId;
+  subscriptionId: string | null;
   /**
    * Paddle ID for the customer related to this adjustment, prefixed with `ctm_`. Set automatically
    * by Paddle based on the `customer_id` of the related transaction.
@@ -42,7 +37,7 @@ export type Adjustment = {
    * Whether this adjustment was applied to the related customer's credit balance. Only returned for
    * `credit` adjustments.
    */
-  creditAppliedToBalance?: CreditAppliedToBalance;
+  creditAppliedToBalance?: boolean | null;
   /**
    * Three-letter ISO 4217 currency code for this adjustment. Set automatically by Paddle based on
    * the `currency_code` of the related transaction.
@@ -53,7 +48,7 @@ export type Adjustment = {
   items: Item[];
   totals: AdjustmentTotals;
   /** Breakdown of how this adjustment affects your payout balance. */
-  payoutTotals: PayoutTotals;
+  payoutTotals: PayoutTotalsAdjustment | null;
   taxRatesUsed: AdjustmentTaxRateUsed[];
   createdAt: Date;
   updatedAt: Date;
@@ -64,15 +59,15 @@ export const adjustmentSchema: Schema<Adjustment> = s.object<Adjustment>({
   action: adjustmentActionSchema,
   type: s.defaulted(adjustmentTypeSchema, AdjustmentType.Partial),
   transactionId: s.string(),
-  subscriptionId: subscriptionIdSchema,
+  subscriptionId: s.nullable(s.string()),
   customerId: s.string(),
   reason: s.string(),
-  creditAppliedToBalance: s.optional(s.lazy(() => creditAppliedToBalanceSchema)),
+  creditAppliedToBalance: s.optionalNullable(s.boolean()),
   currencyCode: currencyCodeSchema,
   status: adjustmentStatusSchema,
   items: s.array(s.lazy(() => itemSchema)),
   totals: adjustmentTotalsSchema,
-  payoutTotals: payoutTotalsSchema,
+  payoutTotals: s.nullable(s.lazy(() => payoutTotalsAdjustmentSchema)),
   taxRatesUsed: s.array(s.lazy(() => adjustmentTaxRateUsedSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),

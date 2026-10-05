@@ -21,6 +21,6 @@ export type NonCatalogPriceForAnExistingProduct1 = {
 
 export const nonCatalogPriceForAnExistingProduct1Schema: Schema<NonCatalogPriceForAnExistingProduct1> =
   s.object<NonCatalogPriceForAnExistingProduct1>({
-    quantity: s.number(),
+    quantity: s.int(),
     price: subscriptionChargeCreateWithPriceInternalPriceModelSchema,
   });

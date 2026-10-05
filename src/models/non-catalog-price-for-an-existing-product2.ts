@@ -1,10 +1,10 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { prorationSchema, type Proration } from "./proration.js";
 import {
   transactionPriceCreateWithProductIdSchema,
   type TransactionPriceCreateWithProductId,
 } from "./transaction-price-create-with-product-id.js";
-import { proration13Schema, type Proration13 } from "./unions/proration13.js";
 
 /**
  * Add a non-catalog price for an existing product in your catalog to a transaction. In this case,
@@ -18,7 +18,7 @@ export type NonCatalogPriceForAnExistingProduct2 = {
    * subscription change, where `proration_billing_mode` was `prorated_immediately` or
    * `prorated_next_billing_period`. Set automatically by Paddle.
    */
-  proration?: Proration13;
+  proration?: Proration | null;
   /**
    * Price object for a non-catalog item to charge for. Include a `product_id` to relate this
    * non-catalog price to an existing catalog price.
@@ -28,7 +28,7 @@ export type NonCatalogPriceForAnExistingProduct2 = {
 
 export const nonCatalogPriceForAnExistingProduct2Schema: Schema<NonCatalogPriceForAnExistingProduct2> =
   s.object<NonCatalogPriceForAnExistingProduct2>({
-    quantity: s.number(),
-    proration: s.optional(s.lazy(() => proration13Schema)),
+    quantity: s.int(),
+    proration: s.optionalNullable(s.lazy(() => prorationSchema)),
     price: transactionPriceCreateWithProductIdSchema,
   });

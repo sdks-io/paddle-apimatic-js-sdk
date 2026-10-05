@@ -29,10 +29,10 @@ export type Pagination = {
 };
 
 export const paginationSchema: Schema<Pagination> = s.object<Pagination>({
-  perPage: s.number(),
+  perPage: s.int(),
   next: s.string(),
   hasMore: s.boolean(),
-  estimatedTotal: s.optional(s.number()),
+  estimatedTotal: s.optional(s.int()),
   _keysMap: {
     perPage: "per_page",
     hasMore: "has_more",

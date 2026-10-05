@@ -14,7 +14,7 @@ export type ItemUpdateSummary = {
 };
 
 export const itemUpdateSummarySchema: Schema<ItemUpdateSummary> = s.object<ItemUpdateSummary>({
-  quantityDelta: s.number(),
+  quantityDelta: s.int(),
   _keysMap: {
     quantityDelta: "quantity_delta",
   },

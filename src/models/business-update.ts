@@ -1,34 +1,31 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { contactsCreateSchema, type ContactsCreate } from "./contacts-create.js";
 import { statusSchema, type Status } from "./status.js";
-import { companyNumberSchema, type CompanyNumber } from "./unions/company-number.js";
-import { contactsSchema, type Contacts } from "./unions/contacts.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { taxIdentifierSchema, type TaxIdentifier } from "./unions/tax-identifier.js";
 
 /** Represents a business entity when updating businesses. */
 export type BusinessUpdate = {
   /** Name of this business. */
   name?: string;
   /** Company number for this business. */
-  companyNumber?: CompanyNumber;
+  companyNumber?: string | null;
   /** Tax or VAT Number for this business. */
-  taxIdentifier?: TaxIdentifier;
+  taxIdentifier?: string | null;
   /** Whether this entity can be used in Paddle. */
   status?: Status;
   /** List of contacts related to this business, typically used for sending invoices. */
-  contacts?: Contacts;
+  contacts?: ContactsCreate[] | null;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
 };
 
 export const businessUpdateSchema: Schema<BusinessUpdate> = s.object<BusinessUpdate>({
   name: s.optional(s.string()),
-  companyNumber: s.optional(s.lazy(() => companyNumberSchema)),
-  taxIdentifier: s.optional(s.lazy(() => taxIdentifierSchema)),
+  companyNumber: s.optionalNullable(s.string()),
+  taxIdentifier: s.optionalNullable(s.string()),
   status: s.optional(s.lazy(() => statusSchema)),
-  contacts: s.optional(s.lazy(() => contactsSchema)),
-  customData: s.optional(s.lazy(() => customDataSchema)),
+  contacts: s.optionalNullable(s.array(s.lazy(() => contactsCreateSchema))),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   _keysMap: {
     companyNumber: "company_number",
     taxIdentifier: "tax_identifier",

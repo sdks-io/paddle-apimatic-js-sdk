@@ -13,7 +13,7 @@ export type CatalogItem = {
 
 export const catalogItemSchema: Schema<CatalogItem> = s.object<CatalogItem>({
   priceId: s.string(),
-  quantity: s.optional(s.number()),
+  quantity: s.optional(s.float64()),
   _keysMap: {
     priceId: "price_id",
   },

@@ -1,6 +1,5 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { customData27Schema, type CustomData27 } from "./unions/custom-data27.js";
 
 /** Details specific to `subscription_custom_data_updated` actions. */
 export type CustomDataUpdated = {
@@ -10,12 +9,12 @@ export type CustomDataUpdated = {
    * Updated custom data on the subscription. `null` if custom data was removed. This is what the
    * custom data was changed to.
    */
-  customData: CustomData27;
+  customData: Record<string, unknown> | null;
 };
 
 export const customDataUpdatedSchema: Schema<CustomDataUpdated> = s.object<CustomDataUpdated>({
   action: s.defaulted(s.literal("subscription_custom_data_updated"), "subscription_custom_data_updated"),
-  customData: customData27Schema,
+  customData: s.nullable(s.record(s.string(), s.unknown())),
   _keysMap: {
     customData: "custom_data",
   },

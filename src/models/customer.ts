@@ -1,9 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { Status, statusSchema } from "./status.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { importMeta1Schema, type ImportMeta1 } from "./unions/import-meta1.js";
-import { name1Schema, type Name1 } from "./unions/name1.js";
 
 /** Represents a customer entity. */
 export type Customer = {
@@ -12,7 +10,7 @@ export type Customer = {
    * Full name of this customer. Required when creating transactions where `collection_mode` is
    * `manual` (invoices).
    */
-  name: Name1;
+  name: string | null;
   /** Email address for this customer. */
   email: string;
   /**
@@ -25,26 +23,26 @@ export type Customer = {
   /** @default Status.Active */
   status?: Status;
   /** Your own structured key-value data. */
-  customData: CustomData;
+  customData: Record<string, unknown> | null;
   /** Valid IETF BCP 47 short form locale tag. If omitted, defaults to `en`. @default "en" */
   locale?: string;
   createdAt: Date;
   updatedAt: Date;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta1;
+  importMeta: ImportMeta | null;
 };
 
 export const customerSchema: Schema<Customer> = s.object<Customer>({
   id: s.string(),
-  name: name1Schema,
+  name: s.nullable(s.string()),
   email: s.string(),
   marketingConsent: s.defaulted(s.boolean(), false),
   status: s.defaulted(statusSchema, Status.Active),
-  customData: customDataSchema,
+  customData: s.nullable(s.record(s.string(), s.unknown())),
   locale: s.defaulted(s.string(), "en"),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  importMeta: importMeta1Schema,
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     marketingConsent: "marketing_consent",
     customData: "custom_data",

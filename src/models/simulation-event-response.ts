@@ -12,7 +12,7 @@ export type SimulationEventResponse = {
 export const simulationEventResponseSchema: Schema<SimulationEventResponse> =
   s.object<SimulationEventResponse>({
     body: s.string(),
-    statusCode: s.number(),
+    statusCode: s.float64(),
     _keysMap: {
       statusCode: "status_code",
     },

@@ -1,53 +1,46 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { countryCodeSupportedSchema, type CountryCodeSupported } from "./country-code-supported.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { Status, statusSchema } from "./status.js";
-import { city1Schema, type City1 } from "./unions/city1.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { description1Schema, type Description1 } from "./unions/description1.js";
-import { firstLine1Schema, type FirstLine1 } from "./unions/first-line1.js";
-import { importMeta11Schema, type ImportMeta11 } from "./unions/import-meta11.js";
-import { postalCode1Schema, type PostalCode1 } from "./unions/postal-code1.js";
-import { region1Schema, type Region1 } from "./unions/region1.js";
-import { secondLine1Schema, type SecondLine1 } from "./unions/second-line1.js";
 
 /** Represents an address entity. */
 export type Address = {
   id: string;
   /** Paddle ID for the customer related to this address, prefixed with `cus_`. */
   customerId: string;
-  description: Description1;
-  firstLine: FirstLine1;
-  secondLine: SecondLine1;
-  city: City1;
-  postalCode: PostalCode1;
-  region: Region1;
+  description: string | null;
+  firstLine: string | null;
+  secondLine: string | null;
+  city: string | null;
+  postalCode: string | null;
+  region: string | null;
   /** Supported two-letter ISO 3166-1 alpha-2 country code for this address. */
   countryCode: CountryCodeSupported;
   /** Your own structured key-value data. */
-  customData: CustomData;
+  customData: Record<string, unknown> | null;
   /** @default Status.Active */
   status?: Status;
   createdAt: Date;
   updatedAt: Date;
-  importMeta: ImportMeta11;
+  importMeta: ImportMeta | null;
 };
 
 export const addressSchema: Schema<Address> = s.object<Address>({
   id: s.string(),
   customerId: s.string(),
-  description: description1Schema,
-  firstLine: firstLine1Schema,
-  secondLine: secondLine1Schema,
-  city: city1Schema,
-  postalCode: postalCode1Schema,
-  region: region1Schema,
+  description: s.nullable(s.string()),
+  firstLine: s.nullable(s.string()),
+  secondLine: s.nullable(s.string()),
+  city: s.nullable(s.string()),
+  postalCode: s.nullable(s.string()),
+  region: s.nullable(s.string()),
   countryCode: countryCodeSupportedSchema,
-  customData: customDataSchema,
+  customData: s.nullable(s.record(s.string(), s.unknown())),
   status: s.defaulted(statusSchema, Status.Active),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  importMeta: importMeta11Schema,
+  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     customerId: "customer_id",
     firstLine: "first_line",

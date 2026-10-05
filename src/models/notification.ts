@@ -4,10 +4,6 @@ import { eventTypeNameSchema, type EventTypeName } from "./event-type-name.js";
 import { notificationOriginSchema, type NotificationOrigin } from "./notification-origin.js";
 import { notificationPayloadSchema, type NotificationPayload } from "./notification-payload.js";
 import { notificationStatusSchema, type NotificationStatus } from "./notification-status.js";
-import { deliveredAtSchema, type DeliveredAt } from "./unions/delivered-at.js";
-import { lastAttemptAtSchema, type LastAttemptAt } from "./unions/last-attempt-at.js";
-import { replayedAtSchema, type ReplayedAt } from "./unions/replayed-at.js";
-import { retryAtSchema, type RetryAt } from "./unions/retry-at.js";
 
 /** Represents a notification entity. */
 export type Notification = {
@@ -22,14 +18,14 @@ export type Notification = {
    * RFC 3339 datetime string of when this notification was delivered. `null` if not yet delivered
    * successfully.
    */
-  deliveredAt: DeliveredAt;
+  deliveredAt: Date | null;
   /** RFC 3339 datetime string of when this notification was replayed. `null` if not replayed. */
-  replayedAt: ReplayedAt;
+  replayedAt: Date | null;
   origin: NotificationOrigin;
   /** RFC 3339 datetime string of when this notification was last attempted. */
-  lastAttemptAt: LastAttemptAt;
+  lastAttemptAt: Date | null;
   /** RFC 3339 datetime string of when this notification is scheduled to be retried. */
-  retryAt: RetryAt;
+  retryAt: Date | null;
   /**
    * How many times delivery of this notification has been attempted. Automatically incremented by
    * Paddle after an attempt.
@@ -44,12 +40,12 @@ export const notificationSchema: Schema<Notification> = s.object<Notification>({
   status: notificationStatusSchema,
   payload: notificationPayloadSchema,
   occurredAt: s.dateTime(),
-  deliveredAt: deliveredAtSchema,
-  replayedAt: replayedAtSchema,
+  deliveredAt: s.nullable(s.dateTime()),
+  replayedAt: s.nullable(s.dateTime()),
   origin: notificationOriginSchema,
-  lastAttemptAt: lastAttemptAtSchema,
-  retryAt: retryAtSchema,
-  timesAttempted: s.number(),
+  lastAttemptAt: s.nullable(s.dateTime()),
+  retryAt: s.nullable(s.dateTime()),
+  timesAttempted: s.int(),
   notificationSettingId: s.string(),
   _keysMap: {
     occurredAt: "occurred_at",

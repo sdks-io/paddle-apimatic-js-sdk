@@ -13,7 +13,7 @@ export type CatalogItem1 = {
 };
 
 export const catalogItem1Schema: Schema<CatalogItem1> = s.object<CatalogItem1>({
-  quantity: s.number(),
+  quantity: s.int(),
   priceId: s.string(),
   _keysMap: {
     priceId: "price_id",

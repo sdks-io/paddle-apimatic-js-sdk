@@ -44,7 +44,7 @@ export const notificationSettingUpdateSchema: Schema<NotificationSettingUpdate> 
     description: s.optional(s.string()),
     destination: s.optional(s.string()),
     active: s.defaulted(s.boolean(), true),
-    apiVersion: s.optional(s.number()),
+    apiVersion: s.optional(s.int()),
     includeSensitiveFields: s.defaulted(s.boolean(), false),
     subscribedEvents: s.optional(s.array(s.lazy(() => eventTypeNameSchema))),
     trafficSource: s.optional(s.lazy(() => notificationSettingTrafficSourceSchema)),

@@ -1,6 +1,5 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { urlSchema, type Url } from "./unions/url.js";
 
 /**
  * Paddle Checkout details for this transaction. Returned for automatically-collected transactions
@@ -12,9 +11,9 @@ export type TransactionCheckout = {
    * Paddle Checkout URL for this transaction, composed of the URL passed in the request or your
    * default payment URL + `?_ptxn=` and the Paddle ID for this transaction.
    */
-  url: Url;
+  url: string | null;
 };
 
 export const transactionCheckoutSchema: Schema<TransactionCheckout> = s.object<TransactionCheckout>({
-  url: urlSchema,
+  url: s.nullable(s.string()),
 });

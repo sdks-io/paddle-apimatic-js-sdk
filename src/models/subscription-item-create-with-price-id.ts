@@ -10,7 +10,7 @@ export type SubscriptionItemCreateWithPriceId = {
 
 export const subscriptionItemCreateWithPriceIdSchema: Schema<SubscriptionItemCreateWithPriceId> =
   s.object<SubscriptionItemCreateWithPriceId>({
-    quantity: s.number(),
+    quantity: s.int(),
     priceId: s.string(),
     _keysMap: {
       priceId: "price_id",

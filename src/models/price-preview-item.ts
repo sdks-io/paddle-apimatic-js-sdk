@@ -10,7 +10,7 @@ export type PricePreviewItem = {
 
 export const pricePreviewItemSchema: Schema<PricePreviewItem> = s.object<PricePreviewItem>({
   priceId: s.optional(s.string()),
-  quantity: s.number(),
+  quantity: s.int(),
   _keysMap: {
     priceId: "price_id",
   },

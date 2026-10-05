@@ -13,5 +13,5 @@ export type SubscriptionHistoryItem = {
 export const subscriptionHistoryItemSchema: Schema<SubscriptionHistoryItem> =
   s.object<SubscriptionHistoryItem>({
     price: priceSchema,
-    quantity: s.number(),
+    quantity: s.int(),
   });

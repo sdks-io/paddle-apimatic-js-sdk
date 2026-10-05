@@ -1,14 +1,12 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { CatalogType, catalogTypeSchema } from "./catalog-type.js";
+import { durationSchema, type Duration } from "./duration.js";
+import { importMetaSchema, type ImportMeta } from "./import-meta.js";
 import { moneySchema, type Money } from "./money.js";
 import { priceQuantitySchema, type PriceQuantity } from "./price-quantity.js";
+import { priceTrialDuration1Schema, type PriceTrialDuration1 } from "./price-trial-duration1.js";
 import { TaxMode, taxModeSchema } from "./tax-mode.js";
-import { billingCycle2Schema, type BillingCycle2 } from "./unions/billing-cycle2.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { importMeta1Schema, type ImportMeta1 } from "./unions/import-meta1.js";
-import { nameSchema, type Name } from "./unions/name.js";
-import { trialPeriod2Schema, type TrialPeriod2 } from "./unions/trial-period2.js";
 import { unitPriceOverrideSchema, type UnitPriceOverride } from "./unit-price-override.js";
 
 /** Represents a price entity when creating prices. */
@@ -23,20 +21,20 @@ export type PriceCreate = {
    * @default CatalogType.Standard
    */
   type?: CatalogType;
-  name?: Name;
+  name?: string | null;
   /** Paddle ID for the product that this price is for, prefixed with `pro_`. */
   productId: string;
   /**
    * How often this price should be charged. `null` if price is non-recurring (one-time). If
    * omitted, defaults to `null`.
    */
-  billingCycle?: BillingCycle2;
+  billingCycle?: Duration | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`. If omitted, defaults to
    * `null`.
    */
-  trialPeriod?: TrialPeriod2;
+  trialPeriod?: PriceTrialDuration1 | null;
   /**
    * How tax is calculated for this price. If omitted, defaults to `account_setting`.
    *
@@ -59,25 +57,25 @@ export type PriceCreate = {
    */
   quantity?: PriceQuantity;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta?: ImportMeta1;
+  importMeta?: ImportMeta | null;
 };
 
 export const priceCreateSchema: Schema<PriceCreate> = s.object<PriceCreate>({
   id: s.optional(s.string()),
   description: s.string(),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
-  name: s.optional(s.lazy(() => nameSchema)),
+  name: s.optionalNullable(s.string()),
   productId: s.string(),
-  billingCycle: s.optional(s.lazy(() => billingCycle2Schema)),
-  trialPeriod: s.optional(s.lazy(() => trialPeriod2Schema)),
+  billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
+  trialPeriod: s.optionalNullable(s.lazy(() => priceTrialDuration1Schema)),
   taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
   unitPrice: moneySchema,
   unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceOverrideSchema))),
   quantity: s.optional(s.lazy(() => priceQuantitySchema)),
-  customData: s.optional(s.lazy(() => customDataSchema)),
-  importMeta: s.optional(s.lazy(() => importMeta1Schema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     productId: "product_id",
     billingCycle: "billing_cycle",

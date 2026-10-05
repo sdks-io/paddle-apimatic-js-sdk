@@ -56,7 +56,7 @@ export class NotificationLogs {
         pathParams: [{ name: "notification_id", value: request.notificationId, schema: s.string() }],
         query: [
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
         ],
         headers: [{ name: "Skip-Count", value: request.skipCount, schema: s.optional(s.string()) }],
         body: { kind: "empty" },

@@ -1,9 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { businessId15Schema, type BusinessId15 } from "./unions/business-id15.js";
-import { currencyCode14Schema, type CurrencyCode14 } from "./unions/currency-code14.js";
-import { discountId12Schema, type DiscountId12 } from "./unions/discount-id12.js";
-import { discount14Schema, type Discount14 } from "./unions/discount14.js";
+import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
+import { discountCustomSchema, type DiscountCustom } from "./discount-custom.js";
 import {
   transactionPreviewCreateItemsSchema,
   type TransactionPreviewCreateItems,
@@ -14,11 +12,11 @@ import {
  */
 export type ExistingCustomerPaddleIDs = {
   /** Supported three-letter ISO 4217 currency code. */
-  currencyCode?: CurrencyCode14;
+  currencyCode?: CurrencyCode | null;
   /** Paddle ID of the discount to apply to this transaction preview, prefixed with `dsc_`. */
-  discountId?: DiscountId12;
+  discountId?: string | null;
   /** Apply a non-catalog discount to a transaction. Send one of `discount_id` or `discount`. */
-  discount?: Discount14;
+  discount?: DiscountCustom | null;
   /**
    * Whether trials should be ignored for transaction preview calculations.
    *
@@ -45,19 +43,19 @@ export type ExistingCustomerPaddleIDs = {
    */
   addressId: string;
   /** Paddle ID of the business that this transaction preview is for, prefixed with `biz_`. */
-  businessId?: BusinessId15;
+  businessId?: string | null;
 };
 
 export const existingCustomerPaddleIDsSchema: Schema<ExistingCustomerPaddleIDs> =
   s.object<ExistingCustomerPaddleIDs>({
-    currencyCode: s.optional(s.lazy(() => currencyCode14Schema)),
-    discountId: s.optional(s.lazy(() => discountId12Schema)),
-    discount: s.optional(s.lazy(() => discount14Schema)),
+    currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
+    discountId: s.optionalNullable(s.string()),
+    discount: s.optionalNullable(s.lazy(() => discountCustomSchema)),
     ignoreTrials: s.defaulted(s.boolean(), false),
     items: s.array(s.lazy(() => transactionPreviewCreateItemsSchema)),
     customerId: s.string(),
     addressId: s.string(),
-    businessId: s.optional(s.lazy(() => businessId15Schema)),
+    businessId: s.optionalNullable(s.string()),
     _keysMap: {
       currencyCode: "currency_code",
       discountId: "discount_id",

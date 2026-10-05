@@ -1,8 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
-import { earnings1Schema, type Earnings1 } from "./unions/earnings1.js";
-import { feeSchema, type Fee } from "./unions/fee.js";
 
 /** Breakdown of the totals for a transaction after adjustments. */
 export type TransactionTotalsAdjusted = {
@@ -25,14 +23,14 @@ export type TransactionTotalsAdjusted = {
    * Total fee taken by Paddle for this transaction. `null` until the transaction is `completed` and
    * the fee is processed.
    */
-  fee: Fee;
+  fee: string | null;
   /** Total Paddle fees retained for this adjustment. */
   retainedFee: string;
   /**
    * Total earnings for this transaction. This is the total minus the Paddle fee. `null` until the
    * transaction is `completed` and the fee is processed.
    */
-  earnings: Earnings1;
+  earnings: string | null;
   /** Three-letter ISO 4217 currency code of the currency used for this transaction. */
   currencyCode: CurrencyCode;
 };
@@ -44,9 +42,9 @@ export const transactionTotalsAdjustedSchema: Schema<TransactionTotalsAdjusted> 
     total: s.string(),
     grandTotal: s.string(),
     grandTotalTax: s.string(),
-    fee: feeSchema,
+    fee: s.nullable(s.string()),
     retainedFee: s.string(),
-    earnings: earnings1Schema,
+    earnings: s.nullable(s.string()),
     currencyCode: currencyCodeSchema,
     _keysMap: {
       grandTotal: "grand_total",

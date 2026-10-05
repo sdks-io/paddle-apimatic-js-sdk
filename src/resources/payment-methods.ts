@@ -155,7 +155,7 @@ export class PaymentMethods {
         pathParams: [{ name: "customer_id", value: request.customerId, schema: s.string() }],
         query: [
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
           { name: "address_id", value: request.addressId, schema: s.optional(s.array(s.string())) },
           { name: "order_by", value: request.orderBy, schema: s.defaulted(s.string(), "id[DESC]") },
           { name: "supports_checkout", value: request.supportsCheckout, schema: s.optional(s.boolean()) },

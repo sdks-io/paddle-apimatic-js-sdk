@@ -1,10 +1,10 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
+import { prorationSchema, type Proration } from "./proration.js";
 import {
   transactionPriceCreateWithProductIdSchema,
   type TransactionPriceCreateWithProductId,
 } from "./transaction-price-create-with-product-id.js";
-import { proration18Schema, type Proration18 } from "./unions/proration18.js";
 
 /**
  * Add a non-catalog price for an existing product in your catalog to a transaction. In this case,
@@ -21,7 +21,7 @@ export type NonCatalogPriceForAnExistingProduct3 = {
    */
   includeInTotals?: boolean;
   /** How proration was calculated for this item. `null` for transaction previews. */
-  proration?: Proration18;
+  proration?: Proration | null;
   /**
    * Price object for a non-catalog item to preview charging for. Include a `product_id` to relate
    * this non-catalog price to an existing catalog price.
@@ -31,9 +31,9 @@ export type NonCatalogPriceForAnExistingProduct3 = {
 
 export const nonCatalogPriceForAnExistingProduct3Schema: Schema<NonCatalogPriceForAnExistingProduct3> =
   s.object<NonCatalogPriceForAnExistingProduct3>({
-    quantity: s.number(),
+    quantity: s.int(),
     includeInTotals: s.defaulted(s.boolean(), true),
-    proration: s.optional(s.lazy(() => proration18Schema)),
+    proration: s.optionalNullable(s.lazy(() => prorationSchema)),
     price: transactionPriceCreateWithProductIdSchema,
     _keysMap: {
       includeInTotals: "include_in_totals",

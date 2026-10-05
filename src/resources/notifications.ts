@@ -102,7 +102,7 @@ export class Notifications {
         pathParams: [],
         query: [
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
           {
             name: "notification_setting_id",
             value: request.notificationSettingId,

@@ -9,7 +9,6 @@ import {
   subscriptionOnPaymentFailureSchema,
   type SubscriptionOnPaymentFailure,
 } from "./subscription-on-payment-failure.js";
-import { transactionId5Schema, type TransactionId5 } from "./unions/transaction-id5.js";
 
 /** Details specific to `subscription_one_off_charge_applied` actions. */
 export type OneOffChargeApplied = {
@@ -25,7 +24,7 @@ export type OneOffChargeApplied = {
    * Paddle ID of the transaction created for the one-off charge, prefixed with `txn_`. `null` if no
    * transaction was created.
    */
-  transactionId: TransactionId5;
+  transactionId: string | null;
 };
 
 export const oneOffChargeAppliedSchema: Schema<OneOffChargeApplied> = s.object<OneOffChargeApplied>({
@@ -36,7 +35,7 @@ export const oneOffChargeAppliedSchema: Schema<OneOffChargeApplied> = s.object<O
   effectiveFrom: subscriptionHistoryOneOffChargeAppliedEffectiveFromSchema,
   items: s.array(s.lazy(() => subscriptionHistoryItemSchema)),
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: transactionId5Schema,
+  transactionId: s.nullable(s.string()),
   _keysMap: {
     effectiveFrom: "effective_from",
     onPaymentFailure: "on_payment_failure",

@@ -1,7 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { durationSchema, type Duration } from "./duration.js";
-import { additionalInformationSchema, type AdditionalInformation } from "./unions/additional-information.js";
 
 /** Details for invoicing. Required if `collection_mode` is `manual`. */
 export type BillingDetailsUpdate = {
@@ -10,7 +9,7 @@ export type BillingDetailsUpdate = {
   /** Customer purchase order number. Appears on invoice documents. */
   purchaseOrderNumber?: string;
   /** Notes or other information to include on this invoice. Appears on invoice documents. */
-  additionalInformation?: AdditionalInformation;
+  additionalInformation?: string | null;
   /** How long a customer has to pay this invoice once issued. */
   paymentTerms?: Duration;
 };
@@ -18,7 +17,7 @@ export type BillingDetailsUpdate = {
 export const billingDetailsUpdateSchema: Schema<BillingDetailsUpdate> = s.object<BillingDetailsUpdate>({
   enableCheckout: s.defaulted(s.boolean(), false),
   purchaseOrderNumber: s.optional(s.string()),
-  additionalInformation: s.optional(s.lazy(() => additionalInformationSchema)),
+  additionalInformation: s.optionalNullable(s.string()),
   paymentTerms: s.optional(s.lazy(() => durationSchema)),
   _keysMap: {
     enableCheckout: "enable_checkout",

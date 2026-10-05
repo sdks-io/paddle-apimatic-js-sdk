@@ -1,14 +1,12 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { CatalogType, catalogTypeSchema } from "./catalog-type.js";
+import { durationSchema, type Duration } from "./duration.js";
 import { moneySchema, type Money } from "./money.js";
 import { priceQuantitySchema, type PriceQuantity } from "./price-quantity.js";
+import { priceTrialDuration2Schema, type PriceTrialDuration2 } from "./price-trial-duration2.js";
 import { statusSchema, type Status } from "./status.js";
 import { TaxMode, taxModeSchema } from "./tax-mode.js";
-import { billingCycleSchema, type BillingCycle } from "./unions/billing-cycle.js";
-import { customDataSchema, type CustomData } from "./unions/custom-data.js";
-import { nameSchema, type Name } from "./unions/name.js";
-import { trialPeriod5Schema, type TrialPeriod5 } from "./unions/trial-period5.js";
 import { unitPriceOverrideSchema, type UnitPriceOverride } from "./unit-price-override.js";
 
 /** Represents a price entity when updating prices. */
@@ -17,14 +15,14 @@ export type PriceUpdate = {
   description?: string;
   /** @default CatalogType.Standard */
   type?: CatalogType;
-  name?: Name;
+  name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
-  billingCycle?: BillingCycle;
+  billingCycle?: Duration | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
-  trialPeriod?: TrialPeriod5;
+  trialPeriod?: PriceTrialDuration2 | null;
   /** @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
@@ -45,21 +43,21 @@ export type PriceUpdate = {
   /** Whether this entity can be used in Paddle. */
   status?: Status;
   /** Your own structured key-value data. */
-  customData?: CustomData;
+  customData?: Record<string, unknown> | null;
 };
 
 export const priceUpdateSchema: Schema<PriceUpdate> = s.object<PriceUpdate>({
   description: s.optional(s.string()),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
-  name: s.optional(s.lazy(() => nameSchema)),
-  billingCycle: s.optional(s.lazy(() => billingCycleSchema)),
-  trialPeriod: s.optional(s.lazy(() => trialPeriod5Schema)),
+  name: s.optionalNullable(s.string()),
+  billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
+  trialPeriod: s.optionalNullable(s.lazy(() => priceTrialDuration2Schema)),
   taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
   unitPrice: s.optional(s.lazy(() => moneySchema)),
   unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceOverrideSchema))),
   quantity: s.optional(s.lazy(() => priceQuantitySchema)),
   status: s.optional(s.lazy(() => statusSchema)),
-  customData: s.optional(s.lazy(() => customDataSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   _keysMap: {
     billingCycle: "billing_cycle",
     trialPeriod: "trial_period",

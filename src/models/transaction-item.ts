@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { priceSchema, type Price } from "./price.js";
-import { proration13Schema, type Proration13 } from "./unions/proration13.js";
+import { prorationSchema, type Proration } from "./proration.js";
 
 export type TransactionItem = {
   price: Price;
@@ -12,11 +12,11 @@ export type TransactionItem = {
    * subscription change, where `proration_billing_mode` was `prorated_immediately` or
    * `prorated_next_billing_period`. Set automatically by Paddle.
    */
-  proration: Proration13;
+  proration: Proration | null;
 };
 
 export const transactionItemSchema: Schema<TransactionItem> = s.object<TransactionItem>({
   price: priceSchema,
-  quantity: s.number(),
-  proration: proration13Schema,
+  quantity: s.int(),
+  proration: s.nullable(s.lazy(() => prorationSchema)),
 });

@@ -236,11 +236,11 @@ export function buildRetryOptions(
         maxRetries: s.fallback(s.int().check(s.gte(0)), fallbacks.maxRetries),
         delay: s.fallback(s.int().check(s.gte(0), s.lte(MAX_TIMEOUT_MS)), fallbacks.delay),
         backoffFactor: s.fallback(
-          s.number().check(s.gte(1), s.lte(MAX_BACKOFF_FACTOR)),
+          s.float64().check(s.gte(1), s.lte(MAX_BACKOFF_FACTOR)),
           fallbacks.backoffFactor,
         ),
         useExponentialBackoff: s.fallback(s.boolean(), fallbacks.useExponentialBackoff),
-        maxJitter: s.fallback(s.number().check(s.gte(0), s.lte(1)), fallbacks.maxJitter),
+        maxJitter: s.fallback(s.float64().check(s.gte(0), s.lte(1)), fallbacks.maxJitter),
         onRetry: s.fallback(s.callback<(attempt: RetryAttempt) => void>(), fallbacks.onRetry),
       }),
       fallbacks,

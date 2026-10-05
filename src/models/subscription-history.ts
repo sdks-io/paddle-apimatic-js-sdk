@@ -3,13 +3,13 @@ import type { Schema } from "../core/validation/schema.js";
 import { actionSourceSchema, type ActionSource } from "./action-source.js";
 import { actorSchema, type Actor } from "./actor.js";
 import {
+  subscriptionHistoryReasonSchema,
+  type SubscriptionHistoryReason,
+} from "./subscription-history-reason.js";
+import {
   subscriptionHistoryDetailSchema,
   type SubscriptionHistoryDetail,
 } from "./unions/subscription-history-detail.js";
-import {
-  subscriptionHistoryReason1Schema,
-  type SubscriptionHistoryReason1,
-} from "./unions/subscription-history-reason1.js";
 
 /** Represents a subscription history entry. */
 export type SubscriptionHistory = {
@@ -29,7 +29,7 @@ export type SubscriptionHistory = {
   /** Details about the actor that performed the action that created this entry. */
   actor: Actor;
   /** Why the entry was created. Only applicable to certain actions; `null` otherwise. */
-  reason: SubscriptionHistoryReason1;
+  reason: SubscriptionHistoryReason | null;
   /** Details specific to the action. The fields returned depend on the value of `action`. */
   detail: SubscriptionHistoryDetail;
 };
@@ -41,7 +41,7 @@ export const subscriptionHistorySchema: Schema<SubscriptionHistory> = s.object<S
   occurredAt: s.dateTime(),
   source: actionSourceSchema,
   actor: actorSchema,
-  reason: subscriptionHistoryReason1Schema,
+  reason: s.nullable(s.lazy(() => subscriptionHistoryReasonSchema)),
   detail: subscriptionHistoryDetailSchema,
   _keysMap: {
     groupId: "group_id",

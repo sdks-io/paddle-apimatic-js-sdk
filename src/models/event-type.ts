@@ -17,7 +17,7 @@ export const eventTypeSchema: Schema<EventType> = s.object<EventType>({
   name: eventTypeNameSchema,
   description: s.string(),
   group: s.string(),
-  availableVersions: s.array(s.number()),
+  availableVersions: s.array(s.int()),
   _keysMap: {
     availableVersions: "available_versions",
   },

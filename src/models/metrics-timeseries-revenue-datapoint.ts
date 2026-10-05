@@ -15,5 +15,5 @@ export const metricsTimeseriesRevenueDatapointSchema: Schema<MetricsTimeseriesRe
   s.object<MetricsTimeseriesRevenueDatapoint>({
     timestamp: s.dateTime(),
     amount: s.string(),
-    count: s.number(),
+    count: s.int(),
   });

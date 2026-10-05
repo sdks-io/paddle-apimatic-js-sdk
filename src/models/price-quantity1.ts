@@ -23,6 +23,6 @@ export type PriceQuantity1 = {
 };
 
 export const priceQuantity1Schema: Schema<PriceQuantity1> = s.object<PriceQuantity1>({
-  minimum: s.defaulted(s.number(), 1),
-  maximum: s.defaulted(s.number(), 100),
+  minimum: s.defaulted(s.int(), 1),
+  maximum: s.defaulted(s.int(), 100),
 });

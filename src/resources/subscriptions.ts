@@ -64,11 +64,7 @@ import {
   subscriptionsUpdatePaymentMethodTransactionResponseSchema,
   type SubscriptionsUpdatePaymentMethodTransactionResponse,
 } from "../models/subscriptions-update-payment-method-transaction-response.js";
-import { nextBilledAtModelSchema, type NextBilledAtModel } from "../models/unions/next-billed-at-model.js";
-import {
-  subscriptionResume1Schema,
-  type SubscriptionResume1,
-} from "../models/unions/subscription-resume1.js";
+import { subscriptionResumeSchema, type SubscriptionResume } from "../models/unions/subscription-resume.js";
 import type { Servers } from "../servers.js";
 
 /**
@@ -365,7 +361,7 @@ export class Subscriptions {
         query: [
           { name: "id", value: request.id, schema: s.optional(s.array(s.string())) },
           { name: "after", value: request.after, schema: s.optional(s.string()) },
-          { name: "per_page", value: request.perPage, schema: s.defaulted(s.number(), 50) },
+          { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
           { name: "address_id", value: request.addressId, schema: s.optional(s.array(s.string())) },
           {
             name: "collection_mode",
@@ -383,7 +379,7 @@ export class Subscriptions {
           {
             name: "next_billed_at",
             value: request.nextBilledAt,
-            schema: s.optional(s.lazy(() => nextBilledAtModelSchema)),
+            schema: s.optionalNullable(s.array(s.string())),
           },
           {
             name: "status",
@@ -591,7 +587,7 @@ export class Subscriptions {
         body: {
           kind: "json",
           value: request.body,
-          schema: s.nullable(s.lazy(() => subscriptionResume1Schema)),
+          schema: s.nullable(s.lazy(() => subscriptionResumeSchema)),
         },
       },
       {
@@ -780,7 +776,7 @@ export namespace Subscriptions {
      * Return entities next billed at a specific time. Pass `null` to return entities with no next
      * billing date.
      */
-    nextBilledAt?: NextBilledAtModel;
+    nextBilledAt?: string[] | null;
     /**
      * Return entities that match the specified status. Use a comma-separated list to specify
      * multiple status values.
@@ -846,7 +842,7 @@ export namespace Subscriptions {
   export type ResumeSubscriptionRequest = {
     /** Paddle ID of the subscription entity to work with. */
     subscriptionId: string;
-    body: SubscriptionResume1 | null;
+    body: SubscriptionResume | null;
   };
 
   export class ResumeSubscriptionError extends ApiError {
