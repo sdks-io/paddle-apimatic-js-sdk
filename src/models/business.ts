@@ -12,9 +12,9 @@ export type Business = {
   /** Name of this business. */
   name: string;
   /** Company number for this business. */
-  companyNumber: string | null;
+  companyNumber?: string | null;
   /** Tax or VAT Number for this business. */
-  taxIdentifier: string | null;
+  taxIdentifier?: string | null;
   /** @default Status.Active */
   status?: Status;
   /** List of contacts related to this business, typically used for sending invoices. */
@@ -22,23 +22,23 @@ export type Business = {
   createdAt: Date;
   updatedAt: Date;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
 };
 
 export const businessSchema: Schema<Business> = s.object<Business>({
   id: s.string(),
   customerId: s.string(),
   name: s.string(),
-  companyNumber: s.nullable(s.string()),
-  taxIdentifier: s.nullable(s.string()),
+  companyNumber: s.optionalNullable(s.string()),
+  taxIdentifier: s.optionalNullable(s.string()),
   status: s.defaulted(statusSchema, Status.Active),
   contacts: s.array(s.lazy(() => businessContactsItemSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     customerId: "customer_id",
     companyNumber: "company_number",

@@ -18,14 +18,14 @@ export type Notification = {
    * RFC 3339 datetime string of when this notification was delivered. `null` if not yet delivered
    * successfully.
    */
-  deliveredAt: Date | null;
+  deliveredAt?: Date | null;
   /** RFC 3339 datetime string of when this notification was replayed. `null` if not replayed. */
-  replayedAt: Date | null;
+  replayedAt?: Date | null;
   origin: NotificationOrigin;
   /** RFC 3339 datetime string of when this notification was last attempted. */
-  lastAttemptAt: Date | null;
+  lastAttemptAt?: Date | null;
   /** RFC 3339 datetime string of when this notification is scheduled to be retried. */
-  retryAt: Date | null;
+  retryAt?: Date | null;
   /**
    * How many times delivery of this notification has been attempted. Automatically incremented by
    * Paddle after an attempt.
@@ -40,11 +40,11 @@ export const notificationSchema: Schema<Notification> = s.object<Notification>({
   status: notificationStatusSchema,
   payload: notificationPayloadSchema,
   occurredAt: s.dateTime(),
-  deliveredAt: s.nullable(s.dateTime()),
-  replayedAt: s.nullable(s.dateTime()),
+  deliveredAt: s.optionalNullable(s.dateTime()),
+  replayedAt: s.optionalNullable(s.dateTime()),
   origin: notificationOriginSchema,
-  lastAttemptAt: s.nullable(s.dateTime()),
-  retryAt: s.nullable(s.dateTime()),
+  lastAttemptAt: s.optionalNullable(s.dateTime()),
+  retryAt: s.optionalNullable(s.dateTime()),
   timesAttempted: s.int(),
   notificationSettingId: s.string(),
   _keysMap: {

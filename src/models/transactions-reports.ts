@@ -14,12 +14,12 @@ export type TransactionsReports = {
   /** @default ReportStatus.Pending */
   status?: ReportStatus;
   /** Number of records in this report. `null` if the report is `pending`. */
-  rows: number | null;
+  rows?: number | null;
   /**
    * RFC 3339 datetime string of when this report expires. The report is no longer available to
    * download after this date.
    */
-  expiresAt: Date | null;
+  expiresAt?: Date | null;
   /** RFC 3339 datetime string of when this report was last updated. */
   updatedAt: Date;
   /** RFC 3339 datetime string of when this report was created. */
@@ -37,8 +37,8 @@ export type TransactionsReports = {
 export const transactionsReportsSchema: Schema<TransactionsReports> = s.object<TransactionsReports>({
   id: s.string(),
   status: s.defaulted(reportStatusSchema, ReportStatus.Pending),
-  rows: s.nullable(s.int()),
-  expiresAt: s.nullable(s.dateTime()),
+  rows: s.optionalNullable(s.int()),
+  expiresAt: s.optionalNullable(s.dateTime()),
   updatedAt: s.dateTime(),
   createdAt: s.dateTime(),
   type: transactionsReportTypeSchema,

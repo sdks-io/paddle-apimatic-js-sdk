@@ -29,7 +29,7 @@ export type SubscriptionHistory = {
   /** Details about the actor that performed the action that created this entry. */
   actor: Actor;
   /** Why the entry was created. Only applicable to certain actions; `null` otherwise. */
-  reason: SubscriptionHistoryReason | null;
+  reason?: SubscriptionHistoryReason | null;
   /** Details specific to the action. The fields returned depend on the value of `action`. */
   detail: SubscriptionHistoryDetail;
 };
@@ -41,7 +41,7 @@ export const subscriptionHistorySchema: Schema<SubscriptionHistory> = s.object<S
   occurredAt: s.dateTime(),
   source: actionSourceSchema,
   actor: actorSchema,
-  reason: s.nullable(s.lazy(() => subscriptionHistoryReasonSchema)),
+  reason: s.optionalNullable(s.lazy(() => subscriptionHistoryReasonSchema)),
   detail: subscriptionHistoryDetailSchema,
   _keysMap: {
     groupId: "group_id",

@@ -15,13 +15,13 @@ export type TransactionPaymentAttempt1 = {
    */
   storedPaymentMethodId: string;
   /** Paddle ID of the payment method used for this payment attempt, prefixed with `paymtd_`. */
-  paymentMethodId: string | null;
+  paymentMethodId?: string | null;
   /** Amount for collection in the lowest denomination of a currency (e.g. cents for USD). */
   amount: string;
   /** Status of this payment attempt. */
   status: PaymentAttemptStatus;
   /** Reason why a payment attempt failed. Returns `null` if payment captured successfully. */
-  errorCode: ErrorCode | null;
+  errorCode?: ErrorCode | null;
   /** Information about the payment method used for a payment attempt. */
   methodDetails: MethodDetails1;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
@@ -30,20 +30,20 @@ export type TransactionPaymentAttempt1 = {
    * RFC 3339 datetime string of when this payment was captured. `null` if `status` is not
    * `captured`.
    */
-  capturedAt: Date | null;
+  capturedAt?: Date | null;
 };
 
 export const transactionPaymentAttempt1Schema: Schema<TransactionPaymentAttempt1> =
   s.object<TransactionPaymentAttempt1>({
     paymentAttemptId: s.string(),
     storedPaymentMethodId: s.string(),
-    paymentMethodId: s.nullable(s.string()),
+    paymentMethodId: s.optionalNullable(s.string()),
     amount: s.string(),
     status: paymentAttemptStatusSchema,
-    errorCode: s.nullable(s.lazy(() => errorCodeSchema)),
+    errorCode: s.optionalNullable(s.lazy(() => errorCodeSchema)),
     methodDetails: methodDetails1Schema,
     createdAt: s.dateTime(),
-    capturedAt: s.nullable(s.dateTime()),
+    capturedAt: s.optionalNullable(s.dateTime()),
     _keysMap: {
       paymentAttemptId: "payment_attempt_id",
       storedPaymentMethodId: "stored_payment_method_id",

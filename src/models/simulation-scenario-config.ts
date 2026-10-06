@@ -26,20 +26,22 @@ import {
  * entities are used to populate webhook payloads with.
  */
 export type SimulationScenarioConfig = {
-  subscriptionCancellation: SimulationSubscriptionCancellationConfig | null;
-  subscriptionCreation: SimulationSubscriptionCreationConfig | null;
-  subscriptionPause: SimulationSubscriptionPauseConfig | null;
-  subscriptionRenewal: SimulationSubscriptionRenewalConfig | null;
-  subscriptionResume: SimulationSubscriptionResumeConfig | null;
+  subscriptionCancellation?: SimulationSubscriptionCancellationConfig | null;
+  subscriptionCreation?: SimulationSubscriptionCreationConfig | null;
+  subscriptionPause?: SimulationSubscriptionPauseConfig | null;
+  subscriptionRenewal?: SimulationSubscriptionRenewalConfig | null;
+  subscriptionResume?: SimulationSubscriptionResumeConfig | null;
 };
 
 export const simulationScenarioConfigSchema: Schema<SimulationScenarioConfig> =
   s.object<SimulationScenarioConfig>({
-    subscriptionCancellation: s.nullable(s.lazy(() => simulationSubscriptionCancellationConfigSchema)),
-    subscriptionCreation: s.nullable(s.lazy(() => simulationSubscriptionCreationConfigSchema)),
-    subscriptionPause: s.nullable(s.lazy(() => simulationSubscriptionPauseConfigSchema)),
-    subscriptionRenewal: s.nullable(s.lazy(() => simulationSubscriptionRenewalConfigSchema)),
-    subscriptionResume: s.nullable(s.lazy(() => simulationSubscriptionResumeConfigSchema)),
+    subscriptionCancellation: s.optionalNullable(
+      s.lazy(() => simulationSubscriptionCancellationConfigSchema),
+    ),
+    subscriptionCreation: s.optionalNullable(s.lazy(() => simulationSubscriptionCreationConfigSchema)),
+    subscriptionPause: s.optionalNullable(s.lazy(() => simulationSubscriptionPauseConfigSchema)),
+    subscriptionRenewal: s.optionalNullable(s.lazy(() => simulationSubscriptionRenewalConfigSchema)),
+    subscriptionResume: s.optionalNullable(s.lazy(() => simulationSubscriptionResumeConfigSchema)),
     _keysMap: {
       subscriptionCancellation: "subscription_cancellation",
       subscriptionCreation: "subscription_creation",

@@ -14,13 +14,13 @@ export type Activated = {
    * subscription has never been billed — for example, an imported subscription recovering from
    * `past_due`.
    */
-  firstBilledAt: Date | null;
+  firstBilledAt?: Date | null;
   /**
    * RFC 3339 datetime string of when the subscription was next scheduled to be billed at the time
    * of activation. `null` when the subscription has no next billing date — for example, a recovered
    * `past_due` subscription that is scheduled to cancel or pause.
    */
-  nextBilledAt: Date | null;
+  nextBilledAt?: Date | null;
   /** Billing period of the subscription at the time of activation. */
   currentBillingPeriod: TimePeriod;
   /** Paddle ID of the transaction that activated the subscription, prefixed with `txn_`. */
@@ -30,8 +30,8 @@ export type Activated = {
 export const activatedSchema: Schema<Activated> = s.object<Activated>({
   action: s.defaulted(s.literal("subscription_activated"), "subscription_activated"),
   status: subscriptionStatusSchema,
-  firstBilledAt: s.nullable(s.dateTime()),
-  nextBilledAt: s.nullable(s.dateTime()),
+  firstBilledAt: s.optionalNullable(s.dateTime()),
+  nextBilledAt: s.optionalNullable(s.dateTime()),
   currentBillingPeriod: timePeriodSchema,
   transactionId: s.string(),
   _keysMap: {

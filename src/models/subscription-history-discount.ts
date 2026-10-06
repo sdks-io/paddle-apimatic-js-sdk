@@ -18,7 +18,7 @@ export type SubscriptionHistoryDiscount = {
    * RFC 3339 datetime string of when the discount stops being effective on the subscription. `null`
    * if the discount does not have an end date.
    */
-  endsAt: Date | null;
+  endsAt?: Date | null;
 };
 
 export const subscriptionHistoryDiscountSchema: Schema<SubscriptionHistoryDiscount> =
@@ -26,7 +26,7 @@ export const subscriptionHistoryDiscountSchema: Schema<SubscriptionHistoryDiscou
     discount: discountSchema,
     type: subscriptionHistoryDiscountTypeSchema,
     startsAt: s.dateTime(),
-    endsAt: s.nullable(s.dateTime()),
+    endsAt: s.optionalNullable(s.dateTime()),
     _keysMap: {
       startsAt: "starts_at",
       endsAt: "ends_at",

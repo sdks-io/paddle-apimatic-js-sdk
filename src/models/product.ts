@@ -12,7 +12,7 @@ export type Product = {
   /** Name of this product. */
   name: string;
   /** Short description for this product. */
-  description: string | null;
+  description?: string | null;
   /** @default CatalogType.Standard */
   type?: CatalogType;
   /**
@@ -21,13 +21,13 @@ export type Product = {
    */
   taxCategory: TaxCategory;
   /** Image for this product. Included in the checkout and on some customer documents. */
-  imageUrl: ImageUrl | null;
+  imageUrl?: ImageUrl | null;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** @default Status.Active */
   status?: Status;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -35,13 +35,13 @@ export type Product = {
 export const productSchema: Schema<Product> = s.object<Product>({
   id: s.string(),
   name: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
   taxCategory: taxCategorySchema,
-  imageUrl: s.nullable(s.lazy(() => imageUrlSchema)),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  imageUrl: s.optionalNullable(s.lazy(() => imageUrlSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   status: s.defaulted(statusSchema, Status.Active),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

@@ -12,11 +12,11 @@ export type TransactionItem = {
    * subscription change, where `proration_billing_mode` was `prorated_immediately` or
    * `prorated_next_billing_period`. Set automatically by Paddle.
    */
-  proration: Proration | null;
+  proration?: Proration | null;
 };
 
 export const transactionItemSchema: Schema<TransactionItem> = s.object<TransactionItem>({
   price: priceSchema,
   quantity: s.int(),
-  proration: s.nullable(s.lazy(() => prorationSchema)),
+  proration: s.optionalNullable(s.lazy(() => prorationSchema)),
 });

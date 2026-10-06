@@ -9,8 +9,8 @@ import {
   type SubscriptionDiscountEffectiveFrom,
 } from "./subscription-discount-effective-from.js";
 import {
-  SubscriptionOnPaymentFailure,
   subscriptionOnPaymentFailureSchema,
+  type SubscriptionOnPaymentFailure,
 } from "./subscription-on-payment-failure.js";
 import {
   subscriptionUpdateItemsSchema,
@@ -81,7 +81,6 @@ export type SubscriptionUpdate = {
    * billing mode that collects for payment immediately is used.
    */
   prorationBillingMode?: ProrationBillingMode;
-  /** @default SubscriptionOnPaymentFailure.PreventChange */
   onPaymentFailure?: SubscriptionOnPaymentFailure;
 };
 
@@ -98,10 +97,7 @@ export const subscriptionUpdateSchema: Schema<SubscriptionUpdate> = s.object<Sub
   items: s.optional(s.array(s.lazy(() => subscriptionUpdateItemsSchema))),
   customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   prorationBillingMode: s.optional(s.lazy(() => prorationBillingModeSchema)),
-  onPaymentFailure: s.defaulted(
-    subscriptionOnPaymentFailureSchema,
-    SubscriptionOnPaymentFailure.PreventChange,
-  ),
+  onPaymentFailure: s.optional(s.lazy(() => subscriptionOnPaymentFailureSchema)),
   _keysMap: {
     customerId: "customer_id",
     addressId: "address_id",

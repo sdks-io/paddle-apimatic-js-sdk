@@ -28,16 +28,16 @@ export type SubscriptionConsentRequirement = {
    * Period during which consent for this subscription can be granted. `null` if there is no
    * `next_billed_at` or the consent requirement does not apply to the current billing period.
    */
-  consentPeriod: TimePeriod | null;
+  consentPeriod?: TimePeriod | null;
   /**
    * RFC 3339 datetime string of when the customer granted their consent. `null` if not yet granted.
    */
-  grantedAt: Date | null;
+  grantedAt?: Date | null;
   /**
    * RFC 3339 datetime string of when consent was voided or no longer required. `null` if not
    * voided.
    */
-  voidedAt: Date | null;
+  voidedAt?: Date | null;
 };
 
 export const subscriptionConsentRequirementSchema: Schema<SubscriptionConsentRequirement> =
@@ -46,9 +46,9 @@ export const subscriptionConsentRequirementSchema: Schema<SubscriptionConsentReq
     requirement: subscriptionConsentRequirementTypeSchema,
     status: subscriptionConsentRequirementStatusSchema,
     createdAt: s.dateTime(),
-    consentPeriod: s.nullable(s.lazy(() => timePeriodSchema)),
-    grantedAt: s.nullable(s.dateTime()),
-    voidedAt: s.nullable(s.dateTime()),
+    consentPeriod: s.optionalNullable(s.lazy(() => timePeriodSchema)),
+    grantedAt: s.optionalNullable(s.dateTime()),
+    voidedAt: s.optionalNullable(s.dateTime()),
     _keysMap: {
       createdAt: "created_at",
       consentPeriod: "consent_period",

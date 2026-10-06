@@ -5,8 +5,8 @@ import { resolveBaseUrl } from "./core/url.js";
 import * as s from "./core/validation/index.js";
 
 export const ServerEnvironment = {
+  Sandbox: "sandbox",
   Production: "production",
-  Environment2: "environment2",
 } as const;
 export type ServerEnvironment = (typeof ServerEnvironment)[keyof typeof ServerEnvironment];
 
@@ -14,11 +14,11 @@ export type Servers = {
   default: <Path extends string>(subPath: Path) => UrlTemplate<Path>;
 };
 
-const productionSchemas = {
+const sandboxSchemas = {
   baseUrl: s.of(s.defaulted(s.string(), "https://sandbox-api.paddle.com")),
 };
 
-const environment2Schemas = {
+const productionSchemas = {
   baseUrl: s.of(s.defaulted(s.string(), "https://api.paddle.com")),
 };
 
@@ -34,11 +34,11 @@ export function buildServers(options: ClientOptions): Servers {
 function defaultServer(options: ClientOptions): ServerBase {
   const environment = options.serverEnvironment;
   switch (environment) {
-    case ServerEnvironment.Production:
+    case ServerEnvironment.Sandbox:
     case undefined:
+      return { baseUrl: sandboxSchemas.baseUrl.decode(options.serverOptions?.baseUrl) };
+    case ServerEnvironment.Production:
       return { baseUrl: productionSchemas.baseUrl.decode(options.serverOptions?.baseUrl) };
-    case ServerEnvironment.Environment2:
-      return { baseUrl: environment2Schemas.baseUrl.decode(options.serverOptions?.baseUrl) };
     default:
       unknownEnvironment(environment);
   }

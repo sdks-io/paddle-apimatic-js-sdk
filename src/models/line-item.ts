@@ -15,7 +15,7 @@ export type LineItem = {
    * subscription change, where `proration_billing_mode` was `prorated_immediately` or
    * `prorated_next_billing_period`. Set automatically by Paddle.
    */
-  proration: Proration1 | null;
+  proration?: Proration1 | null;
   /** Rate used to calculate tax for this transaction line item. */
   taxRate: string;
   /**
@@ -40,7 +40,7 @@ export type LineItem = {
 export const lineItemSchema: Schema<LineItem> = s.object<LineItem>({
   priceId: s.string(),
   quantity: s.int(),
-  proration: s.nullable(s.lazy(() => proration1Schema)),
+  proration: s.optionalNullable(s.lazy(() => proration1Schema)),
   taxRate: s.string(),
   unitTotals: totals3Schema,
   totals: totals4Schema,

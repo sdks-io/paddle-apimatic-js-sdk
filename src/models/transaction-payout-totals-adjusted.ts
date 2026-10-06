@@ -20,7 +20,7 @@ export type TransactionPayoutTotalsAdjusted = {
   /** Total fee taken by Paddle for this payout. */
   fee: string;
   /** Paddle fees retained for this adjustment. */
-  retainedFee: string;
+  retainedFee?: string;
   /** Details of any chargeback fees incurred for this transaction. */
   chargebackFee: TransactionPayoutTotalsAdjustedChargebackFee;
   /**
@@ -38,7 +38,7 @@ export type TransactionPayoutTotalsAdjusted = {
    * Currency exchange rate, including margin if applicable. `1.0` if the transaction currency
    * matches your payout currency.
    */
-  exchangeRate: string;
+  exchangeRate?: string;
 };
 
 export const transactionPayoutTotalsAdjustedSchema: Schema<TransactionPayoutTotalsAdjusted> =
@@ -47,11 +47,11 @@ export const transactionPayoutTotalsAdjustedSchema: Schema<TransactionPayoutTota
     tax: s.string(),
     total: s.string(),
     fee: s.string(),
-    retainedFee: s.string(),
+    retainedFee: s.optional(s.string()),
     chargebackFee: transactionPayoutTotalsAdjustedChargebackFeeSchema,
     earnings: s.string(),
     currencyCode: currencyCodePayoutsSchema,
-    exchangeRate: s.string(),
+    exchangeRate: s.optional(s.string()),
     _keysMap: {
       retainedFee: "retained_fee",
       chargebackFee: "chargeback_fee",

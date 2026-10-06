@@ -10,7 +10,7 @@ export type CustomerIncludes = {
    * Full name of this customer. Required when creating transactions where `collection_mode` is
    * `manual` (invoices).
    */
-  name: string | null;
+  name?: string | null;
   /** Email address for this customer. */
   email: string;
   /**
@@ -23,26 +23,26 @@ export type CustomerIncludes = {
   /** @default Status.Active */
   status?: Status;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Valid IETF BCP 47 short form locale tag. If omitted, defaults to `en`. @default "en" */
   locale?: string;
   createdAt: Date;
   updatedAt: Date;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
 };
 
 export const customerIncludesSchema: Schema<CustomerIncludes> = s.object<CustomerIncludes>({
   id: s.string(),
-  name: s.nullable(s.string()),
+  name: s.optionalNullable(s.string()),
   email: s.string(),
   marketingConsent: s.defaulted(s.boolean(), false),
   status: s.defaulted(statusSchema, Status.Active),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   locale: s.defaulted(s.string(), "en"),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     marketingConsent: "marketing_consent",
     customData: "custom_data",

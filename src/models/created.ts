@@ -23,54 +23,54 @@ export type Created = {
    * Status of the subscription when it was created. `null` if created before history recording
    * began and this couldn't be determined.
    */
-  status: SubscriptionStatus | null;
+  status?: SubscriptionStatus | null;
   /** The collection mode of the subscription when it was created. */
-  collectionMode: CollectionMode | null;
+  collectionMode?: CollectionMode | null;
   /**
    * Details for invoicing. Only returned for manually-collected subscriptions (`collection_mode:
    * manual`).
    */
-  billingDetails: BillingDetails | null;
+  billingDetails?: BillingDetails | null;
   /** Customer for the subscription when it was created. */
-  customer: Customer | null;
+  customer?: Customer | null;
   /** Address for the subscription when it was created. */
-  address: Address | null;
+  address?: Address | null;
   /** Business for the subscription when it was created. */
-  business: Business | null;
+  business?: Business | null;
   /** Supported three-letter ISO 4217 currency code of the subscription when it was created. */
-  currencyCode: CurrencyCode | null;
+  currencyCode?: CurrencyCode | null;
   /** Current billing period of the subscription when it was created. */
-  currentBillingPeriod: TimePeriod | null;
+  currentBillingPeriod?: TimePeriod | null;
   /** Billing cycle of the subscription when it was created. */
-  billingCycle: Duration | null;
+  billingCycle?: Duration | null;
   /** Items on the subscription when it was created. */
-  items: SubscriptionHistoryItem[] | null;
+  items?: SubscriptionHistoryItem[] | null;
   /** Custom data of the subscription when it was created. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Discount attached to the subscription when it was created. */
-  discount: SubscriptionHistoryDiscount | null;
+  discount?: SubscriptionHistoryDiscount | null;
   /**
    * Whether the subscription had a payment method when it was created. `null` if this couldn't be
    * determined.
    */
-  hasPaymentMethod: boolean | null;
+  hasPaymentMethod?: boolean | null;
 };
 
 export const createdSchema: Schema<Created> = s.object<Created>({
   action: s.defaulted(s.literal("subscription_created"), "subscription_created"),
-  status: s.nullable(s.lazy(() => subscriptionStatusSchema)),
-  collectionMode: s.nullable(s.lazy(() => collectionModeSchema)),
-  billingDetails: s.nullable(s.lazy(() => billingDetailsSchema)),
-  customer: s.nullable(s.lazy(() => customerSchema)),
-  address: s.nullable(s.lazy(() => addressSchema)),
-  business: s.nullable(s.lazy(() => businessSchema)),
-  currencyCode: s.nullable(s.lazy(() => currencyCodeSchema)),
-  currentBillingPeriod: s.nullable(s.lazy(() => timePeriodSchema)),
-  billingCycle: s.nullable(s.lazy(() => durationSchema)),
-  items: s.nullable(s.array(s.lazy(() => subscriptionHistoryItemSchema))),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  discount: s.nullable(s.lazy(() => subscriptionHistoryDiscountSchema)),
-  hasPaymentMethod: s.nullable(s.boolean()),
+  status: s.optionalNullable(s.lazy(() => subscriptionStatusSchema)),
+  collectionMode: s.optionalNullable(s.lazy(() => collectionModeSchema)),
+  billingDetails: s.optionalNullable(s.lazy(() => billingDetailsSchema)),
+  customer: s.optionalNullable(s.lazy(() => customerSchema)),
+  address: s.optionalNullable(s.lazy(() => addressSchema)),
+  business: s.optionalNullable(s.lazy(() => businessSchema)),
+  currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
+  currentBillingPeriod: s.optionalNullable(s.lazy(() => timePeriodSchema)),
+  billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
+  items: s.optionalNullable(s.array(s.lazy(() => subscriptionHistoryItemSchema))),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  discount: s.optionalNullable(s.lazy(() => subscriptionHistoryDiscountSchema)),
+  hasPaymentMethod: s.optionalNullable(s.boolean()),
   _keysMap: {
     collectionMode: "collection_mode",
     billingDetails: "billing_details",

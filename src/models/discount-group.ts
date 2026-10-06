@@ -16,7 +16,7 @@ export type DiscountGroup = {
   createdAt: Date;
   updatedAt: Date;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
 };
 
 export const discountGroupSchema: Schema<DiscountGroup> = s.object<DiscountGroup>({
@@ -25,7 +25,7 @@ export const discountGroupSchema: Schema<DiscountGroup> = s.object<DiscountGroup
   status: statusSchema,
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     createdAt: "created_at",
     updatedAt: "updated_at",

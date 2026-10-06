@@ -16,7 +16,7 @@ export type Product10 = {
   /** Name of this product. */
   name: string;
   /** Short description for this product. */
-  description: string | null;
+  description?: string | null;
   /**
    * Type of item. Standard items are considered part of your catalog and are shown in the Paddle
    * dashboard.
@@ -30,13 +30,13 @@ export type Product10 = {
    */
   taxCategory: TaxCategory;
   /** Image for this product. Included in the checkout and on some customer documents. */
-  imageUrl: ImageUrl | null;
+  imageUrl?: ImageUrl | null;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Whether this entity can be used in Paddle. @default Status.Active */
   status?: Status;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -46,13 +46,13 @@ export type Product10 = {
 export const product10Schema: Schema<Product10> = s.object<Product10>({
   id: s.string(),
   name: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
   taxCategory: taxCategorySchema,
-  imageUrl: s.nullable(s.lazy(() => imageUrlSchema)),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  imageUrl: s.optionalNullable(s.lazy(() => imageUrlSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   status: s.defaulted(statusSchema, Status.Active),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

@@ -18,9 +18,9 @@ export type Item = {
    */
   type: AdjustmentItemType;
   /** Amount adjusted for this transaction item. Required when item `type` is `partial`. */
-  amount: string | null;
+  amount?: string | null;
   /** How proration was calculated for this adjustment item. */
-  proration: Proration | null;
+  proration?: Proration | null;
   totals: AdjustmentItemTotals;
 };
 
@@ -28,8 +28,8 @@ export const itemSchema: Schema<Item> = s.object<Item>({
   id: s.string(),
   itemId: s.string(),
   type: adjustmentItemTypeSchema,
-  amount: s.nullable(s.string()),
-  proration: s.nullable(s.lazy(() => prorationSchema)),
+  amount: s.optionalNullable(s.string()),
+  proration: s.optionalNullable(s.lazy(() => prorationSchema)),
   totals: adjustmentItemTotalsSchema,
   _keysMap: {
     itemId: "item_id",

@@ -15,7 +15,7 @@ export type ReportFilterReconciliation = {
    * Operator to use when filtering. Valid when filtering by `transaction_updated_at` or
    * `balance_movement_date`, must be `null` otherwise.
    */
-  operator: FilterOperator | null;
+  operator?: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -26,6 +26,6 @@ export type ReportFilterReconciliation = {
 export const reportFilterReconciliationSchema: Schema<ReportFilterReconciliation> =
   s.object<ReportFilterReconciliation>({
     name: reconciliationReportFilterNameSchema,
-    operator: s.nullable(s.lazy(() => filterOperatorSchema)),
+    operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
     value: value5Schema,
   });

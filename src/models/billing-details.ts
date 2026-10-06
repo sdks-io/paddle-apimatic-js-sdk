@@ -12,17 +12,17 @@ export type BillingDetails = {
    */
   enableCheckout?: boolean;
   /** Customer purchase order number. Appears on invoice documents. */
-  purchaseOrderNumber: string;
+  purchaseOrderNumber?: string | null;
   /** Notes or other information to include on this invoice. Appears on invoice documents. */
-  additionalInformation: string | null;
+  additionalInformation?: string | null;
   /** How long a customer has to pay this invoice once issued. */
   paymentTerms: Duration;
 };
 
 export const billingDetailsSchema: Schema<BillingDetails> = s.object<BillingDetails>({
   enableCheckout: s.defaulted(s.boolean(), false),
-  purchaseOrderNumber: s.string(),
-  additionalInformation: s.nullable(s.string()),
+  purchaseOrderNumber: s.optionalNullable(s.string()),
+  additionalInformation: s.optionalNullable(s.string()),
   paymentTerms: durationSchema,
   _keysMap: {
     enableCheckout: "enable_checkout",

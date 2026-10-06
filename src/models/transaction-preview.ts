@@ -12,28 +12,28 @@ import { transactionItemPreviewSchema, type TransactionItemPreview } from "./tra
 /** Represents a transaction entity when previewing transactions. */
 export type TransactionPreview = {
   /** Paddle ID of the customer that this transaction preview is for, prefixed with `ctm_`. */
-  customerId: string | null;
+  customerId?: string | null;
   /**
    * Paddle ID of the address that this transaction preview is for, prefixed with `add_`. Send one
    * of `address_id`, `customer_ip_address`, or the `address` object when previewing.
    */
-  addressId: string | null;
+  addressId?: string | null;
   /** Paddle ID of the business that this transaction preview is for, prefixed with `biz_`. */
-  businessId: string | null;
+  businessId?: string | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /** Paddle ID of the discount applied to this transaction preview, prefixed with `dsc_`. */
-  discountId: string | null;
+  discountId?: string | null;
   /**
    * IP address for this transaction preview. Send one of `address_id`, `customer_ip_address`, or
    * the `address` object when previewing.
    */
-  customerIpAddress: string | null;
+  customerIpAddress?: string | null;
   /**
    * Address for this transaction preview. Send one of `address_id`, `customer_ip_address`, or the
    * `address` object when previewing.
    */
-  address: AddressPreview | null;
+  address?: AddressPreview | null;
   /**
    * Whether trials should be ignored for transaction preview calculations.
    *
@@ -54,13 +54,13 @@ export type TransactionPreview = {
 };
 
 export const transactionPreviewSchema: Schema<TransactionPreview> = s.object<TransactionPreview>({
-  customerId: s.nullable(s.string()),
-  addressId: s.nullable(s.string()),
-  businessId: s.nullable(s.string()),
+  customerId: s.optionalNullable(s.string()),
+  addressId: s.optionalNullable(s.string()),
+  businessId: s.optionalNullable(s.string()),
   currencyCode: currencyCodeSchema,
-  discountId: s.nullable(s.string()),
-  customerIpAddress: s.nullable(s.string()),
-  address: s.nullable(s.lazy(() => addressPreviewSchema)),
+  discountId: s.optionalNullable(s.string()),
+  customerIpAddress: s.optionalNullable(s.string()),
+  address: s.optionalNullable(s.lazy(() => addressPreviewSchema)),
   ignoreTrials: s.defaulted(s.boolean(), false),
   items: s.array(s.lazy(() => transactionItemPreviewSchema)),
   details: transactionDetailsPreviewSchema,

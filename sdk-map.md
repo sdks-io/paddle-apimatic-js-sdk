@@ -8,8 +8,8 @@
 | --- | --- |
 | SDK display name | Paddle API |
 | Package | `paddle-apimatic-sdk` |
-| Package version | `1.0.0` |
-| API spec version | `1.0` |
+| Package version | `0.0.3` |
+| API spec version | `0.0.3` |
 | Import specifier | `paddle-apimatic-sdk` — the package root is the **only** entry. Deep imports (`paddle-apimatic-sdk/models/...`) do not resolve; the `exports` map exposes `.` and `./package.json` and nothing else |
 | Module format | dual ESM + CommonJS, as folder dialects (`dist/esm`, `dist/commonjs`), each with its own `package.json` marker. No `.mjs`, `.cjs`, `.d.mts` or `.d.cts` files exist |
 | Node floor | `>=20.3` (`engines.node`) |
@@ -29,7 +29,7 @@ All `Source` paths on this map and its sub-pages are relative to the **SDK root*
 import { PaddleApiClient, ServerEnvironment } from "paddle-apimatic-sdk";
 
 const client = new PaddleApiClient({
-  serverEnvironment: ServerEnvironment.Production,
+  serverEnvironment: ServerEnvironment.Sandbox,
   bearerAuth: "YOUR_BEARER_TOKEN",
 });
 ```
@@ -40,7 +40,7 @@ All `ClientOptions` fields (source: `src/client-options.ts`; every field is `rea
 
 | Field | Type | Default |
 | --- | --- | --- |
-| `serverEnvironment` | `typeof ServerEnvironment.<member>`, one per union arm | `ServerEnvironment.Production` |
+| `serverEnvironment` | `typeof ServerEnvironment.<member>`, one per union arm | `ServerEnvironment.Sandbox` |
 | `serverOptions` | the selected environment's server overrides | `{}` — each resolver merges its own per-environment defaults in |
 | `retry` | `RetryOptions` | the `RetryOptions` defaults below |
 | `fetch` | `FetchLike \| undefined` | the global `fetch`, resolved by the transport |
@@ -269,7 +269,7 @@ Each page below carries one block per operation, with bullets in the fixed order
 
 | Group | Count | Directory |
 | --- | --- | --- |
-| Objects (plain `type`, no class) | 513 | `src/models/` |
+| Objects (plain `type`, no class) | 512 | `src/models/` |
 | Enums (open; const companion plus schema) | 138 | `src/models/` |
 | Unions | 25 | `src/models/unions/` |
 | Typed error classes (`ApiError` subclass, one per typed operation) | 99 | `src/resources/`, in the declaring module's namespace |
@@ -306,8 +306,8 @@ A scheme **contributes** headers, query parameters and cookies rather than mutat
 
 | `ServerEnvironment` member | Value |
 | --- | --- |
-| `ServerEnvironment.Production` *(default)* | `production` |
-| `ServerEnvironment.Environment2` | `environment2` |
+| `ServerEnvironment.Sandbox` *(default)* | `sandbox` |
+| `ServerEnvironment.Production` | `production` |
 
 **serverOptions.** 1 logical server; each operation is bound to one at generation time, and a block carries a **Server** bullet only when its group is not `default`. Override `serverOptions`.
 
@@ -315,8 +315,8 @@ A scheme **contributes** headers, query parameters and cookies rather than mutat
 
 | Group | Environment | Base URL template | Template variables (default) |
 | --- | --- | --- | --- |
-| `default` | `production` | `https://sandbox-api.paddle.com` | — |
-| `default` | `environment2` | `https://api.paddle.com` | — |
+| `default` | `sandbox` | `https://sandbox-api.paddle.com` | — |
+| `default` | `production` | `https://api.paddle.com` | — |
 
 A `baseUrl` override replaces the template verbatim; variable values are percent-encoded into it. Server variables are filled in once, as the client is built; only the path parameters are expanded per request. An environment value the SDK does not know throws `ConfigurationError`, and it is the **constructor** that throws it: every server group is resolved once, by `buildServers`, as the client is built, and an accessor afterwards only attaches the operation's sub-path. No operation method throws synchronously.
 

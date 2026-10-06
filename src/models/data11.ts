@@ -13,15 +13,15 @@ export type Data11 = {
   /** Full name. */
   name: string;
   /** Company number for this business. */
-  companyNumber: string | null;
+  companyNumber?: string | null;
   /** Tax or VAT Number for this business. */
-  taxIdentifier: string | null;
+  taxIdentifier?: string | null;
   /** Whether this entity can be used in Paddle. */
   status: Status;
   contacts: BusinessContactsItem[];
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
-  importMeta: ImportMeta | null;
+  customData?: Record<string, unknown> | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -32,12 +32,12 @@ export const data11Schema: Schema<Data11> = s.object<Data11>({
   id: s.string(),
   customerId: s.string(),
   name: s.string(),
-  companyNumber: s.nullable(s.string()),
-  taxIdentifier: s.nullable(s.string()),
+  companyNumber: s.optionalNullable(s.string()),
+  taxIdentifier: s.optionalNullable(s.string()),
   status: statusSchema,
   contacts: s.array(s.lazy(() => businessContactsItemSchema)),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

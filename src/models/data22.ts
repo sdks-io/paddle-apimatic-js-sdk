@@ -16,7 +16,7 @@ export type Data22 = {
   description: string;
   /** Whether this discount can be redeemed by customers at checkout (`true`) or not (`false`). */
   enabledForCheckout: boolean;
-  code: string | null;
+  code?: string | null;
   /** Type of discount. Determines how this discount impacts the checkout or transaction total. */
   type: DiscountType;
   /**
@@ -24,7 +24,7 @@ export type Data22 = {
    * For `flat` and `flat_per_seat` discounts, amount in the lowest denomination for a currency.
    */
   amount: string;
-  currencyCode: CurrencyCode | null;
+  currencyCode?: CurrencyCode | null;
   /**
    * Whether this discount applies for multiple subscription billing periods (`true`) or not
    * (`false`).
@@ -37,7 +37,7 @@ export type Data22 = {
    * Subscription renewals, midcycle changes, and one-time charges billed to a subscription aren't
    * considered a redemption. `times_used` is not incremented in these cases.
    */
-  maximumRecurringIntervals: number | null;
+  maximumRecurringIntervals?: number | null;
   /**
    * Maximum number of times this discount can be redeemed. This is an overall limit for this
    * discount, rather than a per-customer limit. `null` if this discount can be redeemed an
@@ -47,17 +47,17 @@ export type Data22 = {
    * against a subscription. Transactions created for subscription renewals, midcycle changes, and
    * one-time charges aren't considered a redemption.
    */
-  usageLimit: number | null;
+  usageLimit?: number | null;
   /**
    * Product or price IDs that this discount is for. When including a product ID, all prices for
    * that product can be discounted. `null` if this discount applies to all products and prices.
    */
-  restrictTo: string[] | null;
-  expiresAt: Date | null;
-  mode: DiscountMode | null;
-  discountGroupId: string | null;
-  customData: Record<string, unknown> | null;
-  importMeta: ImportMeta | null;
+  restrictTo?: string[] | null;
+  expiresAt?: Date | null;
+  mode?: DiscountMode | null;
+  discountGroupId?: string | null;
+  customData?: Record<string, unknown> | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -69,19 +69,19 @@ export const data22Schema: Schema<Data22> = s.object<Data22>({
   status: statusSchema,
   description: s.string(),
   enabledForCheckout: s.boolean(),
-  code: s.nullable(s.string()),
+  code: s.optionalNullable(s.string()),
   type: discountTypeSchema,
   amount: s.string(),
-  currencyCode: s.nullable(s.lazy(() => currencyCodeSchema)),
+  currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
   recur: s.boolean(),
-  maximumRecurringIntervals: s.nullable(s.int()),
-  usageLimit: s.nullable(s.int()),
-  restrictTo: s.nullable(s.array(s.string())),
-  expiresAt: s.nullable(s.dateTime()),
-  mode: s.nullable(s.lazy(() => discountModeSchema)),
-  discountGroupId: s.nullable(s.string()),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  maximumRecurringIntervals: s.optionalNullable(s.int()),
+  usageLimit: s.optionalNullable(s.int()),
+  restrictTo: s.optionalNullable(s.array(s.string())),
+  expiresAt: s.optionalNullable(s.dateTime()),
+  mode: s.optionalNullable(s.lazy(() => discountModeSchema)),
+  discountGroupId: s.optionalNullable(s.string()),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

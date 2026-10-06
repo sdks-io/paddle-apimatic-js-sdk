@@ -22,7 +22,7 @@ export type Adjustment = {
    * Paddle ID for the subscription related to this adjustment, prefixed with `sub_`. Set
    * automatically by Paddle based on the `subscription_id` of the related transaction.
    */
-  subscriptionId: string | null;
+  subscriptionId?: string | null;
   /**
    * Paddle ID for the customer related to this adjustment, prefixed with `ctm_`. Set automatically
    * by Paddle based on the `customer_id` of the related transaction.
@@ -48,7 +48,7 @@ export type Adjustment = {
   items: Item[];
   totals: AdjustmentTotals;
   /** Breakdown of how this adjustment affects your payout balance. */
-  payoutTotals: PayoutTotalsAdjustment | null;
+  payoutTotals?: PayoutTotalsAdjustment | null;
   taxRatesUsed: AdjustmentTaxRateUsed[];
   createdAt: Date;
   updatedAt: Date;
@@ -59,7 +59,7 @@ export const adjustmentSchema: Schema<Adjustment> = s.object<Adjustment>({
   action: adjustmentActionSchema,
   type: s.defaulted(adjustmentTypeSchema, AdjustmentType.Partial),
   transactionId: s.string(),
-  subscriptionId: s.nullable(s.string()),
+  subscriptionId: s.optionalNullable(s.string()),
   customerId: s.string(),
   reason: s.string(),
   creditAppliedToBalance: s.optionalNullable(s.boolean()),
@@ -67,7 +67,7 @@ export const adjustmentSchema: Schema<Adjustment> = s.object<Adjustment>({
   status: adjustmentStatusSchema,
   items: s.array(s.lazy(() => itemSchema)),
   totals: adjustmentTotalsSchema,
-  payoutTotals: s.nullable(s.lazy(() => payoutTotalsAdjustmentSchema)),
+  payoutTotals: s.optionalNullable(s.lazy(() => payoutTotalsAdjustmentSchema)),
   taxRatesUsed: s.array(s.lazy(() => adjustmentTaxRateUsedSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),

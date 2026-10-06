@@ -20,15 +20,15 @@ export type PaymentMethod = {
   /** Type of payment method saved. */
   type: SavedPaymentMethodType;
   /** Information about the credit or debit card saved. `null` unless `type` is `card`. */
-  card: Card | null;
+  card?: Card | null;
   /** Information about the PayPal payment method saved. `null` unless `type` is `paypal`. */
-  paypal: PayPal | null;
+  paypal?: PayPal | null;
   underlyingDetails?: PaymentMethodUnderlyingDetails | null;
   /**
    * Information about the Korean payment method used to pay. `null` unless `type` is
    * `south_korea_local_card`.
    */
-  southKoreaLocalCard: SouthKoreaLocalCard | null;
+  southKoreaLocalCard?: SouthKoreaLocalCard | null;
   /** Describes how this payment method was saved. */
   origin: PaymentMethodOrigin;
   savedAt: Date;
@@ -40,10 +40,10 @@ export const paymentMethodSchema: Schema<PaymentMethod> = s.object<PaymentMethod
   customerId: s.string(),
   addressId: s.string(),
   type: savedPaymentMethodTypeSchema,
-  card: s.nullable(s.lazy(() => cardSchema)),
-  paypal: s.nullable(s.lazy(() => payPalSchema)),
+  card: s.optionalNullable(s.lazy(() => cardSchema)),
+  paypal: s.optionalNullable(s.lazy(() => payPalSchema)),
   underlyingDetails: s.optionalNullable(s.lazy(() => paymentMethodUnderlyingDetailsSchema)),
-  southKoreaLocalCard: s.nullable(s.lazy(() => southKoreaLocalCardSchema)),
+  southKoreaLocalCard: s.optionalNullable(s.lazy(() => southKoreaLocalCardSchema)),
   origin: paymentMethodOriginSchema,
   savedAt: s.dateTime(),
   updatedAt: s.dateTime(),

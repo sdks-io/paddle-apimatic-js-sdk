@@ -23,11 +23,11 @@ export type Data3 = {
    * Type of adjustment. Use `full` to adjust the grand total for the related transaction. Include
    * an `items` array when creating a `partial` adjustment. If omitted, defaults to `partial`.
    */
-  type: AdjustmentType | null;
+  type?: AdjustmentType | null;
   /** ID of the Transaction that this adjustment belongs to */
   transactionId: string;
   /** ID of the Subscription that this adjustment belongs to */
-  subscriptionId: string | null;
+  subscriptionId?: string | null;
   /** ID of the Customer that this Transaction is for */
   customerId: string;
   /** Some context on why the adjustment is being performed */
@@ -37,7 +37,7 @@ export type Data3 = {
    * If it is true, it indicates that credits have been applied to the customer's balance.
    * Otherwise, the adjustment is used to decrease the total amount of a billed invoice Transaction.
    */
-  creditAppliedToBalance: boolean | null;
+  creditAppliedToBalance?: boolean | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /**
@@ -48,8 +48,8 @@ export type Data3 = {
   items: Item1[];
   /** Breakdown of the total for an adjustment. */
   totals: AdjustmentTotals2;
-  payoutTotals: PayoutTotalsAdjustment1 | null;
-  taxRatesUsed: AdjustmentTaxRateUsed1[] | null;
+  payoutTotals?: PayoutTotalsAdjustment1 | null;
+  taxRatesUsed?: AdjustmentTaxRateUsed1[] | null;
   /**
    * Timestamp following the RFC 3339 standard. This is set by the system, and cannot be changed via
    * the API.
@@ -65,18 +65,18 @@ export type Data3 = {
 export const data3Schema: Schema<Data3> = s.object<Data3>({
   id: s.string(),
   action: adjustmentAction1Schema,
-  type: s.nullable(s.lazy(() => adjustmentTypeSchema)),
+  type: s.optionalNullable(s.lazy(() => adjustmentTypeSchema)),
   transactionId: s.string(),
-  subscriptionId: s.nullable(s.string()),
+  subscriptionId: s.optionalNullable(s.string()),
   customerId: s.string(),
   reason: s.string(),
-  creditAppliedToBalance: s.nullable(s.boolean()),
+  creditAppliedToBalance: s.optionalNullable(s.boolean()),
   currencyCode: currencyCodeSchema,
   status: status7Schema,
   items: s.array(s.lazy(() => item1Schema)),
   totals: adjustmentTotals2Schema,
-  payoutTotals: s.nullable(s.lazy(() => payoutTotalsAdjustment1Schema)),
-  taxRatesUsed: s.nullable(s.array(s.lazy(() => adjustmentTaxRateUsed1Schema))),
+  payoutTotals: s.optionalNullable(s.lazy(() => payoutTotalsAdjustment1Schema)),
+  taxRatesUsed: s.optionalNullable(s.array(s.lazy(() => adjustmentTaxRateUsed1Schema))),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

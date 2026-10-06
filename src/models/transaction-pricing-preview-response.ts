@@ -7,41 +7,41 @@ import { pricePreviewDetailsSchema, type PricePreviewDetails } from "./price-pre
 
 export type TransactionPricingPreviewResponse = {
   /** Paddle ID of the customer that this preview is for, prefixed with `ctm_`. */
-  customerId: string | null;
+  customerId?: string | null;
   /**
    * Paddle ID of the address that this preview is for, prefixed with `add_`. Send one of
    * `address_id`, `customer_ip_address`, or the `address` object when previewing.
    */
-  addressId: string | null;
+  addressId?: string | null;
   /** Paddle ID of the business that this preview is for, prefixed with `biz_`. */
-  businessId: string | null;
+  businessId?: string | null;
   /** Supported three-letter ISO 4217 currency code. */
-  currencyCode: CurrencyCode | null;
+  currencyCode?: CurrencyCode | null;
   /** Paddle ID of the discount applied to this preview, prefixed with `dsc_`. */
-  discountId: string | null;
+  discountId?: string | null;
   /**
    * Address for this preview. Send one of `address_id`, `customer_ip_address`, or the `address`
    * object when previewing.
    */
-  address: AddressPreview | null;
+  address?: AddressPreview | null;
   /**
    * IP address for this transaction preview. Send one of `address_id`, `customer_ip_address`, or
    * the `address` object when previewing.
    */
-  customerIpAddress: string | null;
+  customerIpAddress?: string | null;
   details: PricePreviewDetails;
   availablePaymentMethods: PaymentMethodType1[];
 };
 
 export const transactionPricingPreviewResponseSchema: Schema<TransactionPricingPreviewResponse> =
   s.object<TransactionPricingPreviewResponse>({
-    customerId: s.nullable(s.string()),
-    addressId: s.nullable(s.string()),
-    businessId: s.nullable(s.string()),
-    currencyCode: s.nullable(s.lazy(() => currencyCodeSchema)),
-    discountId: s.nullable(s.string()),
-    address: s.nullable(s.lazy(() => addressPreviewSchema)),
-    customerIpAddress: s.nullable(s.string()),
+    customerId: s.optionalNullable(s.string()),
+    addressId: s.optionalNullable(s.string()),
+    businessId: s.optionalNullable(s.string()),
+    currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
+    discountId: s.optionalNullable(s.string()),
+    address: s.optionalNullable(s.lazy(() => addressPreviewSchema)),
+    customerIpAddress: s.optionalNullable(s.string()),
     details: pricePreviewDetailsSchema,
     availablePaymentMethods: s.array(s.lazy(() => paymentMethodType1Schema)),
     _keysMap: {

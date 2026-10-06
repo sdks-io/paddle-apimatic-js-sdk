@@ -23,15 +23,13 @@ type SdkClientOptions = ServerOptions & {
 
 type ServerOptions =
   | {
-      readonly serverEnvironment?: typeof ServerEnvironment.Production;
-      /** Sandbox */
+      readonly serverEnvironment?: typeof ServerEnvironment.Sandbox;
       readonly serverOptions?: {
         baseUrl?: string;
       };
     }
   | {
-      readonly serverEnvironment: typeof ServerEnvironment.Environment2;
-      /** Sandbox */
+      readonly serverEnvironment: typeof ServerEnvironment.Production;
       readonly serverOptions?: {
         baseUrl?: string;
       };

@@ -16,9 +16,9 @@ export type SimulationEvent = {
    */
   payload: Record<string, unknown>;
   /** Information about the request. Sent by Paddle as part of the simulation. */
-  request: SimulationEventRequest | null;
+  request?: SimulationEventRequest | null;
   /** Information about the response. Sent by the responding server for the notification setting. */
-  response: SimulationEventResponse | null;
+  response?: SimulationEventResponse | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -28,8 +28,8 @@ export const simulationEventSchema: Schema<SimulationEvent> = s.object<Simulatio
   status: simulationEventStatusSchema,
   eventType: eventTypeNameSchema,
   payload: s.record(s.string(), s.unknown()),
-  request: s.nullable(s.lazy(() => simulationEventRequestSchema)),
-  response: s.nullable(s.lazy(() => simulationEventResponseSchema)),
+  request: s.optionalNullable(s.lazy(() => simulationEventRequestSchema)),
+  response: s.optionalNullable(s.lazy(() => simulationEventResponseSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

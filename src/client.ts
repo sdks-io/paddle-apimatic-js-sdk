@@ -81,9 +81,9 @@ export class PaddleApiClient {
     this.#rawClient = new RawClient({
       ...buildCoreClientOptions(options),
       defaultHeaders: [
-        { name: "User-Agent", value: "PaddleApiClient/1.0.0 TypeScript", schema: s.string() },
+        { name: "User-Agent", value: "PaddleApiClient/0.0.3 TypeScript", schema: s.string() },
         { name: "X-APIMatic-Lang", value: "TypeScript", schema: s.string() },
-        { name: "X-APIMatic-Package-Version", value: "1.0.0", schema: s.string() },
+        { name: "X-APIMatic-Package-Version", value: "0.0.3", schema: s.string() },
         { name: "X-APIMatic-Gen-Version", value: "4.0.0", schema: s.string() },
         { name: "X-APIMatic-OS", value: host.operatingSystem(), schema: s.optional(s.string()) },
         { name: "X-APIMatic-Runtime", value: host.runtimeDescription(), schema: s.optional(s.string()) },

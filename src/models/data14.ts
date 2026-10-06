@@ -13,7 +13,7 @@ export type Data14 = {
   token: string;
   /** Short name of this client-side token. Typically unique and human-identifiable. */
   name: string;
-  description: string | null;
+  description?: string | null;
   /** Status of this client-side token. */
   status: ClientTokenStatus;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
@@ -21,18 +21,18 @@ export type Data14 = {
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
   updatedAt: Date;
   /** RFC 3339 datetime string of when this client-side token was revoked. `null` if not revoked. */
-  revokedAt: Date | null;
+  revokedAt?: Date | null;
 };
 
 export const data14Schema: Schema<Data14> = s.object<Data14>({
   id: s.string(),
   token: s.string(),
   name: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   status: clientTokenStatusSchema,
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  revokedAt: s.nullable(s.dateTime()),
+  revokedAt: s.optionalNullable(s.dateTime()),
   _keysMap: {
     createdAt: "created_at",
     updatedAt: "updated_at",

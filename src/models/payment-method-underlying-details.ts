@@ -11,12 +11,12 @@ import {
  * instead.
  */
 export type PaymentMethodUnderlyingDetails = {
-  koreaLocal: KoreanMarketUnderlyingDetails | null;
+  koreaLocal?: KoreanMarketUnderlyingDetails | null;
 };
 
 export const paymentMethodUnderlyingDetailsSchema: Schema<PaymentMethodUnderlyingDetails> =
   s.object<PaymentMethodUnderlyingDetails>({
-    koreaLocal: s.nullable(s.lazy(() => koreanMarketUnderlyingDetailsSchema)),
+    koreaLocal: s.optionalNullable(s.lazy(() => koreanMarketUnderlyingDetailsSchema)),
     _keysMap: {
       koreaLocal: "korea_local",
     },

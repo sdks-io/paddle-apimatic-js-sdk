@@ -12,11 +12,11 @@ export type ClientSideToken = {
   token: string;
   /** Short name of this client-side token. Typically unique and human-identifiable. */
   name: string;
-  description: string | null;
+  description?: string | null;
   /** @default ClientTokenStatus.Active */
   status?: ClientTokenStatus;
   /** RFC 3339 datetime string of when this client-side token was revoked. `null` if not revoked. */
-  revokedAt: Date | null;
+  revokedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -25,9 +25,9 @@ export const clientSideTokenSchema: Schema<ClientSideToken> = s.object<ClientSid
   id: s.string(),
   token: s.string(),
   name: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   status: s.defaulted(clientTokenStatusSchema, ClientTokenStatus.Active),
-  revokedAt: s.nullable(s.dateTime()),
+  revokedAt: s.optionalNullable(s.dateTime()),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

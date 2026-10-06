@@ -10,12 +10,12 @@ export type Canceled = {
   /** What happened on the subscription. @default "subscription_canceled" */
   action?: "subscription_canceled";
   /** Whether the subscription was canceled immediately, or scheduled to cancel. */
-  effectiveFrom: SubscriptionHistoryCanceledEffectiveFrom | null;
+  effectiveFrom?: SubscriptionHistoryCanceledEffectiveFrom | null;
 };
 
 export const canceledSchema: Schema<Canceled> = s.object<Canceled>({
   action: s.defaulted(s.literal("subscription_canceled"), "subscription_canceled"),
-  effectiveFrom: s.nullable(s.lazy(() => subscriptionHistoryCanceledEffectiveFromSchema)),
+  effectiveFrom: s.optionalNullable(s.lazy(() => subscriptionHistoryCanceledEffectiveFromSchema)),
   _keysMap: {
     effectiveFrom: "effective_from",
   },

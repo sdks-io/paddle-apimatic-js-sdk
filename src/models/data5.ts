@@ -20,7 +20,7 @@ export type Data5 = {
   source?: "github";
   /** Reference or identifier for this exposure. */
   reference: string;
-  description: string | null;
+  description?: string | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
 };
@@ -32,7 +32,7 @@ export const data5Schema: Schema<Data5> = s.object<Data5>({
   actionTaken: apiKeyExposureActionTakenSchema,
   source: s.defaulted(s.literal("github"), "github"),
   reference: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   createdAt: s.dateTime(),
   _keysMap: {
     apiKeyId: "api_key_id",

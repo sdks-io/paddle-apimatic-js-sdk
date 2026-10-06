@@ -20,13 +20,13 @@ export type NextTransaction = {
    */
   details: TransactionDetailsPreview;
   /** Preview of adjustments for the next transaction. */
-  adjustments: AdjustmentPreview[];
+  adjustments?: AdjustmentPreview[];
 };
 
 export const nextTransactionSchema: Schema<NextTransaction> = s.object<NextTransaction>({
   billingPeriod: timePeriodSchema,
   details: transactionDetailsPreviewSchema,
-  adjustments: s.array(s.lazy(() => adjustmentPreviewSchema)),
+  adjustments: s.optional(s.array(s.lazy(() => adjustmentPreviewSchema))),
   _keysMap: {
     billingPeriod: "billing_period",
   },

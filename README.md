@@ -39,7 +39,7 @@ Create one client and reuse it. Configure its behaviour through [ClientOptions](
 import { PaddleApiClient, ServerEnvironment } from "paddle-apimatic-sdk";
 
 const client = new PaddleApiClient({
-  serverEnvironment: ServerEnvironment.Production,
+  serverEnvironment: ServerEnvironment.Sandbox,
   bearerAuth: "YOUR_BEARER_TOKEN",
 });
 ```
@@ -54,7 +54,7 @@ The package ships both dialects from a single entry, so `require` works with ful
 import sdk = require("paddle-apimatic-sdk");
 
 const client = new sdk.PaddleApiClient({
-  serverEnvironment: sdk.ServerEnvironment.Production,
+  serverEnvironment: sdk.ServerEnvironment.Sandbox,
   bearerAuth: "YOUR_BEARER_TOKEN",
 });
 ```

@@ -15,24 +15,24 @@ export type PricePreview = {
    * Unique Paddle ID for this price, prefixed with `pri_`. The value is null for custom prices
    * being previewed.
    */
-  id: string | null;
+  id?: string | null;
   /**
    * Paddle ID for the product that this price is for, prefixed with `pro_`. The value is null for
    * custom products being previewed.
    */
-  productId: string | null;
+  productId?: string | null;
   /** Internal description for this price, not shown to customers. Typically notes for your team. */
   description: string;
   /** @default CatalogType.Standard */
   type?: CatalogType;
-  name: string | null;
+  name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
-  billingCycle: Duration | null;
+  billingCycle?: Duration | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
-  trialPeriod: Duration | null;
+  trialPeriod?: Duration | null;
   /** @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
@@ -53,28 +53,28 @@ export type PricePreview = {
   /** @default Status.Active */
   status?: Status;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   createdAt: Date;
   updatedAt: Date;
 };
 
 export const pricePreviewSchema: Schema<PricePreview> = s.object<PricePreview>({
-  id: s.nullable(s.string()),
-  productId: s.nullable(s.string()),
+  id: s.optionalNullable(s.string()),
+  productId: s.optionalNullable(s.string()),
   description: s.string(),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
-  name: s.nullable(s.string()),
-  billingCycle: s.nullable(s.lazy(() => durationSchema)),
-  trialPeriod: s.nullable(s.lazy(() => durationSchema)),
+  name: s.optionalNullable(s.string()),
+  billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
+  trialPeriod: s.optionalNullable(s.lazy(() => durationSchema)),
   taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
   unitPrice: moneySchema,
   unitPriceOverrides: s.array(s.lazy(() => unitPriceOverrideSchema)),
   quantity: priceQuantitySchema,
   status: s.defaulted(statusSchema, Status.Active),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

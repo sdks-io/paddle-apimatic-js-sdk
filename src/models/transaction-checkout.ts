@@ -11,9 +11,9 @@ export type TransactionCheckout = {
    * Paddle Checkout URL for this transaction, composed of the URL passed in the request or your
    * default payment URL + `?_ptxn=` and the Paddle ID for this transaction.
    */
-  url: string | null;
+  url?: string | null;
 };
 
 export const transactionCheckoutSchema: Schema<TransactionCheckout> = s.object<TransactionCheckout>({
-  url: s.nullable(s.string()),
+  url: s.optionalNullable(s.string()),
 });

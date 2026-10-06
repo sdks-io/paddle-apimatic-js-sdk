@@ -28,14 +28,14 @@ export type Price1 = {
    * @default CatalogType.Standard
    */
   type?: CatalogType;
-  name: string | null;
+  name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
-  billingCycle: Duration1 | null;
+  billingCycle?: Duration1 | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
-  trialPeriod: PriceTrialDuration3 | null;
+  trialPeriod?: PriceTrialDuration3 | null;
   /** How tax is calculated for this price. @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
@@ -56,9 +56,9 @@ export type Price1 = {
   /** Whether this entity can be used in Paddle. @default Status.Active */
   status?: Status;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -70,16 +70,16 @@ export const price1Schema: Schema<Price1> = s.object<Price1>({
   productId: s.string(),
   description: s.string(),
   type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
-  name: s.nullable(s.string()),
-  billingCycle: s.nullable(s.lazy(() => duration1Schema)),
-  trialPeriod: s.nullable(s.lazy(() => priceTrialDuration3Schema)),
+  name: s.optionalNullable(s.string()),
+  billingCycle: s.optionalNullable(s.lazy(() => duration1Schema)),
+  trialPeriod: s.optionalNullable(s.lazy(() => priceTrialDuration3Schema)),
   taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
   unitPrice: money1Schema,
   unitPriceOverrides: s.array(s.lazy(() => unitPriceOverride1Schema)),
   quantity: priceQuantity1Schema,
   status: s.defaulted(statusSchema, Status.Active),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

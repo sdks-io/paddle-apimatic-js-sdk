@@ -13,7 +13,7 @@ export type Data6 = {
    * Short description of this API key. Typically gives details about what the API key is used for
    * and where it's used.
    */
-  description: string | null;
+  description?: string | null;
   /** An obfuscated version of this API key, prefixed with `pdl_` and containing `_apikey_ `. */
   key: string;
   /** Status of this API key. */
@@ -21,14 +21,14 @@ export type Data6 = {
   /** Permissions assigned to this API key. Determines what actions the API key can perform. */
   permissions: Permission[];
   /** RFC 3339 datetime string of when this API key was first exposed. `null` if never exposed. */
-  exposedAt: Date | null;
+  exposedAt?: Date | null;
   /** RFC 3339 datetime string of when this API key expires. */
-  expiresAt: Date | null;
+  expiresAt?: Date | null;
   /**
    * RFC 3339 datetime string of when this API key was last used (accurate to within 1 hour). `null`
    * if never used.
    */
-  lastUsedAt: Date | null;
+  lastUsedAt?: Date | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -38,13 +38,13 @@ export type Data6 = {
 export const data6Schema: Schema<Data6> = s.object<Data6>({
   id: s.string(),
   name: s.string(),
-  description: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
   key: s.string(),
   status: apiKeyStatusSchema,
   permissions: s.array(s.lazy(() => permissionSchema)),
-  exposedAt: s.nullable(s.dateTime()),
-  expiresAt: s.nullable(s.dateTime()),
-  lastUsedAt: s.nullable(s.dateTime()),
+  exposedAt: s.optionalNullable(s.dateTime()),
+  expiresAt: s.optionalNullable(s.dateTime()),
+  lastUsedAt: s.optionalNullable(s.dateTime()),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

@@ -31,7 +31,7 @@ export type ItemRemoved = {
    * Paddle ID of the transaction created as a result of the item being removed, prefixed with
    * `txn_`. `null` if no transaction was created.
    */
-  transactionId: string | null;
+  transactionId?: string | null;
 };
 
 export const itemRemovedSchema: Schema<ItemRemoved> = s.object<ItemRemoved>({
@@ -41,7 +41,7 @@ export const itemRemovedSchema: Schema<ItemRemoved> = s.object<ItemRemoved>({
   updateSummary: itemUpdateSummarySchema,
   prorationBillingMode: prorationBillingModeSchema,
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: s.nullable(s.string()),
+  transactionId: s.optionalNullable(s.string()),
   _keysMap: {
     updateSummary: "update_summary",
     prorationBillingMode: "proration_billing_mode",

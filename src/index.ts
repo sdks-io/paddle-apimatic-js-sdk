@@ -47,7 +47,6 @@ export {
   type AddressImportedRequest,
 } from "./models/address-imported-request.js";
 export { addressPreviewSchema, type AddressPreview } from "./models/address-preview.js";
-export { addressPreview1Schema, type AddressPreview1 } from "./models/address-preview1.js";
 export { addressUpdateSchema, type AddressUpdate } from "./models/address-update.js";
 export { addressUpdatedRequestSchema, type AddressUpdatedRequest } from "./models/address-updated-request.js";
 export { adjustmentSchema, type Adjustment } from "./models/adjustment.js";

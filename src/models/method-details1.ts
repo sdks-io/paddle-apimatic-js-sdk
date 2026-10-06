@@ -16,24 +16,24 @@ export type MethodDetails1 = {
   /**
    * @deprecated
    */
-  underlyingDetails: PaymentMethodUnderlyingDetails1 | null;
+  underlyingDetails?: PaymentMethodUnderlyingDetails1 | null;
   /**
    * Information about the Korean credit or debit card used to pay. `null` unless `type` is
    * `south_korea_local_card`.
    */
-  southKoreaLocalCard: SouthKoreaLocalCard | null;
+  southKoreaLocalCard?: SouthKoreaLocalCard | null;
   /** Information about the credit or debit card used to pay. `null` unless `type` is `card`. */
-  card: Card | null;
+  card?: Card | null;
   /** Information about the PayPal account used to pay. `null` unless `type` is `paypal`. */
-  paypal: PayPalTransaction | null;
+  paypal?: PayPalTransaction | null;
 };
 
 export const methodDetails1Schema: Schema<MethodDetails1> = s.object<MethodDetails1>({
   type: paymentMethodTypeSchema,
-  underlyingDetails: s.nullable(s.lazy(() => paymentMethodUnderlyingDetails1Schema)),
-  southKoreaLocalCard: s.nullable(s.lazy(() => southKoreaLocalCardSchema)),
-  card: s.nullable(s.lazy(() => cardSchema)),
-  paypal: s.nullable(s.lazy(() => payPalTransactionSchema)),
+  underlyingDetails: s.optionalNullable(s.lazy(() => paymentMethodUnderlyingDetails1Schema)),
+  southKoreaLocalCard: s.optionalNullable(s.lazy(() => southKoreaLocalCardSchema)),
+  card: s.optionalNullable(s.lazy(() => cardSchema)),
+  paypal: s.optionalNullable(s.lazy(() => payPalTransactionSchema)),
   _keysMap: {
     underlyingDetails: "underlying_details",
     southKoreaLocalCard: "south_korea_local_card",

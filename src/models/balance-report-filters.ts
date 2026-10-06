@@ -9,7 +9,7 @@ export type BalanceReportFilters = {
   /** Field name to filter by. */
   name: BalanceReportFilterName;
   /** Operator to use when filtering. Valid when filtering by `updated_at`, `null` otherwise. */
-  operator: FilterOperator | null;
+  operator?: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -19,6 +19,6 @@ export type BalanceReportFilters = {
 
 export const balanceReportFiltersSchema: Schema<BalanceReportFilters> = s.object<BalanceReportFilters>({
   name: balanceReportFilterNameSchema,
-  operator: s.nullable(s.lazy(() => filterOperatorSchema)),
+  operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
   value: value1Schema,
 });

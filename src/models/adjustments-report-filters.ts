@@ -16,7 +16,7 @@ export type AdjustmentsReportFilters = {
   /** Field name to filter by. */
   name: ReportFilterAdjustmentsName;
   /** Operator to use when filtering. Valid when filtering by `updated_at`, `null` otherwise. */
-  operator: FilterOperator | null;
+  operator?: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -27,6 +27,6 @@ export type AdjustmentsReportFilters = {
 export const adjustmentsReportFiltersSchema: Schema<AdjustmentsReportFilters> =
   s.object<AdjustmentsReportFilters>({
     name: reportFilterAdjustmentsNameSchema,
-    operator: s.nullable(s.lazy(() => filterOperatorSchema)),
+    operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
     value: valueSchema,
   });

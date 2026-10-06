@@ -14,7 +14,7 @@ export type Data20 = {
    * shown to customers.
    */
   name: string;
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -25,7 +25,7 @@ export const data20Schema: Schema<Data20> = s.object<Data20>({
   id: s.string(),
   status: statusSchema,
   name: s.string(),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

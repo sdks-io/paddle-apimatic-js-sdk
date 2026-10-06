@@ -25,17 +25,17 @@ export type Scenario = {
    */
   type: SimulationScenarioType;
   /** Simulation payload. `null` for scenarios. */
-  payload: string | null;
+  payload?: string | null;
   /**
    * Configuration for this scenario simulation. Determines which granular flow is simulated and
    * what entities are used to populate webhook payloads with.
    */
-  config: SimulationScenarioConfig | null;
+  config?: SimulationScenarioConfig | null;
   /**
    * RFC 3339 datetime string of when this simulation was last run. `null` until run. Set
    * automatically by Paddle.
    */
-  lastRunAt: Date | null;
+  lastRunAt?: Date | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -48,9 +48,9 @@ export const scenarioSchema: Schema<Scenario> = s.object<Scenario>({
   notificationSettingId: s.string(),
   name: s.string(),
   type: simulationScenarioTypeSchema,
-  payload: s.nullable(s.string()),
-  config: s.nullable(s.lazy(() => simulationScenarioConfigSchema)),
-  lastRunAt: s.nullable(s.dateTime()),
+  payload: s.optionalNullable(s.string()),
+  config: s.optionalNullable(s.lazy(() => simulationScenarioConfigSchema)),
+  lastRunAt: s.optionalNullable(s.dateTime()),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

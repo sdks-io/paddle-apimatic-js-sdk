@@ -23,7 +23,7 @@ export type PaymentOutcomeOptions = {
    * recovery attempts are exhausted. Only applies when `payment_outcome` is `failed`. If omitted,
    * defaults to `null`.
    */
-  dunningExhaustedAction: SimulationConfigOptionsPaymentDunningExhaustedAction | null;
+  dunningExhaustedAction?: SimulationConfigOptionsPaymentDunningExhaustedAction | null;
 };
 
 export const paymentOutcomeOptionsSchema: Schema<PaymentOutcomeOptions> = s.object<PaymentOutcomeOptions>({
@@ -31,7 +31,7 @@ export const paymentOutcomeOptionsSchema: Schema<PaymentOutcomeOptions> = s.obje
     simulationConfigOptionsPaymentPaymentOutcomeSchema,
     SimulationConfigOptionsPaymentPaymentOutcome.Success,
   ),
-  dunningExhaustedAction: s.nullable(
+  dunningExhaustedAction: s.optionalNullable(
     s.lazy(() => simulationConfigOptionsPaymentDunningExhaustedActionSchema),
   ),
   _keysMap: {

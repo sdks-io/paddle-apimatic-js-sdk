@@ -34,7 +34,7 @@ export type Data35 = {
   customerId: string;
   /** Unique Paddle ID for this address entity, prefixed with `add_`. */
   addressId: string;
-  businessId: string | null;
+  businessId?: string | null;
   /** Supported three-letter ISO 4217 currency code. */
   currencyCode: CurrencyCode;
   /** RFC 3339 datetime string. */
@@ -45,48 +45,48 @@ export type Data35 = {
    * RFC 3339 datetime string of when this subscription started. This may be different from
    * `first_billed_at` if the subscription started in trial.
    */
-  startedAt: Date | null;
+  startedAt?: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was first billed. This may be different from
    * `started_at` if the subscription started in trial.
    */
-  firstBilledAt: Date | null;
+  firstBilledAt?: Date | null;
   /** RFC 3339 datetime string of when this subscription is next scheduled to be billed. */
-  nextBilledAt: Date | null;
+  nextBilledAt?: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was paused. Set automatically by Paddle when
    * the pause subscription operation is used. `null` if not paused.
    */
-  pausedAt: Date | null;
+  pausedAt?: Date | null;
   /**
    * RFC 3339 datetime string of when this subscription was canceled. Set automatically by Paddle
    * when the cancel subscription operation is used. `null` if not canceled.
    */
-  canceledAt: Date | null;
-  discount: SubscriptionDiscountTimePeriod | null;
+  canceledAt?: Date | null;
+  discount?: SubscriptionDiscountTimePeriod | null;
   /**
    * How payment is collected for transactions created for this subscription. `automatic` for
    * checkout, `manual` for invoices.
    */
-  collectionMode: CollectionMode | null;
-  billingDetails: BillingDetails2 | null;
+  collectionMode?: CollectionMode | null;
+  billingDetails?: BillingDetails2 | null;
   /**
    * Current billing period for this subscription. Set automatically by Paddle based on the billing
    * cycle. `null` for `paused` and `canceled` subscriptions.
    */
-  currentBillingPeriod: TimePeriod | null;
+  currentBillingPeriod?: TimePeriod | null;
   /**
    * How often this subscription renews. Set automatically by Paddle based on the prices on this
    * subscription.
    */
   billingCycle: Duration5;
-  scheduledChange: SubscriptionScheduledChange1 | null;
+  scheduledChange?: SubscriptionScheduledChange1 | null;
   items: SubscriptionItem1[];
   /** List of active consent requirements for the subscription's current billing period. */
-  consentRequirements: SubscriptionConsentRequirement1[] | null;
+  consentRequirements?: SubscriptionConsentRequirement1[] | null;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
-  importMeta: ImportMeta | null;
+  customData?: Record<string, unknown> | null;
+  importMeta?: ImportMeta | null;
 };
 
 export const data35Schema: Schema<Data35> = s.object<Data35>({
@@ -94,25 +94,25 @@ export const data35Schema: Schema<Data35> = s.object<Data35>({
   status: subscriptionStatusSchema,
   customerId: s.string(),
   addressId: s.string(),
-  businessId: s.nullable(s.string()),
+  businessId: s.optionalNullable(s.string()),
   currencyCode: currencyCodeSchema,
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  startedAt: s.nullable(s.dateTime()),
-  firstBilledAt: s.nullable(s.dateTime()),
-  nextBilledAt: s.nullable(s.dateTime()),
-  pausedAt: s.nullable(s.dateTime()),
-  canceledAt: s.nullable(s.dateTime()),
-  discount: s.nullable(s.lazy(() => subscriptionDiscountTimePeriodSchema)),
-  collectionMode: s.nullable(s.lazy(() => collectionModeSchema)),
-  billingDetails: s.nullable(s.lazy(() => billingDetails2Schema)),
-  currentBillingPeriod: s.nullable(s.lazy(() => timePeriodSchema)),
+  startedAt: s.optionalNullable(s.dateTime()),
+  firstBilledAt: s.optionalNullable(s.dateTime()),
+  nextBilledAt: s.optionalNullable(s.dateTime()),
+  pausedAt: s.optionalNullable(s.dateTime()),
+  canceledAt: s.optionalNullable(s.dateTime()),
+  discount: s.optionalNullable(s.lazy(() => subscriptionDiscountTimePeriodSchema)),
+  collectionMode: s.optionalNullable(s.lazy(() => collectionModeSchema)),
+  billingDetails: s.optionalNullable(s.lazy(() => billingDetails2Schema)),
+  currentBillingPeriod: s.optionalNullable(s.lazy(() => timePeriodSchema)),
   billingCycle: duration5Schema,
-  scheduledChange: s.nullable(s.lazy(() => subscriptionScheduledChange1Schema)),
+  scheduledChange: s.optionalNullable(s.lazy(() => subscriptionScheduledChange1Schema)),
   items: s.array(s.lazy(() => subscriptionItem1Schema)),
-  consentRequirements: s.nullable(s.array(s.lazy(() => subscriptionConsentRequirement1Schema))),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  consentRequirements: s.optionalNullable(s.array(s.lazy(() => subscriptionConsentRequirement1Schema))),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   _keysMap: {
     customerId: "customer_id",
     addressId: "address_id",

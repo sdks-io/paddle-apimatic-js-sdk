@@ -10,10 +10,10 @@ export type Actor = {
    * The ID of the actor in relation to the `type`. `null` where the type of actor doesn't have an
    * ID.
    */
-  id: string | null;
+  id?: string | null;
 };
 
 export const actorSchema: Schema<Actor> = s.object<Actor>({
   type: actorTypeSchema,
-  id: s.nullable(s.string()),
+  id: s.optionalNullable(s.string()),
 });

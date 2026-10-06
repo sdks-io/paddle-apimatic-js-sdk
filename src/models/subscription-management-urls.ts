@@ -14,7 +14,7 @@ export type SubscriptionManagementUrls = {
    * form pre-opened. Use as part of workflows to let customers update their payment details. `null`
    * for manually-collected subscriptions.
    */
-  updatePaymentMethod: string | null;
+  updatePaymentMethod?: string | null;
   /**
    * Link to the page for this subscription in the customer portal with the subscription
    * cancellation form pre-opened. Use as part of cancel subscription workflows.
@@ -24,7 +24,7 @@ export type SubscriptionManagementUrls = {
 
 export const subscriptionManagementUrlsSchema: Schema<SubscriptionManagementUrls> =
   s.object<SubscriptionManagementUrls>({
-    updatePaymentMethod: s.nullable(s.string()),
+    updatePaymentMethod: s.optionalNullable(s.string()),
     cancel: s.string(),
     _keysMap: {
       updatePaymentMethod: "update_payment_method",

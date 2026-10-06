@@ -15,7 +15,7 @@ export type ReportFilterCheckouts = {
    * Operator to use when filtering. Valid when filtering by `checkout_created_at` (must be `gte` or
    * `lt`), `null` otherwise.
    */
-  operator: FilterOperator | null;
+  operator?: FilterOperator | null;
   /**
    * Value to filter by. Check the allowed values descriptions for the `name` field to see valid
    * values for a field.
@@ -25,6 +25,6 @@ export type ReportFilterCheckouts = {
 
 export const reportFilterCheckoutsSchema: Schema<ReportFilterCheckouts> = s.object<ReportFilterCheckouts>({
   name: checkoutsReportFilterNameSchema,
-  operator: s.nullable(s.lazy(() => filterOperatorSchema)),
+  operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
   value: value1Schema,
 });

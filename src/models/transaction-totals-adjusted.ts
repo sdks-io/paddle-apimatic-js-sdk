@@ -23,14 +23,14 @@ export type TransactionTotalsAdjusted = {
    * Total fee taken by Paddle for this transaction. `null` until the transaction is `completed` and
    * the fee is processed.
    */
-  fee: string | null;
+  fee?: string | null;
   /** Total Paddle fees retained for this adjustment. */
   retainedFee: string;
   /**
    * Total earnings for this transaction. This is the total minus the Paddle fee. `null` until the
    * transaction is `completed` and the fee is processed.
    */
-  earnings: string | null;
+  earnings?: string | null;
   /** Three-letter ISO 4217 currency code of the currency used for this transaction. */
   currencyCode: CurrencyCode;
 };
@@ -42,9 +42,9 @@ export const transactionTotalsAdjustedSchema: Schema<TransactionTotalsAdjusted> 
     total: s.string(),
     grandTotal: s.string(),
     grandTotalTax: s.string(),
-    fee: s.nullable(s.string()),
+    fee: s.optionalNullable(s.string()),
     retainedFee: s.string(),
-    earnings: s.nullable(s.string()),
+    earnings: s.optionalNullable(s.string()),
     currencyCode: currencyCodeSchema,
     _keysMap: {
       grandTotal: "grand_total",

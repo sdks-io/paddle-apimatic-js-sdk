@@ -18,19 +18,19 @@ export type Data29 = {
   productId: string;
   /** Internal description for this price, not shown to customers. Typically notes for your team. */
   description: string;
-  type: CatalogType | null;
+  type?: CatalogType | null;
   /**
    * Name of this price, shown to customers at checkout and on invoices. Typically describes how
    * often the related product bills.
    */
-  name: string | null;
+  name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
-  billingCycle: Duration1 | null;
+  billingCycle?: Duration1 | null;
   /**
    * Trial period for the product related to this price. The billing cycle begins once the trial
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
-  trialPeriod: PriceTrialDuration3 | null;
+  trialPeriod?: PriceTrialDuration3 | null;
   /** How tax is calculated for this price. */
   taxMode: TaxMode;
   /**
@@ -51,30 +51,30 @@ export type Data29 = {
   /** Whether this entity can be used in Paddle. */
   status: Status;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Import information for this entity. `null` if this entity is not imported. */
-  importMeta: ImportMeta | null;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  importMeta?: ImportMeta | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 };
 
 export const data29Schema: Schema<Data29> = s.object<Data29>({
   id: s.string(),
   productId: s.string(),
   description: s.string(),
-  type: s.nullable(s.lazy(() => catalogTypeSchema)),
-  name: s.nullable(s.string()),
-  billingCycle: s.nullable(s.lazy(() => duration1Schema)),
-  trialPeriod: s.nullable(s.lazy(() => priceTrialDuration3Schema)),
+  type: s.optionalNullable(s.lazy(() => catalogTypeSchema)),
+  name: s.optionalNullable(s.string()),
+  billingCycle: s.optionalNullable(s.lazy(() => duration1Schema)),
+  trialPeriod: s.optionalNullable(s.lazy(() => priceTrialDuration3Schema)),
   taxMode: taxModeSchema,
   unitPrice: money1Schema,
   unitPriceOverrides: s.array(s.lazy(() => unitPriceOverride1Schema)),
   quantity: priceQuantity1Schema,
   status: statusSchema,
-  customData: s.nullable(s.record(s.string(), s.unknown())),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
-  createdAt: s.nullable(s.dateTime()),
-  updatedAt: s.nullable(s.dateTime()),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
+  createdAt: s.optionalNullable(s.dateTime()),
+  updatedAt: s.optionalNullable(s.dateTime()),
   _keysMap: {
     productId: "product_id",
     billingCycle: "billing_cycle",

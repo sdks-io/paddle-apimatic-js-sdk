@@ -16,14 +16,14 @@ export type SubscriptionScheduledChange1 = {
    * RFC 3339 datetime string of when a paused subscription should resume. Only used for `pause`
    * scheduled changes.
    */
-  resumeAt: Date | null;
+  resumeAt?: Date | null;
 };
 
 export const subscriptionScheduledChange1Schema: Schema<SubscriptionScheduledChange1> =
   s.object<SubscriptionScheduledChange1>({
     action: scheduledChangeActionSchema,
     effectiveAt: s.dateTime(),
-    resumeAt: s.nullable(s.dateTime()),
+    resumeAt: s.optionalNullable(s.dateTime()),
     _keysMap: {
       effectiveAt: "effective_at",
       resumeAt: "resume_at",

@@ -14,14 +14,14 @@ export type TransactionItemPreview = {
    */
   includeInTotals?: boolean;
   /** How proration was calculated for this item. `null` for transaction previews. */
-  proration: Proration | null;
+  proration?: Proration | null;
   price: PricePreview;
 };
 
 export const transactionItemPreviewSchema: Schema<TransactionItemPreview> = s.object<TransactionItemPreview>({
   quantity: s.int(),
   includeInTotals: s.defaulted(s.boolean(), true),
-  proration: s.nullable(s.lazy(() => prorationSchema)),
+  proration: s.optionalNullable(s.lazy(() => prorationSchema)),
   price: pricePreviewSchema,
   _keysMap: {
     includeInTotals: "include_in_totals",

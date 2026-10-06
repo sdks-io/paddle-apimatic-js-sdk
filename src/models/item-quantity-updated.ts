@@ -29,7 +29,7 @@ export type ItemQuantityUpdated = {
    * Paddle ID of the transaction created as a result of the quantity change, prefixed with `txn_`.
    * `null` if no transaction was created.
    */
-  transactionId: string | null;
+  transactionId?: string | null;
 };
 
 export const itemQuantityUpdatedSchema: Schema<ItemQuantityUpdated> = s.object<ItemQuantityUpdated>({
@@ -39,7 +39,7 @@ export const itemQuantityUpdatedSchema: Schema<ItemQuantityUpdated> = s.object<I
   updateSummary: itemUpdateSummarySchema,
   prorationBillingMode: prorationBillingModeSchema,
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: s.nullable(s.string()),
+  transactionId: s.optionalNullable(s.string()),
   _keysMap: {
     updateSummary: "update_summary",
     prorationBillingMode: "proration_billing_mode",

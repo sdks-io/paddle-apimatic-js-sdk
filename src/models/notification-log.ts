@@ -7,7 +7,7 @@ export type NotificationLog = {
   /** HTTP code sent by the responding server. */
   responseCode: number;
   /** Content-Type sent by the responding server. */
-  responseContentType: string | null;
+  responseContentType?: string | null;
   /** Response body sent by the responding server. Typically empty for success responses. */
   responseBody: string;
   /** RFC 3339 datetime string of when Paddle attempted to deliver the related notification. */
@@ -17,7 +17,7 @@ export type NotificationLog = {
 export const notificationLogSchema: Schema<NotificationLog> = s.object<NotificationLog>({
   id: s.string(),
   responseCode: s.int(),
-  responseContentType: s.nullable(s.string()),
+  responseContentType: s.optionalNullable(s.string()),
   responseBody: s.string(),
   attemptedAt: s.dateTime(),
   _keysMap: {

@@ -7,12 +7,12 @@ export type SimulationSubscriptionPauseConfigEntities = {
    * Paddle ID of a subscription to simulate as paused. Adds details of that subscription to webhook
    * payloads.
    */
-  subscriptionId: string | null;
+  subscriptionId?: string | null;
 };
 
 export const simulationSubscriptionPauseConfigEntitiesSchema: Schema<SimulationSubscriptionPauseConfigEntities> =
   s.object<SimulationSubscriptionPauseConfigEntities>({
-    subscriptionId: s.nullable(s.string()),
+    subscriptionId: s.optionalNullable(s.string()),
     _keysMap: {
       subscriptionId: "subscription_id",
     },

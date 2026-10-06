@@ -14,7 +14,7 @@ export type TransactionLineItemPreview = {
    * Paddle ID for the price related to this transaction line item, prefixed with `pri_`. The value
    * is null for custom prices being previewed.
    */
-  priceId: string | null;
+  priceId?: string | null;
   /** Quantity of this transaction line item. */
   quantity: number;
   /** Rate used to calculate tax for this transaction line item. */
@@ -28,18 +28,18 @@ export type TransactionLineItemPreview = {
   /** Related product entity for this transaction line item price. */
   product: ProductPreview;
   /** How proration was calculated for this item. */
-  proration: Proration | null;
+  proration?: Proration | null;
 };
 
 export const transactionLineItemPreviewSchema: Schema<TransactionLineItemPreview> =
   s.object<TransactionLineItemPreview>({
-    priceId: s.nullable(s.string()),
+    priceId: s.optionalNullable(s.string()),
     quantity: s.int(),
     taxRate: s.string(),
     unitTotals: totalsSchema,
     totals: totalsSchema,
     product: productPreviewSchema,
-    proration: s.nullable(s.lazy(() => prorationSchema)),
+    proration: s.optionalNullable(s.lazy(() => prorationSchema)),
     _keysMap: {
       priceId: "price_id",
       taxRate: "tax_rate",

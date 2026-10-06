@@ -12,7 +12,7 @@ export type ProductPricesReportFilters = {
   /** Field name to filter by. */
   name: ProductPricesReportFilterName;
   /** Operator to use when filtering. Valid when filtering by `updated_at`, `null` otherwise. */
-  operator: FilterOperator | null;
+  operator?: FilterOperator | null;
   /** Value to filter by. */
   value: Value2;
 };
@@ -20,6 +20,6 @@ export type ProductPricesReportFilters = {
 export const productPricesReportFiltersSchema: Schema<ProductPricesReportFilters> =
   s.object<ProductPricesReportFilters>({
     name: productPricesReportFilterNameSchema,
-    operator: s.nullable(s.lazy(() => filterOperatorSchema)),
+    operator: s.optionalNullable(s.lazy(() => filterOperatorSchema)),
     value: value2Schema,
   });

@@ -18,14 +18,14 @@ export type SingleEvent = {
   /** Single event sent for this simulation, in the format `entity.event_type`. */
   type: EventTypeName;
   /** Simulation payload. */
-  payload: Record<string, unknown> | null;
+  payload?: Record<string, unknown> | null;
   /** Configuration for scenario simulations. `null` for single events. */
-  config: string | null;
+  config?: string | null;
   /**
    * RFC 3339 datetime string of when this simulation was last run. `null` until run. Set
    * automatically by Paddle.
    */
-  lastRunAt: Date | null;
+  lastRunAt?: Date | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -38,9 +38,9 @@ export const singleEventSchema: Schema<SingleEvent> = s.object<SingleEvent>({
   notificationSettingId: s.string(),
   name: s.string(),
   type: eventTypeNameSchema,
-  payload: s.nullable(s.record(s.string(), s.unknown())),
-  config: s.nullable(s.string()),
-  lastRunAt: s.nullable(s.dateTime()),
+  payload: s.optionalNullable(s.record(s.string(), s.unknown())),
+  config: s.optionalNullable(s.string()),
+  lastRunAt: s.optionalNullable(s.dateTime()),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {

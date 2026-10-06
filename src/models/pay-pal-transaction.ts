@@ -9,10 +9,10 @@ export type PayPalTransaction = {
    * PayPal billing agreement identifier. Only populated for subscription payments where a billing
    * agreement was created between the customer and PayPal. `null` for one-off PayPal payments.
    */
-  reference: string | null;
+  reference?: string | null;
 };
 
 export const payPalTransactionSchema: Schema<PayPalTransaction> = s.object<PayPalTransaction>({
   email: s.string(),
-  reference: s.nullable(s.string()),
+  reference: s.optionalNullable(s.string()),
 });

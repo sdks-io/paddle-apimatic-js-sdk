@@ -16,14 +16,14 @@ export type BillingCycleUpdated = {
    * billing cycle was updated. `null` if the subscription has no next billing date (for example,
    * paused without a scheduled resume).
    */
-  nextBilledAt: Date | null;
+  nextBilledAt?: Date | null;
 };
 
 export const billingCycleUpdatedSchema: Schema<BillingCycleUpdated> = s.object<BillingCycleUpdated>({
   action: s.defaulted(s.literal("subscription_billing_cycle_updated"), "subscription_billing_cycle_updated"),
   billingCycle: durationSchema,
   currentBillingPeriod: timePeriodSchema,
-  nextBilledAt: s.nullable(s.dateTime()),
+  nextBilledAt: s.optionalNullable(s.dateTime()),
   _keysMap: {
     billingCycle: "billing_cycle",
     currentBillingPeriod: "current_billing_period",

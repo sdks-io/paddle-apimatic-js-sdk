@@ -12,11 +12,11 @@ export type AdjustmentPayoutTotalsChargebackFee = {
    * Chargeback fee before conversion to the payout currency. `null` when the chargeback fee is the
    * same as the payout currency.
    */
-  original: AdjustmentPayoutTotalsChargebackFeeOriginal | null;
+  original?: AdjustmentPayoutTotalsChargebackFeeOriginal | null;
 };
 
 export const adjustmentPayoutTotalsChargebackFeeSchema: Schema<AdjustmentPayoutTotalsChargebackFee> =
   s.object<AdjustmentPayoutTotalsChargebackFee>({
     amount: s.string(),
-    original: s.nullable(s.lazy(() => adjustmentPayoutTotalsChargebackFeeOriginalSchema)),
+    original: s.optionalNullable(s.lazy(() => adjustmentPayoutTotalsChargebackFeeOriginalSchema)),
   });

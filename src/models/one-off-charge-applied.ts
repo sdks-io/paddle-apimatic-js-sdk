@@ -24,7 +24,7 @@ export type OneOffChargeApplied = {
    * Paddle ID of the transaction created for the one-off charge, prefixed with `txn_`. `null` if no
    * transaction was created.
    */
-  transactionId: string | null;
+  transactionId?: string | null;
 };
 
 export const oneOffChargeAppliedSchema: Schema<OneOffChargeApplied> = s.object<OneOffChargeApplied>({
@@ -35,7 +35,7 @@ export const oneOffChargeAppliedSchema: Schema<OneOffChargeApplied> = s.object<O
   effectiveFrom: subscriptionHistoryOneOffChargeAppliedEffectiveFromSchema,
   items: s.array(s.lazy(() => subscriptionHistoryItemSchema)),
   onPaymentFailure: subscriptionOnPaymentFailureSchema,
-  transactionId: s.nullable(s.string()),
+  transactionId: s.optionalNullable(s.string()),
   _keysMap: {
     effectiveFrom: "effective_from",
     onPaymentFailure: "on_payment_failure",

@@ -8,39 +8,39 @@ import {
 /** Configuration resources for subscription creation simulations */
 export type SimulationSubscriptionCreationConfigEntities = {
   /** Paddle ID of a customer. Adds customer details to webhook payloads. */
-  customerId: string | null;
+  customerId?: string | null;
   /** Paddle ID of an address. Adds address details to webhook payloads. Requires `customer_id`. */
-  addressId: string | null;
+  addressId?: string | null;
   /** Paddle ID of a business. Adds business details to webhook payloads. Requires `customer_id`. */
-  businessId: string | null;
+  businessId?: string | null;
   /**
    * Paddle ID of a payment method. Adds payment method details to webhook payloads. Requires
    * `customer_id`.
    */
-  paymentMethodId: string | null;
+  paymentMethodId?: string | null;
   /**
    * Paddle ID of a discount. Adds discount details (including price calculations) to webhook
    * payloads. Requires `items` or `transaction_id` for the discount to be applied.
    */
-  discountId: string | null;
+  discountId?: string | null;
   /** Paddle ID of a transaction. Bases the subscription on the transaction. */
-  transactionId: string | null;
+  transactionId?: string | null;
   /**
    * Items to include on the simulated subscription. Only existing products and prices can be
    * simulated. Non-catalog items aren't supported. At least one recurring price must be provided.
    */
-  items: SubscriptionItemCreateWithPriceId[] | null;
+  items?: SubscriptionItemCreateWithPriceId[] | null;
 };
 
 export const simulationSubscriptionCreationConfigEntitiesSchema: Schema<SimulationSubscriptionCreationConfigEntities> =
   s.object<SimulationSubscriptionCreationConfigEntities>({
-    customerId: s.nullable(s.string()),
-    addressId: s.nullable(s.string()),
-    businessId: s.nullable(s.string()),
-    paymentMethodId: s.nullable(s.string()),
-    discountId: s.nullable(s.string()),
-    transactionId: s.nullable(s.string()),
-    items: s.nullable(s.array(s.lazy(() => subscriptionItemCreateWithPriceIdSchema))),
+    customerId: s.optionalNullable(s.string()),
+    addressId: s.optionalNullable(s.string()),
+    businessId: s.optionalNullable(s.string()),
+    paymentMethodId: s.optionalNullable(s.string()),
+    discountId: s.optionalNullable(s.string()),
+    transactionId: s.optionalNullable(s.string()),
+    items: s.optionalNullable(s.array(s.lazy(() => subscriptionItemCreateWithPriceIdSchema))),
     _keysMap: {
       customerId: "customer_id",
       addressId: "address_id",

@@ -34,12 +34,12 @@ export type TransactionDetails1 = {
    * Breakdown of the payout total for a transaction. `null` until the transaction is `completed`.
    * Returned in your payout currency.
    */
-  payoutTotals: TransactionPayoutTotals1 | null;
+  payoutTotals?: TransactionPayoutTotals1 | null;
   /**
    * Breakdown of the payout total for a transaction after adjustments. `null` until the transaction
    * is `completed`.
    */
-  adjustedPayoutTotals: TransactionPayoutTotalsAdjusted1 | null;
+  adjustedPayoutTotals?: TransactionPayoutTotalsAdjusted1 | null;
   /**
    * Information about line items for this transaction. Different from transaction `items` as they
    * include totals calculated by Paddle. Considered the source of truth for line item totals.
@@ -51,8 +51,8 @@ export const transactionDetails1Schema: Schema<TransactionDetails1> = s.object<T
   taxRatesUsed: s.array(s.lazy(() => taxRatesUsedSchema)),
   totals: totals2Schema,
   adjustedTotals: transactionTotalsAdjusted1Schema,
-  payoutTotals: s.nullable(s.lazy(() => transactionPayoutTotals1Schema)),
-  adjustedPayoutTotals: s.nullable(s.lazy(() => transactionPayoutTotalsAdjusted1Schema)),
+  payoutTotals: s.optionalNullable(s.lazy(() => transactionPayoutTotals1Schema)),
+  adjustedPayoutTotals: s.optionalNullable(s.lazy(() => transactionPayoutTotalsAdjusted1Schema)),
   lineItems: s.array(s.lazy(() => lineItemSchema)),
   _keysMap: {
     taxRatesUsed: "tax_rates_used",

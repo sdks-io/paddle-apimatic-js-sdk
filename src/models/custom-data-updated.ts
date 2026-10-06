@@ -9,12 +9,12 @@ export type CustomDataUpdated = {
    * Updated custom data on the subscription. `null` if custom data was removed. This is what the
    * custom data was changed to.
    */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
 };
 
 export const customDataUpdatedSchema: Schema<CustomDataUpdated> = s.object<CustomDataUpdated>({
   action: s.defaulted(s.literal("subscription_custom_data_updated"), "subscription_custom_data_updated"),
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   _keysMap: {
     customData: "custom_data",
   },

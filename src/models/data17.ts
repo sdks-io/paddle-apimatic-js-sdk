@@ -7,7 +7,7 @@ import { statusSchema, type Status } from "./status.js";
 export type Data17 = {
   /** Unique Paddle ID for this customer entity, prefixed with `ctm_`. */
   id: string;
-  name: string | null;
+  name?: string | null;
   /** Email address for this entity. */
   email: string;
   /**
@@ -18,26 +18,26 @@ export type Data17 = {
   /** Whether this entity can be used in Paddle. */
   status: Status;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** A short form locale tag following the IETF BCP 47 standard. @default "en" */
   locale?: string;
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
-  updatedAt: Date | null;
+  updatedAt?: Date | null;
 };
 
 export const data17Schema: Schema<Data17> = s.object<Data17>({
   id: s.string(),
-  name: s.nullable(s.string()),
+  name: s.optionalNullable(s.string()),
   email: s.string(),
   marketingConsent: s.boolean(),
   status: statusSchema,
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   locale: s.defaulted(s.string(), "en"),
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
-  updatedAt: s.nullable(s.dateTime()),
+  updatedAt: s.optionalNullable(s.dateTime()),
   _keysMap: {
     marketingConsent: "marketing_consent",
     customData: "custom_data",

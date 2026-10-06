@@ -14,7 +14,7 @@ export type PayoutTotalsAdjustment1 = {
   /** Adjusted Paddle fee. */
   fee: string;
   /** Paddle fees retained for this adjustment. */
-  retainedFee: string;
+  retainedFee?: string;
   /**
    * Chargeback fees incurred for this adjustment. Only returned when the adjustment `action` is
    * `chargeback` or `chargeback_warning`.
@@ -39,7 +39,7 @@ export const payoutTotalsAdjustment1Schema: Schema<PayoutTotalsAdjustment1> =
     tax: s.string(),
     total: s.string(),
     fee: s.string(),
-    retainedFee: s.string(),
+    retainedFee: s.optional(s.string()),
     chargebackFee: s.optional(s.lazy(() => chargebackFeeSchema)),
     earnings: s.string(),
     currencyCode: currencyCodePayouts1Schema,

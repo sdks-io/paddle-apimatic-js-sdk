@@ -18,11 +18,11 @@ export type SubscriptionItem = {
   /** RFC 3339 datetime string of when this item was last updated on this subscription. */
   updatedAt: Date;
   /** RFC 3339 datetime string of when this item was last billed. */
-  previouslyBilledAt: Date | null;
+  previouslyBilledAt?: Date | null;
   /** RFC 3339 datetime string of when this item is next scheduled to be billed. */
-  nextBilledAt: Date | null;
+  nextBilledAt?: Date | null;
   /** Trial dates for this item. */
-  trialDates: TimePeriod | null;
+  trialDates?: TimePeriod | null;
   /**
    * Related price entity for this item. This reflects the price entity at the time it was added to
    * the subscription.
@@ -41,9 +41,9 @@ export const subscriptionItemSchema: Schema<SubscriptionItem> = s.object<Subscri
   recurring: s.boolean(),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
-  previouslyBilledAt: s.nullable(s.dateTime()),
-  nextBilledAt: s.nullable(s.dateTime()),
-  trialDates: s.nullable(s.lazy(() => timePeriodSchema)),
+  previouslyBilledAt: s.optionalNullable(s.dateTime()),
+  nextBilledAt: s.optionalNullable(s.dateTime()),
+  trialDates: s.optionalNullable(s.lazy(() => timePeriodSchema)),
   price: priceSchema,
   product: productSchema,
   _keysMap: {

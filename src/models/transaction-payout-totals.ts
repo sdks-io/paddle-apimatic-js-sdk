@@ -37,7 +37,7 @@ export type TransactionPayoutTotals = {
    * Net tax amount included in `grand_total`. Equals the full `tax` amount unless credits are
    * applied, in which case this value is proportionally reduced.
    */
-  grandTotalTax: string;
+  grandTotalTax?: string;
   /** Total fee taken by Paddle for this payout. */
   fee: string;
   /** Total earnings for this payout. This is the subtotal minus the Paddle fee. */
@@ -51,7 +51,7 @@ export type TransactionPayoutTotals = {
   /** @default "1" */
   exchangeRate?: string;
   /** Paddle fee rate that was applied to this transaction. */
-  feeRate: string;
+  feeRate?: string;
 };
 
 export const transactionPayoutTotalsSchema: Schema<TransactionPayoutTotals> =
@@ -64,12 +64,12 @@ export const transactionPayoutTotalsSchema: Schema<TransactionPayoutTotals> =
     creditToBalance: s.string(),
     balance: s.string(),
     grandTotal: s.string(),
-    grandTotalTax: s.string(),
+    grandTotalTax: s.optional(s.string()),
     fee: s.string(),
     earnings: s.string(),
     currencyCode: currencyCodePayoutsSchema,
     exchangeRate: s.defaulted(s.string(), "1"),
-    feeRate: s.string(),
+    feeRate: s.optional(s.string()),
     _keysMap: {
       creditToBalance: "credit_to_balance",
       grandTotal: "grand_total",

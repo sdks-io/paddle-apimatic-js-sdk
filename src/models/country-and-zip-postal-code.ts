@@ -1,6 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { addressPreview1Schema, type AddressPreview1 } from "./address-preview1.js";
+import { addressPreviewSchema, type AddressPreview } from "./address-preview.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { discountCustomSchema, type DiscountCustom } from "./discount-custom.js";
 import {
@@ -37,7 +37,7 @@ export type CountryAndZipPostalCode = {
    */
   items: TransactionPreviewCreateItems[];
   /** Address for this transaction preview. */
-  address: AddressPreview1;
+  address: AddressPreview;
 };
 
 export const countryAndZipPostalCodeSchema: Schema<CountryAndZipPostalCode> =
@@ -48,7 +48,7 @@ export const countryAndZipPostalCodeSchema: Schema<CountryAndZipPostalCode> =
     discount: s.optionalNullable(s.lazy(() => discountCustomSchema)),
     ignoreTrials: s.defaulted(s.boolean(), false),
     items: s.array(s.lazy(() => transactionPreviewCreateItemsSchema)),
-    address: addressPreview1Schema,
+    address: addressPreviewSchema,
     _keysMap: {
       customerId: "customer_id",
       currencyCode: "currency_code",

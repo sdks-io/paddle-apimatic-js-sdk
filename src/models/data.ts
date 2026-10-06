@@ -10,18 +10,18 @@ export type Data = {
   id: string;
   /** The ID of the customer this address belongs to. */
   customerId: string;
-  description: string | null;
-  firstLine: string | null;
-  secondLine: string | null;
-  city: string | null;
-  postalCode: string | null;
-  region: string | null;
+  description?: string | null;
+  firstLine?: string | null;
+  secondLine?: string | null;
+  city?: string | null;
+  postalCode?: string | null;
+  region?: string | null;
   countryCode: CountryCodeSupported;
   /** Your own structured key-value data. */
-  customData: Record<string, unknown> | null;
+  customData?: Record<string, unknown> | null;
   /** Whether this entity can be used in Paddle. */
   status: Status;
-  importMeta: ImportMeta | null;
+  importMeta?: ImportMeta | null;
   /** RFC 3339 datetime string of when this entity was created. Set automatically by Paddle. */
   createdAt: Date;
   /** RFC 3339 datetime string of when this entity was updated. Set automatically by Paddle. */
@@ -31,16 +31,16 @@ export type Data = {
 export const dataSchema: Schema<Data> = s.object<Data>({
   id: s.string(),
   customerId: s.string(),
-  description: s.nullable(s.string()),
-  firstLine: s.nullable(s.string()),
-  secondLine: s.nullable(s.string()),
-  city: s.nullable(s.string()),
-  postalCode: s.nullable(s.string()),
-  region: s.nullable(s.string()),
+  description: s.optionalNullable(s.string()),
+  firstLine: s.optionalNullable(s.string()),
+  secondLine: s.optionalNullable(s.string()),
+  city: s.optionalNullable(s.string()),
+  postalCode: s.optionalNullable(s.string()),
+  region: s.optionalNullable(s.string()),
   countryCode: countryCodeSupportedSchema,
-  customData: s.nullable(s.record(s.string(), s.unknown())),
+  customData: s.optionalNullable(s.record(s.string(), s.unknown())),
   status: statusSchema,
-  importMeta: s.nullable(s.lazy(() => importMetaSchema)),
+  importMeta: s.optionalNullable(s.lazy(() => importMetaSchema)),
   createdAt: s.dateTime(),
   updatedAt: s.dateTime(),
   _keysMap: {
