@@ -12,7 +12,7 @@ export type NotificationSettingUpdate = {
   description?: string;
   /** Webhook endpoint URL or email address. */
   destination?: string;
-  /** Whether Paddle should try to deliver events to this notification destination. @default true */
+  /** Whether Paddle should try to deliver events to this notification destination. */
   active?: boolean;
   /**
    * API version that returned objects for events should conform to. Must be a valid version of the
@@ -20,11 +20,7 @@ export type NotificationSettingUpdate = {
    * default if omitted.
    */
   apiVersion?: number;
-  /**
-   * Whether potentially sensitive fields should be sent to this notification destination.
-   *
-   * @default false
-   */
+  /** Whether potentially sensitive fields should be sent to this notification destination. */
   includeSensitiveFields?: boolean;
   /**
    * Subscribed events for this notification destination. When creating or updating a notification
@@ -43,9 +39,9 @@ export const notificationSettingUpdateSchema: Schema<NotificationSettingUpdate> 
   s.object<NotificationSettingUpdate>({
     description: s.optional(s.string()),
     destination: s.optional(s.string()),
-    active: s.defaulted(s.boolean(), true),
+    active: s.optional(s.boolean()),
     apiVersion: s.optional(s.int()),
-    includeSensitiveFields: s.defaulted(s.boolean(), false),
+    includeSensitiveFields: s.optional(s.boolean()),
     subscribedEvents: s.optional(s.array(s.lazy(() => eventTypeNameSchema))),
     trafficSource: s.optional(s.lazy(() => notificationSettingTrafficSourceSchema)),
     _keysMap: {

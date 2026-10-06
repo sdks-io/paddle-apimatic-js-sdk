@@ -459,7 +459,7 @@ if (result.ok) {
 | <code>occurredAt?</code> | <code>string</code> | Return entities that occurred at a specific time. Use `[LTE]` (less than or equal to) or `[GTE]` (greater than or equal to) operators with an RFC 3339 datetime string. For example, `occurred_at[LTE]=2023-04-18T17:03:26` or `occurred_at[GTE]=2023-04-18T17:03:26`. |
 | <code>after?</code> | <code>string</code> | Return entities after the specified Paddle ID when working with paginated endpoints. Used in the `meta.pagination.next` URL in responses for list operations. |
 | <code>perPage?</code> | <code>number</code> | Set how many entities are returned per page. Paddle returns the maximum number of results if a number greater than the maximum is requested. Check `meta.pagination.per_page` in the response to see how many were returned.<br><br>Default: `50`; Maximum: `200`.<br>**Default**: 50 |
-| <code>orderBy?</code> | <code>string</code> | Order returned entities by the specified field and direction (`[ASC]` or `[DESC]`). For example, `?order_by=occurred_at[DESC]`.<br><br>Valid fields for ordering: `occurred_at`.<br>**Default**: "occurred_at[DESC]" |
+| <code>orderBy?</code> | <code>string</code> | Order returned entities by the specified field and direction (`[ASC]` or `[DESC]`). For example, `?order_by=id[DESC]`.<br><br>Valid fields for ordering: `id`. |
 | <code>skipCount?</code> | <code>string</code> | Set to `true` to skip the count query on list operations. When set, `meta.pagination.estimated_total` returns `-1` instead of an exact count. |
 
 </dd>

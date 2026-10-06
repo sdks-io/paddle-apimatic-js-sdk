@@ -1,6 +1,6 @@
 {
   "name": "paddle-apimatic-sdk",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Sample SDKs for Paddle by APIMatic",
   "homepage": "https://developer.paddle.com/",
   "type": "module",

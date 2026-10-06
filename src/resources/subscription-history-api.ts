@@ -99,7 +99,7 @@ export class SubscriptionHistoryApi {
           { name: "occurred_at", value: request.occurredAt, schema: s.optional(s.string()) },
           { name: "after", value: request.after, schema: s.optional(s.string()) },
           { name: "per_page", value: request.perPage, schema: s.defaulted(s.int(), 50) },
-          { name: "order_by", value: request.orderBy, schema: s.defaulted(s.string(), "occurred_at[DESC]") },
+          { name: "order_by", value: request.orderBy, schema: s.optional(s.string()) },
         ],
         headers: [{ name: "Skip-Count", value: request.skipCount, schema: s.optional(s.string()) }],
         body: { kind: "empty" },
@@ -164,11 +164,9 @@ export namespace SubscriptionHistoryApi {
     perPage?: number;
     /**
      * Order returned entities by the specified field and direction (`[ASC]` or `[DESC]`). For
-     * example, `?order_by=occurred_at[DESC]`.
+     * example, `?order_by=id[DESC]`.
      *
-     * Valid fields for ordering: `occurred_at`.
-     *
-     * @default "occurred_at[DESC]"
+     * Valid fields for ordering: `id`.
      */
     orderBy?: string;
     /**

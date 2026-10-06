@@ -2,16 +2,14 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { adjustmentActionSchema, type AdjustmentAction } from "./adjustment-action.js";
 import { adjustmentItemCreateSchema, type AdjustmentItemCreate } from "./adjustment-item-create.js";
-import { AdjustmentTaxMode, adjustmentTaxModeSchema } from "./adjustment-tax-mode.js";
-import { AdjustmentType, adjustmentTypeSchema } from "./adjustment-type.js";
+import { adjustmentTaxModeSchema, type AdjustmentTaxMode } from "./adjustment-tax-mode.js";
+import { adjustmentTypeSchema, type AdjustmentType } from "./adjustment-type.js";
 
 /** Represents an adjustment entity when creating adjustments. */
 export type AdjustmentCreate = {
   /** How this adjustment impacts the related transaction. */
   action: AdjustmentAction;
-  /** @default AdjustmentType.Partial */
   type?: AdjustmentType;
-  /** @default AdjustmentTaxMode.Internal */
   taxMode?: AdjustmentTaxMode;
   /**
    * Paddle ID of the transaction that this adjustment is for, prefixed with `txn_`.
@@ -35,8 +33,8 @@ export type AdjustmentCreate = {
 
 export const adjustmentCreateSchema: Schema<AdjustmentCreate> = s.object<AdjustmentCreate>({
   action: adjustmentActionSchema,
-  type: s.defaulted(adjustmentTypeSchema, AdjustmentType.Partial),
-  taxMode: s.defaulted(adjustmentTaxModeSchema, AdjustmentTaxMode.Internal),
+  type: s.optional(s.lazy(() => adjustmentTypeSchema)),
+  taxMode: s.optional(s.lazy(() => adjustmentTaxModeSchema)),
   transactionId: s.string(),
   reason: s.string(),
   items: s.optionalNullable(s.array(s.lazy(() => adjustmentItemCreateSchema))),

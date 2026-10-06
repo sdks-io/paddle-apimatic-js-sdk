@@ -4,7 +4,7 @@ import { durationSchema, type Duration } from "./duration.js";
 
 /** Details for invoicing. Required if `collection_mode` is `manual`. */
 export type BillingDetailsUpdate = {
-  /** Whether the related transaction may be paid using Paddle Checkout. @default false */
+  /** Whether the related transaction may be paid using Paddle Checkout. */
   enableCheckout?: boolean;
   /** Customer purchase order number. Appears on invoice documents. */
   purchaseOrderNumber?: string;
@@ -15,7 +15,7 @@ export type BillingDetailsUpdate = {
 };
 
 export const billingDetailsUpdateSchema: Schema<BillingDetailsUpdate> = s.object<BillingDetailsUpdate>({
-  enableCheckout: s.defaulted(s.boolean(), false),
+  enableCheckout: s.optional(s.boolean()),
   purchaseOrderNumber: s.optional(s.string()),
   additionalInformation: s.optionalNullable(s.string()),
   paymentTerms: s.optional(s.lazy(() => durationSchema)),

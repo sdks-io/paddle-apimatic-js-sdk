@@ -12,7 +12,6 @@ export type PriceTrialDuration2 = {
   interval?: DurationInterval;
   /** Amount of time. */
   frequency?: number;
-  /** @default true */
   requiresPaymentMethod?: boolean;
   /**
    * Trial price. Customers are billed this amount for the duration of the trial period. Applies to
@@ -30,7 +29,7 @@ export type PriceTrialDuration2 = {
 export const priceTrialDuration2Schema: Schema<PriceTrialDuration2> = s.object<PriceTrialDuration2>({
   interval: s.optional(s.lazy(() => durationIntervalSchema)),
   frequency: s.optional(s.int()),
-  requiresPaymentMethod: s.defaulted(s.boolean(), true),
+  requiresPaymentMethod: s.optional(s.boolean()),
   unitPrice: s.optionalNullable(s.lazy(() => moneyWithOptionalCurrencySchema)),
   unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceTrialOverrideSchema))),
   _keysMap: {

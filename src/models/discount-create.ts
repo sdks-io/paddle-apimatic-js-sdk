@@ -13,11 +13,7 @@ export type DiscountCreate = {
   status?: DiscountStatus;
   /** Short description for this discount for your reference. Not shown to customers. */
   description: string;
-  /**
-   * Whether this discount can be redeemed by customers at checkout (`true`) or not (`false`).
-   *
-   * @default true
-   */
+  /** Whether this discount can be redeemed by customers at checkout (`true`) or not (`false`). */
   enabledForCheckout?: boolean;
   /**
    * Unique code that customers can use to redeem this discount at checkout. Use letters and numbers
@@ -108,7 +104,7 @@ export const discountCreateSchema: Schema<DiscountCreate> = s.object<DiscountCre
   id: s.optional(s.string()),
   status: s.defaulted(discountStatusSchema, DiscountStatus.Active),
   description: s.string(),
-  enabledForCheckout: s.defaulted(s.boolean(), true),
+  enabledForCheckout: s.optional(s.boolean()),
   code: s.optionalNullable(s.string()),
   type: discountTypeSchema,
   mode: s.defaulted(discountModeSchema, DiscountMode.Standard),

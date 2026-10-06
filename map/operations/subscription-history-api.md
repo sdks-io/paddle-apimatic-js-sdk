@@ -29,7 +29,7 @@ Accessor: `client.subscriptionHistoryApi` · Source: `src/resources/subscription
 | `occurredAt` | `query` | `occurred_at` | `string` | no | — |
 | `after` | `query` | — | `string` | no | — |
 | `perPage` | `query` | `per_page` | `number` | no | `50` |
-| `orderBy` | `query` | `order_by` | `string` | no | `"occurred_at[DESC]"` |
+| `orderBy` | `query` | `order_by` | `string` | no | — |
 | `skipCount` | `header` | `Skip-Count` | `string` | no | — |
 
 | Type | Schema value | Source |

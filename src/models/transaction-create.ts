@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { billingDetails1Schema, type BillingDetails1 } from "./billing-details1.js";
-import { CollectionMode, collectionModeSchema } from "./collection-mode.js";
+import { collectionModeSchema, type CollectionMode } from "./collection-mode.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
 import { discountCustomSchema, type DiscountCustom } from "./discount-custom.js";
 import { publicTransactionOriginSchema, type PublicTransactionOrigin } from "./public-transaction-origin.js";
@@ -72,8 +72,6 @@ export type TransactionCreate = {
   /**
    * How payment is collected for this transaction. `automatic` for checkout, `manual` for invoices.
    * If omitted, defaults to `automatic`.
-   *
-   * @default CollectionMode.Automatic
    */
   collectionMode?: CollectionMode;
   /** Paddle ID of the discount to apply to this transaction, prefixed with `dsc_`. */
@@ -129,7 +127,7 @@ export const transactionCreateSchema: Schema<TransactionCreate> = s.object<Trans
   subscriptionId: s.optionalNullable(s.string()),
   invoiceId: s.optionalNullable(s.string()),
   invoiceNumber: s.optionalNullable(s.string()),
-  collectionMode: s.defaulted(collectionModeSchema, CollectionMode.Automatic),
+  collectionMode: s.optional(s.lazy(() => collectionModeSchema)),
   discountId: s.optionalNullable(s.string()),
   discount: s.optionalNullable(s.lazy(() => discountCustomSchema)),
   billingDetails: s.optionalNullable(s.lazy(() => billingDetails1Schema)),

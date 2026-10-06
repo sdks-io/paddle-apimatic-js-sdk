@@ -1,6 +1,6 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { CatalogType, catalogTypeSchema } from "./catalog-type.js";
+import { catalogTypeSchema, type CatalogType } from "./catalog-type.js";
 import { statusSchema, type Status } from "./status.js";
 import { taxCategorySchema, type TaxCategory } from "./tax-category.js";
 import { imageUrlSchema, type ImageUrl } from "./unions/image-url.js";
@@ -11,7 +11,6 @@ export type ProductUpdate = {
   name?: string;
   /** Short description for this product. */
   description?: string | null;
-  /** @default CatalogType.Standard */
   type?: CatalogType;
   /**
    * Tax category for this product. Used for charging the correct rate of tax. Selected tax category
@@ -29,7 +28,7 @@ export type ProductUpdate = {
 export const productUpdateSchema: Schema<ProductUpdate> = s.object<ProductUpdate>({
   name: s.optional(s.string()),
   description: s.optionalNullable(s.string()),
-  type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
+  type: s.optional(s.lazy(() => catalogTypeSchema)),
   taxCategory: s.optional(s.lazy(() => taxCategorySchema)),
   imageUrl: s.optionalNullable(s.lazy(() => imageUrlSchema)),
   customData: s.optionalNullable(s.record(s.string(), s.unknown())),

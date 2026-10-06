@@ -8,8 +8,8 @@
 | --- | --- |
 | SDK display name | Paddle API |
 | Package | `paddle-apimatic-sdk` |
-| Package version | `0.0.3` |
-| API spec version | `0.0.3` |
+| Package version | `0.0.4` |
+| API spec version | `0.0.4` |
 | Import specifier | `paddle-apimatic-sdk` — the package root is the **only** entry. Deep imports (`paddle-apimatic-sdk/models/...`) do not resolve; the `exports` map exposes `.` and `./package.json` and nothing else |
 | Module format | dual ESM + CommonJS, as folder dialects (`dist/esm`, `dist/commonjs`), each with its own `package.json` marker. No `.mjs`, `.cjs`, `.d.mts` or `.d.cts` files exist |
 | Node floor | `>=20.3` (`engines.node`) |

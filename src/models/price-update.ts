@@ -1,19 +1,18 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
-import { CatalogType, catalogTypeSchema } from "./catalog-type.js";
+import { catalogTypeSchema, type CatalogType } from "./catalog-type.js";
 import { durationSchema, type Duration } from "./duration.js";
 import { moneySchema, type Money } from "./money.js";
 import { priceQuantitySchema, type PriceQuantity } from "./price-quantity.js";
 import { priceTrialDuration2Schema, type PriceTrialDuration2 } from "./price-trial-duration2.js";
 import { statusSchema, type Status } from "./status.js";
-import { TaxMode, taxModeSchema } from "./tax-mode.js";
+import { taxModeSchema, type TaxMode } from "./tax-mode.js";
 import { unitPriceOverrideSchema, type UnitPriceOverride } from "./unit-price-override.js";
 
 /** Represents a price entity when updating prices. */
 export type PriceUpdate = {
   /** Internal description for this price, not shown to customers. Typically notes for your team. */
   description?: string;
-  /** @default CatalogType.Standard */
   type?: CatalogType;
   name?: string | null;
   /** How often this price should be charged. `null` if price is non-recurring (one-time). */
@@ -23,7 +22,6 @@ export type PriceUpdate = {
    * period is over. `null` for no trial period. Requires `billing_cycle`.
    */
   trialPeriod?: PriceTrialDuration2 | null;
-  /** @default TaxMode.AccountSetting */
   taxMode?: TaxMode;
   /**
    * Base price. This price applies to all customers, except for customers located in countries
@@ -48,11 +46,11 @@ export type PriceUpdate = {
 
 export const priceUpdateSchema: Schema<PriceUpdate> = s.object<PriceUpdate>({
   description: s.optional(s.string()),
-  type: s.defaulted(catalogTypeSchema, CatalogType.Standard),
+  type: s.optional(s.lazy(() => catalogTypeSchema)),
   name: s.optionalNullable(s.string()),
   billingCycle: s.optionalNullable(s.lazy(() => durationSchema)),
   trialPeriod: s.optionalNullable(s.lazy(() => priceTrialDuration2Schema)),
-  taxMode: s.defaulted(taxModeSchema, TaxMode.AccountSetting),
+  taxMode: s.optional(s.lazy(() => taxModeSchema)),
   unitPrice: s.optional(s.lazy(() => moneySchema)),
   unitPriceOverrides: s.optional(s.array(s.lazy(() => unitPriceOverrideSchema))),
   quantity: s.optional(s.lazy(() => priceQuantitySchema)),

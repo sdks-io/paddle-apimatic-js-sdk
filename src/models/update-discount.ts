@@ -1,7 +1,7 @@
 import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { currencyCodeSchema, type CurrencyCode } from "./currency-code.js";
-import { DiscountMode, discountModeSchema } from "./discount-mode.js";
+import { discountModeSchema, type DiscountMode } from "./discount-mode.js";
 import { discountStatusSchema, type DiscountStatus } from "./discount-status.js";
 import { discountTypeSchema, type DiscountType } from "./discount-type.js";
 import { importMetaSchema, type ImportMeta } from "./import-meta.js";
@@ -13,11 +13,7 @@ export type UpdateDiscount = {
   status?: DiscountStatus;
   /** Short description for this discount for your reference. Not shown to customers. */
   description?: string;
-  /**
-   * Whether this discount can be redeemed by customers at checkout (`true`) or not (`false`).
-   *
-   * @default true
-   */
+  /** Whether this discount can be redeemed by customers at checkout (`true`) or not (`false`). */
   enabledForCheckout?: boolean;
   /** Unique code that customers can use to redeem this discount at checkout. Not case-sensitive. */
   code?: string | null;
@@ -26,8 +22,6 @@ export type UpdateDiscount = {
   /**
    * Discount mode. Standard discounts are considered part of your catalog and are shown in the
    * Paddle dashboard.
-   *
-   * @default DiscountMode.Standard
    */
   mode?: DiscountMode;
   /**
@@ -43,8 +37,6 @@ export type UpdateDiscount = {
   /**
    * Whether this discount applies for multiple subscription billing periods (`true`) or not
    * (`false`).
-   *
-   * @default false
    */
   recur?: boolean;
   /**
@@ -103,13 +95,13 @@ export const updateDiscountSchema: Schema<UpdateDiscount> = s.object<UpdateDisco
   id: s.optional(s.string()),
   status: s.optional(s.lazy(() => discountStatusSchema)),
   description: s.optional(s.string()),
-  enabledForCheckout: s.defaulted(s.boolean(), true),
+  enabledForCheckout: s.optional(s.boolean()),
   code: s.optionalNullable(s.string()),
   type: s.optional(s.lazy(() => discountTypeSchema)),
-  mode: s.defaulted(discountModeSchema, DiscountMode.Standard),
+  mode: s.optional(s.lazy(() => discountModeSchema)),
   amount: s.optional(s.string()),
   currencyCode: s.optionalNullable(s.lazy(() => currencyCodeSchema)),
-  recur: s.defaulted(s.boolean(), false),
+  recur: s.optional(s.boolean()),
   maximumRecurringIntervals: s.optionalNullable(s.int()),
   usageLimit: s.optionalNullable(s.int()),
   restrictTo: s.optionalNullable(s.array(s.string())),

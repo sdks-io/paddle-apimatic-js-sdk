@@ -2,8 +2,8 @@ import * as s from "../core/validation/index.js";
 import type { Schema } from "../core/validation/schema.js";
 import { effectiveFromSchema, type EffectiveFrom } from "./effective-from.js";
 import {
-  SubscriptionOnPaymentFailure,
   subscriptionOnPaymentFailureSchema,
+  type SubscriptionOnPaymentFailure,
 } from "./subscription-on-payment-failure.js";
 import {
   subscriptionChargeItemsSchema,
@@ -25,17 +25,13 @@ export type SubscriptionCharge = {
    * your price to charge for a non-catalog product.
    */
   items: SubscriptionChargeItems[];
-  /** @default SubscriptionOnPaymentFailure.PreventChange */
   onPaymentFailure?: SubscriptionOnPaymentFailure;
 };
 
 export const subscriptionChargeSchema: Schema<SubscriptionCharge> = s.object<SubscriptionCharge>({
   effectiveFrom: effectiveFromSchema,
   items: s.array(s.lazy(() => subscriptionChargeItemsSchema)),
-  onPaymentFailure: s.defaulted(
-    subscriptionOnPaymentFailureSchema,
-    SubscriptionOnPaymentFailure.PreventChange,
-  ),
+  onPaymentFailure: s.optional(s.lazy(() => subscriptionOnPaymentFailureSchema)),
   _keysMap: {
     effectiveFrom: "effective_from",
     onPaymentFailure: "on_payment_failure",
